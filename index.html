@@ -12,7 +12,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js"></script>
     <script type="text/javascript">
         (function(){
-            // Initialize EmailJS with your Public Key (Replace with your free key from emailjs.com)
+            // EmailJS Public Key initialization
             emailjs.init({
                 publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
             });
@@ -290,7 +290,7 @@
             <div class="text-5xl animate-bounce">🎉🧀</div>
             <div>
                 <h3 class="font-extrabold text-lg text-[#1C1616]">PESANAN BERHASIL DITERIMA!</h3>
-                <p class="text-xs text-neutral-500 mt-1">Email notifikasi & pencatatan sistem telah dikirim.</p>
+                <p class="text-xs text-neutral-500 mt-1">Notifikasi email telah dikirim ke thegrindlog27@gmail.com.</p>
             </div>
             
             <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs text-left space-y-2">
@@ -489,7 +489,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c EmailJS Instant Inbox Alerts Enabled! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Direct Email Alerts to thegrindlog27@gmail.com! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -1090,9 +1090,9 @@
                 }).catch(err => console.log("Google Sheets sync error:", err));
             }
 
-            // 2. SIMULTANEOUS EMAIL ALERT TO YOUR INBOX VIA EMAILJS
-            // (Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your free emailjs credentials)
+            // 2. INSTANT EMAIL ALERT TO THIGRINDLOG27@GMAIL.COM VIA EMAILJS
             const emailParams = {
+                to_email: "thegrindlog27@gmail.com",
                 to_name: "Admin Rest in Cheese",
                 customer_name: orderPayloadForSheet.name,
                 customer_phone: orderPayloadForSheet.phone,
@@ -1105,7 +1105,7 @@
 
             emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", emailParams)
                 .then(function(response) {
-                    console.log("Email alert successfully sent!", response.status, response.text);
+                    console.log("Email alert successfully sent to thegrindlog27@gmail.com!", response.status, response.text);
                 }, function(error) {
                     console.log("Email dispatch failed...", error);
                 });
