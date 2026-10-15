@@ -1,464 +1,1371 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rest in Cheese | Artisanal Cheesecake in a Jar</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Rest in Cheese | Artisanal Cheesecake from PIK</title>
+    <meta name="description" content="Artisanal cheesecake in a jar from a home kitchen in Taman Grisenda, Pantai Indah Kapuk, North Jakarta. Handcrafted daily with familiar ingredients and boutique technique." />
+    <meta name="theme-color" content="#F6F1E9">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Rest in Cheese | Artisanal Cheesecake" />
+    <meta property="og:description" content="Artisanal cheesecake in a jar from Taman Grisenda, PIK." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F6F1E9'/%3E%3Ctext x='50' y='62' font-family='serif' font-size='50' fill='%231F1A17' text-anchor='middle' font-weight='300'%3ER%3C/text%3E%3C/svg%3E" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231F1A17'/%3E%3Ctext x='50' y='65' font-family='serif' font-size='50' fill='%23F6F1E9' text-anchor='middle' font-weight='300'%3ER%3C/text%3E%3C/svg%3E" />
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Midtrans Production Snap SDK -->
+    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-qw70TUJoWJ_t6-Mi"></script>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#1C1616">
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8F5F0; color: #1C1616; }
-        .drawer-slide { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
-        .progress-bar-fill { transition: width 0.4s ease-in-out; }
-        .area-list-box { max-height: 220px; overflow-y: auto; }
+        :root {
+            --bg: #F6F1E9;
+            --surface: #FFFFFF;
+            --ink: #1F1A17;
+            --muted: #8C8279;
+            --line: #E4DBCF;
+            --accent: #A8561F;
+            --dark: #1F1A17;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--ink);
+            font-size: 16px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 120px;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 300;
+        }
+
+        button, input, select, textarea {
+            font-family: inherit;
+        }
+
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+
+        header, main {
+            max-width: 480px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(246, 241, 233, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--ink);
+            padding: 8px;
+            margin: -8px;
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: var(--ink);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .lang-switch {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-switch span {
+            cursor: pointer;
+        }
+
+        .lang-switch span.active {
+            color: var(--accent);
+            text-decoration: underline;
+            font-weight: 700;
+        }
+
+        .cart-toggle-btn {
+            background: var(--ink);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+        }
+
+        #cart-count {
+            background: var(--accent);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 999px;
+            font-size: 12px;
+        }
+
+        #menu-drawer {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: rgba(31, 26, 23, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: flex-start;
+            transition: opacity 0.35s ease;
+        }
+
+        #menu-panel {
+            width: 320px;
+            background: var(--bg);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--line);
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .drawer-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .drawer-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--muted);
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drawer-links {
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .drawer-links button, .drawer-links a {
+            background: none;
+            border: none;
+            text-align: left;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            color: var(--ink);
+            text-decoration: none;
+            cursor: pointer;
+            padding: 4px 0;
+            transition: color 0.2s;
+        }
+
+        .drawer-links button:hover, .drawer-links a:hover {
+            color: var(--accent);
+        }
+
+        main {
+            padding: 32px 24px 64px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 64px;
+        }
+
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .hero-img-wrap {
+            width: 100%;
+            height: 55vh;
+            background: var(--line);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hero-title {
+            font-size: 38px;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-desc {
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            transition: opacity 0.2s;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary:disabled, .btn-primary.opacity-60 {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .pillars-grid {
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            padding: 32px 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .pillar-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .pillar-num {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .pillar-text {
+            font-size: 16px;
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .brand-story-box {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 32px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .bundle-box {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .bundle-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .bundle-prices {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .line-through {
+            text-decoration: line-through;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .current-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .catalogue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .badge-signature {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 24px;
+        }
+
+        .product-img {
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: var(--line);
+            position: relative;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .product-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .product-title {
+            font-size: 24px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        .product-desc {
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .product-story {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 500;
+            padding-top: 8px;
+            border-top: 1px dashed var(--line);
+        }
+
+        .product-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+        }
+
+        .qty-btn {
+            width: 44px;
+            height: 44px;
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ink);
+        }
+
+        .qty-num {
+            font-weight: 700;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .promos-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .voucher-card {
+            background: var(--surface);
+            border: 1px dashed var(--accent);
+            border-radius: 6px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .voucher-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .voucher-code {
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--accent);
+        }
+
+        .btn-secondary {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            min-height: 44px;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .chef-img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: var(--line);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .chef-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-top: 24px;
+            border-top: 1px solid var(--line);
+        }
+
+        .info-item {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .info-item strong {
+            color: var(--ink);
+        }
+
+        #cart-drawer {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: rgba(31, 26, 23, 0.4);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: flex-end;
+            transition: opacity 0.35s ease;
+        }
+
+        #drawer-panel {
+            width: 100%;
+            max-width: 420px;
+            background: var(--bg);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cart-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cart-footer {
+            background: var(--surface);
+            border-top: 1px solid var(--line);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .floating-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 35;
+            background: var(--surface);
+            border-top: 1px solid var(--line);
+            padding: 16px 24px;
+            box-shadow: 0 -8px 24px rgba(31, 26, 23, 0.04);
+        }
+
+        .floating-bar-inner {
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .progress-bar-wrap {
+            width: 100%;
+            background: var(--line);
+            height: 4px;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: var(--accent);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        #puggle-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(31, 26, 23, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .puggle-card {
+            background: var(--dark);
+            color: #fff;
+            width: 100%;
+            max-width: 380px;
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #puggle-board {
+            width: 100%;
+            height: 380px;
+            background: #110E0D;
+            border: 1px solid var(--muted);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 16px;
+        }
 
         @keyframes chaosPinball {
             0%   { transform: translate(0px, 0px) rotate(0deg); }
-            12%  { transform: translate(-45px, 60px) rotate(-35deg); }
-            25%  { transform: translate(40px, 120px) rotate(45deg); }
-            38%  { transform: translate(-35px, 180px) rotate(-60deg); }
-            50%  { transform: translate(45px, 240px) rotate(90deg); }
-            62%  { transform: translate(-40px, 300px) rotate(-120deg); }
-            75%  { transform: translate(30px, 360px) rotate(180deg); }
-            88%  { transform: translate(var(--target-x), 420px) rotate(270deg); }
-            100% { transform: translate(var(--target-x), 450px) rotate(360deg); }
+            12%  { transform: translate(-30px, 40px) rotate(-35deg); }
+            25%  { transform: translate(25px, 90px) rotate(45deg); }
+            38%  { transform: translate(-25px, 140px) rotate(-60deg); }
+            50%  { transform: translate(30px, 190px) rotate(90deg); }
+            62%  { transform: translate(-25px, 240px) rotate(-120deg); }
+            75%  { transform: translate(20px, 290px) rotate(180deg); }
+            88%  { transform: translate(var(--target-x), 330px) rotate(270deg); }
+            100% { transform: translate(var(--target-x), 360px) rotate(360deg); }
         }
         .bouncing-drop-anim { animation: chaosPinball 5s cubic-bezier(0.36, 0, 0.66, 1) forwards; }
 
-        @keyframes floatBtn {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
-        .floating-cheese-trigger { animation: floatBtn 2.5s ease-in-out infinite; }
 
-        @keyframes shinyBounce {
-            0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 4px 20px rgba(217, 119, 6, 0.2); }
-            50% { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 30px rgba(217, 119, 6, 0.4); }
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink);
         }
-        .shiny-coupon-box { animation: shinyBounce 2s ease-in-out infinite; }
-        
-        .glass-nav { background: rgba(248, 245, 240, 0.85); backdrop-filter: blur(12px); }
-        .glass-card { background: #FFFFFF; border: 1px solid rgba(217, 119, 6, 0.12); box-shadow: 0 10px 30px -10px rgba(28, 22, 22, 0.04); }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            font-size: 15px;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .area-list-box {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background: var(--surface);
+        }
+
+        .area-card {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .area-card:last-child {
+            border-bottom: none;
+        }
+
+        .floating-puggle-trigger {
+            position: fixed;
+            bottom: 96px;
+            right: 24px;
+            z-index: 38;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 999px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(31, 26, 23, 0.12);
+        }
+
+        footer {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--ink);
+            text-decoration: underline;
+        }
     </style>
 </head>
-<body class="antialiased pb-36">
+<body>
 
-    <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-40 glass-nav border-b border-amber-900/10">
-        <div class="max-w-md mx-auto px-4 py-3.5 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <button onclick="toggleMenu()" class="text-neutral-800 hover:text-amber-700 p-1.5 text-2xl focus:outline-none transition active:scale-95">
-                    ☰
-                </button>
-                <div class="flex items-center space-x-2 cursor-pointer" onclick="switchPage('home')">
-                    <span class="text-2xl">🧀</span>
-                    <span class="font-extrabold text-lg tracking-tight text-[#1C1616]">Rest in Cheese</span>
-                </div>
+    <!-- Header -->
+    <header>
+        <button onclick="toggleMenu()" class="menu-btn" aria-label="Open Menu">
+            <span>&#9776;</span>
+        </button>
+        <a onclick="switchPage('home')" class="brand-logo">Rest in Cheese</a>
+        <div class="header-controls">
+            <div class="lang-switch">
+                <span id="lang-en" onclick="setLanguage('en')">EN</span>
+                <span>|</span>
+                <span id="lang-id" onclick="setLanguage('id')">ID</span>
             </div>
-            <div class="flex items-center space-x-2">
-                <button onclick="toggleCart()" class="bg-[#1C1616] text-white px-4 py-2 rounded-full font-bold text-xs flex items-center space-x-1.5 shadow-md active:scale-95 transition">
-                    <span>🛒 Cart</span>
-                    <span id="cart-count" class="bg-amber-500 text-white px-1.5 py-0.2 rounded-full text-[11px] font-extrabold">0</span>
-                </button>
-            </div>
+            <button onclick="toggleCart()" class="cart-toggle-btn" aria-label="Open Cart">
+                <span id="t-cart-btn-label">Cart</span>
+                <span id="cart-count">0</span>
+            </button>
         </div>
     </header>
 
     <!-- Navigation Drawer -->
-    <div id="menu-drawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex justify-start">
-        <div class="w-72 bg-[#F8F5F0] h-full flex flex-col shadow-2xl drawer-slide transform -translate-x-full border-r border-amber-900/10" id="menu-panel">
-            <div class="p-5 border-b border-amber-900/10 flex items-center justify-between bg-white">
-                <div class="flex items-center space-x-2">
-                    <span class="text-2xl">🧀</span>
-                    <span class="font-extrabold text-base text-[#1C1616]">Rest in Cheese</span>
-                </div>
-                <button onclick="toggleMenu()" class="text-neutral-400 hover:text-neutral-800 text-2xl font-bold">&times;</button>
+    <div id="menu-drawer" class="hidden">
+        <div id="menu-panel">
+            <div class="drawer-header">
+                <span class="brand-logo">Rest in Cheese</span>
+                <button onclick="toggleMenu()" class="drawer-close" aria-label="Close Menu">&times;</button>
             </div>
-            <div class="flex-1 p-6 space-y-6 overflow-y-auto text-sm">
-                <div class="space-y-3">
-                    <p class="text-[10px] font-extrabold uppercase tracking-widest text-amber-800/80">Menu Utama</p>
-                    <button onclick="switchPage('home'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
-                        <span class="text-lg">🏠</span> <span>Home</span>
-                    </button>
-                    <button onclick="switchPage('products'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
-                        <span class="text-lg">✨</span> <span>Catalogue</span>
-                    </button>
-                    <button onclick="switchPage('promos'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-amber-900 hover:text-amber-950 py-2.5 px-3 rounded-xl bg-amber-100/60 transition shadow-2xs">
-                        <span class="text-lg">🎟️</span> <span>Coupons & Discounts</span>
-                    </button>
-                    <button onclick="switchPage('about'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
-                        <span class="text-lg">📖</span> <span>About Us</span>
-                    </button>
-                    <a href="https://wa.me/6282112002258?text=Halo%20Admin%20Rest%20in%20Cheese,%20saya%20mau%20tanya-tanya%20dulu%20sebelum%20order." target="_blank" class="w-full text-left flex items-center space-x-3 font-bold text-emerald-800 py-2.5 px-3 rounded-xl bg-emerald-100/70 hover:bg-emerald-100 transition shadow-2xs">
-                        <span class="text-lg">💬</span> <span>Chat Admin</span>
-                    </a>
-                </div>
+            <div class="drawer-links">
+                <button onclick="switchPage('home'); toggleMenu();" id="t-nav-home">Home</button>
+                <button onclick="switchPage('products'); toggleMenu();" id="t-nav-catalogue">Catalogue</button>
+                <button onclick="switchPage('promos'); toggleMenu();" id="t-nav-promos">Coupons & Discounts</button>
+                <button onclick="switchPage('about'); toggleMenu();" id="t-nav-about">About</button>
+                <a href="https://wa.me/6282112002258?text=Halo%20Admin%20Rest%20in%20Cheese,%20saya%20mau%20tanya-tanya%20dulu%20sebelum%20order." target="_blank" id="t-nav-admin">Chat Admin</a>
             </div>
         </div>
     </div>
 
-    <!-- Main Content Container -->
-    <main class="max-w-md mx-auto px-4 pt-5 space-y-6">
+    <!-- Main Container -->
+    <main>
 
         <!-- PAGE 1: HOME -->
-        <div id="page-home" class="space-y-6">
-            <div class="bg-gradient-to-br from-[#1C1616] via-[#2D2424] to-[#1C1616] rounded-3xl p-7 text-white shadow-xl relative overflow-hidden text-center border border-amber-500/20">
-                <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 select-none">🧀</div>
-                <span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-widest">
-                    ✨ Artisanal Pastry in PIK
-                </span>
-                <h1 class="text-2xl font-extrabold tracking-tight mt-3 mb-2 leading-snug">
-                    Cheesecake in a Jar
-                </h1>
-                <p class="text-xs text-neutral-300 mb-6 leading-relaxed max-w-xs mx-auto">
-                    Velvety, rich, and meticulously crafted fresh daily with master hotel-grade technique.
-                </p>
-                <div class="flex items-center justify-center">
-                    <button onclick="switchPage('products')" class="bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs px-7 py-4 rounded-2xl shadow-lg active:scale-95 transition">
-                        Pesan Jar Sekarang 🛒
-                    </button>
+        <div id="page-home" class="hero-section">
+            <div class="hero-img-wrap">
+                <!-- GANTI FOTO DI SINI -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'%3E%3Crect width='800' height='1000' fill='%23E4DBCF'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%238C8279'%3EHero Photo%3C/text%3E%3C/svg%3E" alt="Cheesecake in a jar" loading="lazy" width="800" height="1000">
+            </div>
+            <div class="hero-content">
+                <h1 class="hero-title serif-font" id="t-hero-title">Cheesecake made with ingredients you know.</h1>
+                <p class="hero-desc" id="t-hero-desc">Artisanal cheesecake pairing boutique technique with comforting, familiar Indonesian flavors.</p>
+                <button onclick="switchPage('products')" class="btn-primary" id="t-hero-btn">Order now</button>
+            </div>
+
+            <div class="pillars-grid">
+                <div class="pillar-item">
+                    <span class="pillar-num">01</span>
+                    <span class="pillar-text" id="t-pillar-1">Selected local ingredients</span>
+                </div>
+                <div class="pillar-item">
+                    <span class="pillar-num">02</span>
+                    <span class="pillar-text" id="t-pillar-2">Freshly baked in PIK</span>
+                </div>
+                <div class="pillar-item">
+                    <span class="pillar-num">03</span>
+                    <span class="pillar-text" id="t-pillar-3">Instant delivery across Jakarta</span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-2 text-center">
-                <div class="glass-card p-3 rounded-2xl flex flex-col items-center justify-center space-y-1">
-                    <span class="text-xl">🌟</span>
-                    <p class="text-[11px] font-extrabold text-[#1C1616]">Hotel Grade</p>
-                    <p class="text-[9px] text-neutral-500">Master Recipe</p>
-                </div>
-                <div class="glass-card p-3 rounded-2xl flex flex-col items-center justify-center space-y-1">
-                    <span class="text-xl">🌿</span>
-                    <p class="text-[11px] font-extrabold text-[#1C1616]">100% Pure</p>
-                    <p class="text-[9px] text-neutral-500">Natural Dairy</p>
-                </div>
-                <div class="glass-card p-3 rounded-2xl flex flex-col items-center justify-center space-y-1">
-                    <span class="text-xl">🛵</span>
-                    <p class="text-[11px] font-extrabold text-[#1C1616]">Instant</p>
-                    <p class="text-[9px] text-neutral-500">GoSend / Grab</p>
+            <div class="brand-story-box">
+                <h2 class="serif-font" style="font-size: 28px;" id="t-home-story-title">Crafted with Heart in PIK</h2>
+                <p class="hero-desc" id="t-home-story-desc">Born in a home kitchen in Taman Grisenda, we transform everyday local ingredients into velvety, hotel-grade cheesecakes.</p>
+                <div>
+                    <button onclick="switchPage('products')" class="btn-primary" style="width: auto; padding: 12px 20px; font-size: 14px;" id="t-home-story-btn">See catalogue</button>
                 </div>
             </div>
 
-            <div class="bg-gradient-to-r from-amber-700 to-amber-900 rounded-3xl p-5 text-white shadow-lg relative overflow-hidden border border-amber-500/30">
-                <div class="absolute right-[-10px] bottom-[-10px] text-7xl opacity-15">🎁</div>
-                <span class="bg-white/20 text-amber-100 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-                    🔥 Special Bundle Offer
-                </span>
-                <h3 class="font-extrabold text-lg mt-2.5">The Ultimate Trio Bundle</h3>
-                <p class="text-xs text-amber-100 mt-1 leading-relaxed">
-                    Nikmati kelezatan 3 varian signature sekaligus dalam satu box eksklusif.
-                </p>
-                <div class="flex items-center justify-between mt-4 pt-3 border-t border-white/20">
-                    <div>
-                        <span class="text-[11px] line-through text-amber-200">Rp 200.000</span>
-                        <p class="text-base font-extrabold text-white">Rp 189.000</p>
+            <div class="bundle-box">
+                <div>
+                    <span class="badge-signature" id="t-bundle-badge">Special Offer</span>
+                    <h3 class="serif-font" style="font-size: 26px; margin-top: 4px;">The Ultimate Trio Bundle</h3>
+                    <p class="hero-desc" style="margin-top: 8px;" id="t-bundle-desc">Enjoy all 3 signature flavors in one exclusive box set.</p>
+                </div>
+                <div class="bundle-meta">
+                    <div class="bundle-prices">
+                        <span class="line-through">Rp 200.000</span>
+                        <span class="current-price">Rp 189.000</span>
                     </div>
-                    <button onclick="addBundleToCart()" class="bg-white hover:bg-amber-50 text-amber-950 px-4.5 py-2.5 rounded-xl font-extrabold text-xs shadow-md active:scale-95 transition">
-                        + Tambah Bundle
-                    </button>
+                    <button onclick="addBundleToCart()" class="btn-primary" style="width: auto; padding: 12px 20px; font-size: 14px;" id="t-add-bundle-btn">Add bundle</button>
                 </div>
             </div>
         </div>
 
         <!-- PAGE 2: PRODUCTS -->
-        <div id="page-products" class="space-y-4 hidden">
-            <div class="flex items-center justify-between mb-1">
-                <h2 class="text-lg font-extrabold text-[#1C1616]">Katalog Signature Jars</h2>
-                <span class="text-xs font-bold text-amber-800 bg-amber-100/80 px-3 py-1 rounded-full">Fresh Batch Today</span>
+        <div id="page-products" class="hidden">
+            <div class="catalogue-header">
+                <h2 class="section-header-title serif-font" id="t-cat-title">Jar Catalogue</h2>
+                <span class="badge-signature" id="t-cat-subtitle">Fresh Batch Today</span>
             </div>
-            <div id="product-list" class="space-y-4"></div>
+            <div id="product-list"></div>
         </div>
 
-        <!-- PAGE 3: PROMOS PAGE -->
-        <div id="page-promos" class="space-y-4 hidden">
-            <div class="glass-card p-6 rounded-3xl space-y-4">
-                <div class="flex items-center space-x-3">
-                    <span class="text-3xl">🎟️</span>
-                    <div>
-                        <h2 class="font-extrabold text-base text-[#1C1616]">Coupons & Discounts</h2>
-                        <p class="text-xs text-neutral-500">Semua voucher dan mini-game eksklusif Anda di sini.</p>
-                    </div>
-                </div>
-                <div id="boomer-promo-list" class="space-y-3 pt-2"></div>
+        <!-- PAGE 3: PROMOS -->
+        <div id="page-promos" class="hidden promos-container">
+            <div>
+                <h2 class="section-header-title serif-font" id="t-promos-title">Coupons & Discounts</h2>
+                <p class="hero-desc" id="t-promos-desc">Your active vouchers and minigame rewards.</p>
             </div>
+            <div id="boomer-promo-list"></div>
         </div>
 
         <!-- PAGE 4: ABOUT -->
-        <div id="page-about" class="space-y-4 hidden">
-            <div class="glass-card p-6 rounded-3xl space-y-4">
-                <div class="text-3xl">🧑‍🍳</div>
-                <h3 class="font-extrabold text-lg text-[#1C1616]">The Passion Behind Rest in Cheese</h3>
-                <p class="text-xs text-neutral-600 leading-relaxed">
-                    This is my absolute passion. Trained as an ex-intern from The Landmark Mandarin Oriental, I learned early on that high-end pastry isn't just about expensive labels—it's about respect for technique, flavor, and turning ordinary components into extraordinary culinary experiences.
-                </p>
-                <div class="pt-3 border-t border-neutral-100 space-y-2">
-                    <p class="text-xs font-extrabold text-amber-900">📍 Kitchen Base</p>
-                    <p class="text-xs text-neutral-600">Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara.</p>
-                </div>
+        <div id="page-about" class="hidden about-content">
+            <div>
+                <h2 class="section-header-title serif-font" id="t-about-title">About Rest in Cheese</h2>
+                <p class="hero-desc" id="t-about-subtitle">The story behind our kitchen.</p>
+            </div>
+            <div class="chef-img">
+                <!-- GANTI FOTO DI SINI -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23E4DBCF'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%238C8279'%3EChef Photo%3C/text%3E%3C/svg%3E" alt="Rest in Cheese Chef" loading="lazy" width="800" height="600">
+            </div>
+            <p class="hero-desc" id="t-about-text">
+                Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.
+            </p>
+            <div class="info-list">
+                <div class="info-item"><strong id="t-info-main-label">Main ingredients:</strong> <span id="t-info-main-val">[FILL]</span></div>
+                <div class="info-item"><strong id="t-info-shelf-label">Shelf life & storage:</strong> <span id="t-info-shelf-val">[FILL]</span></div>
+                <div class="info-item"><strong id="t-info-order-label">Ordering system:</strong> <span id="t-info-order-val">[FILL]</span></div>
+                <div class="info-item"><strong id="t-info-area-label">Delivery area:</strong> <span id="t-info-area-val">Jakarta, delivery fee based on area</span></div>
             </div>
         </div>
 
     </main>
 
-    <!-- FLOATING HOME PUGLLE TRIGGER (STRICTLY FOR POST-CHECKOUT TOKENS ONLY) -->
-    <div id="floating-puggle-trigger" class="fixed bottom-20 right-4 z-40 hidden">
-        <button onclick="openPuggleModal()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 font-extrabold text-xs border-2 border-white floating-cheese-trigger active:scale-95 transition">
-            <span class="text-xl">🧀</span>
-            <span>Mainkan Pinball!</span>
-        </button>
-    </div>
+    <!-- FLOATING PUGGLE TRIGGER -->
+    <button id="floating-puggle-trigger" onclick="openPuggleModal()" class="floating-puggle-trigger hidden">
+        Play Pinball
+    </button>
 
-    <!-- FLOATING BOTTOM LIVE BAR -->
-    <div class="fixed bottom-0 left-0 right-0 z-35 bg-white/95 backdrop-blur-md border-t border-amber-900/10 p-3.5 shadow-xl">
-        <div class="max-w-md mx-auto space-y-1.5">
-            <div class="flex justify-between items-center text-xs">
-                <div>
-                    <span class="text-[10px] uppercase font-bold text-neutral-400 block -mb-0.5">Total Belanja</span>
-                    <span id="floating-spending-amount" class="font-extrabold text-[#1C1616] text-sm">Rp 0</span>
-                </div>
-                <span id="floating-progress-badge" class="bg-amber-100 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold">0%</span>
+    <!-- FLOATING PROGRESS BAR -->
+    <div class="floating-bar" id="floating-bar-container">
+        <div class="floating-bar-inner">
+            <div class="flex justify-between items-center" style="font-size: 14px;">
+                <span id="floating-spending-amount" style="font-weight: 700;">Rp 0</span>
+                <span id="floating-progress-badge" style="color: var(--muted); font-size: 13px;">0%</span>
             </div>
-            <div class="w-full bg-neutral-100 rounded-full h-2 overflow-hidden">
-                <div id="floating-progress-bar" class="bg-gradient-to-r from-amber-500 to-amber-600 h-2 rounded-full progress-bar-fill" style="width: 0%"></div>
+            <div class="progress-bar-wrap">
+                <div id="floating-progress-bar" class="progress-bar-fill"></div>
             </div>
-            <p id="floating-progress-text" class="text-[10px] text-amber-800 font-semibold leading-tight truncate">
-                Diskon 5% min. belanja Rp 250.000!
-            </p>
+            <p id="floating-progress-text" style="font-size: 13px; color: var(--muted);">5% OFF for orders over Rp 250.000</p>
         </div>
     </div>
 
-    <!-- TALL VERTICAL BOUNCING PUGGLE GAME MODAL -->
-    <div id="puggle-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-gradient-to-b from-neutral-900 via-amber-950 to-neutral-900 w-full max-w-sm rounded-3xl border-4 border-amber-500/80 shadow-2xl overflow-hidden flex flex-col text-white">
-            
-            <div class="bg-amber-950 p-3.5 border-b border-amber-700/60 flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <span class="text-lg">🕹️</span>
-                    <h3 class="font-extrabold text-sm tracking-wide text-amber-300">PUGGLE PINBALL DROP</h3>
-                </div>
-                <button onclick="closePuggleModal()" class="text-neutral-400 hover:text-white text-xl font-bold px-2">&times;</button>
+    <!-- PUGGLE MODAL -->
+    <div id="puggle-modal" class="hidden">
+        <div class="puggle-card">
+            <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                <h3 class="serif-font" style="font-size: 22px;">Puggle Pinball</h3>
+                <button onclick="closePuggleModal()" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">&times;</button>
             </div>
-
-            <div class="p-4 flex flex-col items-center space-y-3">
-                <p class="text-[11px] text-amber-200 text-center">Keju memantul liar ke kiri dan kanan dari pin ke pin!</p>
-                
-                <div id="puggle-board" class="w-full h-[460px] bg-neutral-950 border-2 border-amber-600/50 rounded-2xl relative overflow-hidden shadow-inner flex flex-col justify-between p-3">
-                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
-                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
-                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
-                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
-                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
-                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
-
-                    <div id="puggle-cheese" class="absolute left-1/2 top-2 -translate-x-1/2 text-3xl hidden z-20">🧀</div>
-
-                    <div id="puggle-slots" class="grid grid-cols-4 gap-1 pt-2 border-t border-amber-700/60 text-[10px] font-extrabold text-center text-amber-200 bg-amber-900/60 rounded-xl p-1.5">
-                        <div data-slot="2" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">2%</div>
-                        <div data-slot="3" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">3%</div>
-                        <div data-slot="4" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">4%</div>
-                        <div data-slot="5" class="bg-amber-800/80 rounded py-1.5 border border-amber-600 text-amber-300">5%</div>
-                    </div>
-                </div>
-
-                <div id="puggle-status" class="text-xs font-bold text-amber-300 text-center h-5">Tekan tombol untuk melempar keju!</div>
-
-                <button id="puggle-drop-btn" onclick="startPuggleDrop()" class="w-full bg-amber-400 hover:bg-amber-300 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition active:scale-95 cursor-pointer">
-                    🚀 Lempar & Pantulkan Keju!
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- AUTOMATED ON-SCREEN CONFIRMATION MODAL -->
-    <div id="instant-confirmed-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col p-6 space-y-4 text-center border-4 border-amber-500">
-            <div class="text-5xl animate-bounce">🎉🧀</div>
-            <div>
-                <h3 class="font-extrabold text-lg text-[#1C1616]">PESANAN BERHASIL DITERIMA!</h3>
-                <p class="text-xs text-neutral-500 mt-1">Pesanan Anda telah otomatis tercatat di sistem.</p>
-            </div>
-            
-            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs text-left space-y-2">
-                <p class="font-bold text-amber-950 border-b border-amber-200 pb-1">🚚 Estimasi Pengiriman (ETA):</p>
-                <p class="text-neutral-700">• <strong>Dapur Origin:</strong> Taman Grisenda, PIK (Jakarta Utara)</p>
-                <p class="text-neutral-700">• <strong>Jadwal Kirim:</strong> Fresh diproses & dikirim via Instant/Sameday pada slot pilihan Anda.</p>
-            </div>
-
-            <button onclick="executeRedirectToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 rounded-xl text-xs shadow-md transition">
-                Buka WhatsApp Admin 💬
-            </button>
-        </div>
-    </div>
-
-    <!-- Cart Drawer Modal -->
-    <div id="cart-drawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex justify-end">
-        <div class="w-full max-w-md bg-[#F8F5F0] h-full flex flex-col shadow-2xl drawer-slide transform translate-x-full" id="drawer-panel">
-            
-            <div class="p-4 border-b border-amber-900/10 flex items-center justify-between bg-white">
-                <h2 class="font-extrabold text-base text-[#1C1616]">Ringkasan Pesanan</h2>
-                <button onclick="toggleCart()" class="text-neutral-400 hover:text-neutral-800 p-2 text-xl font-bold">&times;</button>
-            </div>
-
-            <div class="flex-1 overflow-y-auto p-4 space-y-4">
-                
-                <!-- COUPON SELECTION WALLET IN CART -->
-                <div id="coupon-wallet-container" class="space-y-2"></div>
-
-                <div class="bg-amber-50/70 border border-amber-900/10 p-3.5 rounded-2xl space-y-3">
-                    <div class="flex items-center space-x-3">
-                        <input type="checkbox" id="gift-option" onchange="toggleGiftBox()" class="w-4 h-4 text-amber-600 rounded border-amber-300 focus:ring-amber-500">
-                        <label for="gift-option" class="text-xs font-bold text-amber-950 cursor-pointer">
-                            🎁 Kirim sebagai hadiah? (+ Kartu Ucapan)
-                        </label>
-                    </div>
-                    <div id="gift-note-container" class="hidden pt-2 border-t border-amber-900/10">
-                        <label class="block text-[11px] font-bold text-amber-950 mb-1">Pesan Kartu Ucapan</label>
-                        <textarea id="gift-note" rows="2" placeholder="e.g. Happy Birthday Sarah! — from Alex" oninput="saveGiftNote(this.value)" class="w-full px-3 py-2 bg-white border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
-                    </div>
-                </div>
-
-                <div id="cart-items" class="space-y-3"></div>
-
-                <div id="empty-cart" class="text-center py-10 text-neutral-400">
-                    <p class="text-4xl mb-2">🛒</p>
-                    <p class="text-sm font-medium">Belum ada item dipilih. Silahkan tambah jar di katalog!</p>
-                </div>
-
-                <div id="checkout-form-section" class="space-y-4 pt-4 border-t border-amber-900/10 hidden">
-                    <h3 class="font-extrabold text-sm text-[#1C1616]">Detail Pengiriman (Seluruh Jakarta)</h3>
+            <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+                <p style="font-size: 14px; color: #D4CECA;" id="t-puggle-intro">Bounce the cheese to win a discount coupon.</p>
+                <div id="puggle-board">
+                    <div style="display: flex; justify-content: space-around; opacity: 0.4; font-size: 12px;"><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span></div>
+                    <div style="display: flex; justify-content: space-around; opacity: 0.4; font-size: 12px;"><span>•</span><span>•</span><span>•</span><span>•</span></div>
+                    <div style="display: flex; justify-content: space-around; opacity: 0.4; font-size: 12px;"><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span></div>
+                    <div style="display: flex; justify-content: space-around; opacity: 0.4; font-size: 12px;"><span>•</span><span>•</span><span>•</span><span>•</span></div>
                     
-                    <div>
-                        <label class="block text-xs font-bold text-neutral-700 mb-1">Nama Pemesan</label>
-                        <input type="text" id="cust-name" placeholder="e.g. Sarah Jenkins" class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <div id="puggle-cheese" class="hidden" style="position: absolute; left: 50%; top: 10px; transform: translateX(-50%); font-size: 24px; z-index: 20;">🧀</div>
+
+                    <div id="puggle-slots" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 8px; text-align: center; font-size: 12px; font-weight: 700;">
+                        <div data-slot="2" style="background: rgba(255,255,255,0.05); padding: 8px 4px; border-radius: 4px;">2%</div>
+                        <div data-slot="3" style="background: rgba(255,255,255,0.05); padding: 8px 4px; border-radius: 4px;">3%</div>
+                        <div data-slot="4" style="background: rgba(255,255,255,0.05); padding: 8px 4px; border-radius: 4px;">4%</div>
+                        <div data-slot="5" style="background: rgba(255,255,255,0.05); padding: 8px 4px; border-radius: 4px; color: var(--accent);">5%</div>
+                    </div>
+                </div>
+                <div id="puggle-status" style="font-size: 14px; text-align: center; min-height: 20px;">Press button to drop</div>
+                <button id="puggle-drop-btn" onclick="startPuggleDrop()" class="btn-primary">Drop Cheese</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div id="cart-drawer" class="hidden">
+        <div id="drawer-panel">
+            <div class="drawer-header">
+                <h3 class="serif-font" style="font-size: 24px;" id="t-cart-title">Order Summary</h3>
+                <button onclick="toggleCart()" class="drawer-close">&times;</button>
+            </div>
+
+            <div class="cart-body">
+                <div id="coupon-wallet-container"></div>
+
+                <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <input type="checkbox" id="gift-option" onchange="toggleGiftBox()" style="width: 18px; height: 18px; accent-color: var(--accent);">
+                        <label for="gift-option" style="font-size: 14px; font-weight: 500; cursor: pointer;" id="t-gift-label">Send as a gift? (+ Greeting Card)</label>
+                    </div>
+                    <div id="gift-note-container" class="hidden">
+                        <textarea id="gift-note" rows="2" placeholder="Write your greeting message here..." oninput="saveGiftNote(this.value)" class="form-textarea" style="font-size: 14px;"></textarea>
+                    </div>
+                </div>
+
+                <div id="cart-items" style="display: flex; flex-direction: column; gap: 12px;"></div>
+
+                <div id="empty-cart" style="text-align: center; padding: 40px 0; color: var(--muted);">
+                    <p style="font-size: 15px;" id="t-empty-cart">No items added yet.</p>
+                </div>
+
+                <div id="checkout-form-section" class="hidden" style="display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--line); padding-top: 24px;">
+                    <h4 class="serif-font" style="font-size: 20px;" id="t-checkout-title">Delivery Details</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="t-label-name">Full Name</label>
+                        <input type="text" id="cust-name" class="form-input" placeholder="e.g. Sarah Jenkins">
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-neutral-700 mb-1">Nomor WhatsApp Anda</label>
-                        <input type="tel" id="cust-phone" placeholder="e.g. 081380003850" class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <div class="form-group">
+                        <label class="form-label" id="t-label-phone">WhatsApp Number</label>
+                        <input type="tel" id="cust-phone" class="form-input" placeholder="e.g. 081380003850">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 bg-white p-3 rounded-2xl border border-amber-900/10 items-center">
-                        <div class="flex flex-col">
-                            <label class="block text-[10px] font-bold text-amber-900 mb-1">📅 Tanggal Kirim</label>
-                            <input type="date" id="delivery-date" class="w-full px-2 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <div class="form-group">
+                        <label class="form-label" id="t-label-email">Email</label>
+                        <input type="email" id="cust-email" class="form-input" placeholder="e.g. sarah@gmail.com">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="form-group">
+                            <label class="form-label" id="t-label-date">Delivery Date</label>
+                            <input type="date" id="delivery-date" class="form-input">
                         </div>
-                        <div class="flex flex-col">
-                            <label class="block text-[10px] font-bold text-amber-900 mb-1">⏰ Waktu Kirim</label>
-                            <select id="delivery-time" class="w-full px-2 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
-                                <option value="Morning (10:00 - 13:00)">Pagi (10 - 13)</option>
-                                <option value="Afternoon (13:00 - 16:00)" selected>Siang (13 - 16)</option>
-                                <option value="Evening (16:00 - 19:00)">Sore (16 - 19)</option>
+                        <div class="form-group">
+                            <label class="form-label" id="t-label-time">Delivery Time</label>
+                            <select id="delivery-time" class="form-select">
+                                <option value="Morning (10:00 - 13:00)">Morning (10 - 13)</option>
+                                <option value="Afternoon (13:00 - 16:00)" selected>Afternoon (13 - 16)</option>
+                                <option value="Evening (16:00 - 19:00)">Evening (16 - 19)</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block text-xs font-bold text-neutral-700">Pilih Wilayah / Area Tujuan di Jakarta</label>
-                        <div class="grid grid-cols-1 gap-2 area-list-box p-1 bg-white rounded-2xl border border-amber-900/10" id="jakarta-area-cards"></div>
+                    <div class="form-group">
+                        <label class="form-label" id="t-label-area">Delivery Area in Jakarta</label>
+                        <div class="area-list-box" id="jakarta-area-cards"></div>
                     </div>
 
-                    <div id="distance-info" class="text-xs font-semibold text-amber-900 bg-amber-50 p-3 rounded-xl border border-amber-900/10 space-y-1">
-                        <p>📍 Estimasi Jarak dari Dapur PIK: <strong id="dist-km">2.0 km</strong></p>
-                        <p>🛵 Ongkir Sesuai Wilayah: <strong id="calc-ongkir">Rp 15.000</strong></p>
+                    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; font-size: 14px; color: var(--muted); display: flex; flex-direction: column; gap: 4px;">
+                        <div><span id="t-dist-label">Est. Distance:</span> <strong id="dist-km" style="color: var(--ink);">2.0 km</strong></div>
+                        <div><span id="t-fee-label">Delivery Fee:</span> <strong id="calc-ongkir" style="color: var(--ink);">Rp 15.000</strong></div>
                     </div>
 
-                    <div>
-                        <label class="block text-xs font-bold text-neutral-700 mb-1">Alamat Lengkap (Jl., No. Rumah/Gedung, Unit)</label>
-                        <textarea id="cust-address" rows="3" placeholder="e.g. Jl. Sudirman No. 45, Tower B Unit 12..." class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
+                    <div class="form-group">
+                        <label class="form-label" id="t-label-address">Full Address</label>
+                        <textarea id="cust-address" rows="3" class="form-textarea" placeholder="Street, House/Building No., Unit..."></textarea>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Cart Footer -->
-            <div class="p-4 bg-white border-t border-amber-900/10 space-y-3 shadow-lg">
-                <div class="space-y-1 text-sm">
-                    <div class="flex justify-between text-neutral-600">
-                        <span>Subtotal Produk</span>
-                        <span id="summary-products-total" class="font-semibold">Rp 0</span>
+            <div class="cart-footer">
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
+                    <div class="flex justify-between" style="color: var(--muted);">
+                        <span id="t-summary-subtotal">Product Subtotal</span>
+                        <span id="summary-products-total" style="color: var(--ink);">Rp 0</span>
                     </div>
-                    <div id="discount-row" class="flex justify-between text-emerald-700 font-bold hidden">
-                        <span id="discount-label-text">Diskon Stacked</span>
+                    <div id="discount-row" class="flex justify-between hidden" style="color: var(--accent); font-weight: 500;">
+                        <span id="discount-label-text">Discount</span>
                         <span id="summary-discount">-Rp 0</span>
                     </div>
-                    <div class="flex justify-between text-neutral-600">
-                        <span>Ongkir Real-Time</span>
-                        <span id="summary-delivery-fee" class="font-semibold">Rp 15.000</span>
+                    <div class="flex justify-between" style="color: var(--muted);">
+                        <span id="t-summary-delivery">Delivery Fee</span>
+                        <span id="summary-delivery-fee" style="color: var(--ink);">Rp 15.000</span>
                     </div>
-                    <div class="flex justify-between text-base font-extrabold text-[#1C1616] pt-2 border-t border-dashed border-amber-900/20">
-                        <span>Total Pembayaran</span>
+                    <div class="flex justify-between" style="font-size: 18px; font-weight: 700; color: var(--ink); border-top: 1px solid var(--line); padding-top: 8px;">
+                        <span id="t-summary-total">Total Payment</span>
                         <span id="summary-grand-total">Rp 15.000</span>
                     </div>
                 </div>
 
-                <button onclick="previewWhatsAppOrder()" id="whatsapp-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 px-4 rounded-2xl shadow-md transition flex items-center justify-center space-x-2">
-                    <span class="text-lg">🏦</span>
-                    <span>Lanjut ke Pembayaran BCA</span>
+                <button type="button" onclick="payWithMidtrans()" id="whatsapp-btn" class="btn-primary">
+                    <span>Proceed to Payment</span>
                 </button>
             </div>
-
         </div>
     </div>
 
-    <!-- STREAMLINED PROOF UPLOAD MODAL -->
-    <div id="wa-preview-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col p-6 space-y-4">
-            <div class="flex items-center space-x-3">
-                <span class="text-3xl">🏦</span>
-                <div>
-                    <h3 class="font-extrabold text-base text-[#1C1616]">Upload Bukti Transfer BCA</h3>
-                    <p class="text-xs text-neutral-500">Cukup lampirkan screenshot bukti bayar Anda.</p>
-                </div>
-            </div>
-
-            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl space-y-2 text-xs">
-                <p class="font-bold text-amber-900">Transfer tepat ke Rekening BCA:</p>
-                <div class="bg-white p-3 rounded-xl border border-amber-200 font-mono font-extrabold text-sm text-center text-[#1C1616]">
-                    578 543 3570
-                </div>
-                <p class="text-[11px] text-neutral-600 text-center">Atas Nama: <strong class="text-amber-950">DALVEM LASBRA LIU</strong></p>
-                <div class="pt-2 border-t border-amber-200 flex justify-between items-center font-bold">
-                    <span>Total Tagihan:</span>
-                    <span id="modal-grand-total" class="text-amber-900 text-sm">Rp 0</span>
-                </div>
-            </div>
-
-            <div class="space-y-1.5">
-                <label class="block text-xs font-bold text-neutral-700">Unggah Foto Bukti Transfer BCA:</label>
-                <div class="border-2 border-dashed border-amber-500/50 hover:border-amber-600 bg-amber-50/50 p-4 rounded-2xl text-center cursor-pointer relative transition" onclick="document.getElementById('receipt-file-input').click()">
-                    <input type="file" id="receipt-file-input" accept="image/*" class="hidden" onchange="handleReceiptUpload(event)">
-                    <div id="upload-placeholder" class="space-y-1">
-                        <span class="text-2xl block">📸</span>
-                        <p class="text-xs font-extrabold text-amber-950">Klik di sini untuk upload screenshot / foto</p>
-                        <p class="text-[10px] text-neutral-500">Format: JPG, PNG, atau WebP</p>
-                    </div>
-                    <div id="upload-preview-container" class="hidden flex flex-col items-center space-y-1">
-                        <img id="receipt-preview-img" class="h-20 rounded-lg object-contain border border-amber-300 shadow-xs">
-                        <p id="receipt-filename" class="text-[11px] font-bold text-emerald-700 truncate max-w-xs">✅ Bukti Pembayaran Terlampir</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex space-x-2 pt-2">
-                <button onclick="closeWaPreview()" class="flex-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold py-3 px-3 rounded-xl text-xs transition">Batal</button>
-                <button onclick="verifyAndSendOrder()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-1"><span>Kirim Pesanan & Bukti ➔</span></button>
-            </div>
+    <!-- Footer -->
+    <footer>
+        <div>
+            <p>Rest in Cheese, Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara.</p>
+            <p style="margin-top: 4px;"><a href="https://wa.me/6282112002258" target="_blank" id="t-footer-wa">WhatsApp Admin</a></p>
         </div>
-    </div>
+        <p style="color: var(--muted); font-size: 13px;" id="t-footer-copy">&copy; Rest in Cheese. All rights reserved.</p>
+    </footer>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Game unlocked exclusively post-checkout tokens! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwURUdj3sPQ4AjN5hs7jRRxePCXWvGyCYGgXOHQBVFknDuUvqRFmoy70D3CPChmvJi_jg/exec";
+
+        const I18N = {
+            en: {
+                cart_btn_label: "Cart",
+                nav_home: "Home",
+                nav_catalogue: "Catalogue",
+                nav_promos: "Coupons & Discounts",
+                nav_about: "About",
+                nav_admin: "Chat Admin",
+                hero_title: "Cheesecake made with ingredients you know.",
+                hero_desc: "Artisanal cheesecake pairing boutique technique with comforting, familiar Indonesian flavors.",
+                hero_btn: "Order now",
+                pillar_1: "Selected local ingredients",
+                pillar_2: "Freshly baked in PIK",
+                pillar_3: "Instant delivery across Jakarta",
+                home_story_title: "Crafted with Heart in PIK",
+                home_story_desc: "Born in a home kitchen in Taman Grisenda, we transform everyday local ingredients into velvety, hotel-grade cheesecakes.",
+                home_story_btn: "See catalogue",
+                bundle_badge: "Special Offer",
+                bundle_desc: "Enjoy all 3 signature flavors in one exclusive box set.",
+                add_bundle_btn: "Add bundle",
+                cat_title: "Jar Catalogue",
+                cat_subtitle: "Fresh Batch Today",
+                promos_title: "Coupons & Discounts",
+                promos_desc: "Your active vouchers and minigame rewards.",
+                about_title: "About Rest in Cheese",
+                about_subtitle: "The story behind our kitchen.",
+                about_text: "Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.",
+                info_main_label: "Main ingredients:",
+                info_shelf_label: "Shelf life & storage:",
+                info_order_label: "Ordering system:",
+                info_area_label: "Delivery area:",
+                info_area_val: "Jakarta, delivery fee based on area",
+                puggle_trigger: "Play Pinball",
+                puggle_intro: "Bounce the cheese to win a discount coupon.",
+                puggle_status_init: "Press button to drop",
+                puggle_status_dropping: "Cheese is dropping...",
+                puggle_btn_drop: "Drop Cheese",
+                puggle_btn_again: "Play Again",
+                puggle_btn_done: "Coupon Added to Wallet",
+                puggle_win_msg: "Congrats! You won a {percent}% discount!",
+                puggle_locked_title: "Pinball Locked",
+                puggle_locked_desc: "Complete an order over Rp 300.000 to get a game token.",
+                puggle_unlocked_title: "Pinball Unlocked ({tokens} Token)",
+                puggle_unlocked_desc: "You have play tokens ready!",
+                puggle_play_now: "Play Now",
+                cart_title: "Order Summary",
+                gift_label: "Send as a gift? (+ Greeting Card)",
+                gift_placeholder: "Write your greeting message here...",
+                empty_cart: "No items added yet.",
+                checkout_title: "Delivery Details",
+                label_name: "Full Name",
+                placeholder_name: "e.g. Sarah Jenkins",
+                label_phone: "WhatsApp Number",
+                placeholder_phone: "e.g. 081380003850",
+                label_email: "Email",
+                placeholder_email: "e.g. sarah@gmail.com",
+                label_date: "Delivery Date",
+                label_time: "Delivery Time",
+                label_area: "Delivery Area in Jakarta",
+                dist_label: "Est. Distance:",
+                fee_label: "Delivery Fee:",
+                label_address: "Full Address",
+                placeholder_address: "Street, House/Building No., Unit...",
+                summary_subtotal: "Product Subtotal",
+                summary_delivery: "Delivery Fee",
+                summary_total: "Total Payment",
+                btn_proceed: "Proceed to Payment",
+                btn_processing: "Processing...",
+                coupon_select_label: "Select Coupon (Max 1):",
+                coupon_active: "Active coupon applied",
+                coupon_tap: "Tap to apply",
+                coupon_collection: "Your Coupons ({count}):",
+                coupon_empty: "No coupons in your wallet yet.",
+                copy_btn: "Copy",
+                copy_alert: "Coupon {code} copied.",
+                discount_unlocked: "5% Discount Unlocked (-{amount})",
+                discount_progress: "Add {amount} more for 5% OFF",
+                alert_fill_fields: "Please fill in your name, WhatsApp number, and complete address.",
+                alert_invalid_email: "Please enter a valid email address.",
+                alert_pay_fail: "Payment failed. Please try again.",
+                alert_pay_error: "Failed to initiate payment. Please try again or contact admin.",
+                alert_thanks: "Thank you, {name}! Your order has been recorded.",
+                footer_wa: "WhatsApp Admin",
+                footer_copy: "© Rest in Cheese. All rights reserved.",
+                ongkir_label: "Delivery Fee:"
+            },
+            id: {
+                cart_btn_label: "Keranjang",
+                nav_home: "Home",
+                nav_catalogue: "Katalog",
+                nav_promos: "Kupon & Diskon",
+                nav_about: "Tentang",
+                nav_admin: "Chat Admin",
+                hero_title: "Cheesecake dari bahan yang kamu kenal.",
+                hero_desc: "Kelezatan lapis keju artisanal yang memadukan teknik butik dengan cita rasa yang akrab di lidah Indonesia.",
+                hero_btn: "Pesan sekarang",
+                pillar_1: "Bahan lokal terpilih",
+                pillar_2: "Dibuat segar dari dapur PIK",
+                pillar_3: "Kirim instan ke seluruh Jakarta",
+                home_story_title: "Dibuat Sepenuh Hati di PIK",
+                home_story_desc: "Lahir dari dapur rumah di Taman Grisenda, kami mengolah bahan harian menjadi cheesecake lembut berkelas hotel.",
+                home_story_btn: "Lihat katalog",
+                bundle_badge: "Penawaran Khusus",
+                bundle_desc: "Nikmati kelezatan 3 varian signature sekaligus dalam satu kemasan.",
+                add_bundle_btn: "Tambah bundle",
+                cat_title: "Katalog Jar",
+                cat_subtitle: "Segar Setiap Hari",
+                promos_title: "Kupon & Diskon",
+                promos_desc: "Voucher aktif dan token mini-game eksklusif Anda.",
+                about_title: "Tentang Rest in Cheese",
+                about_subtitle: "Cerita di balik dapur kami.",
+                about_text: "Berlatih sebagai mantan pemagang di The Landmark Mandarin Oriental mengajarkan saya bahwa kue butik bukan soal label mahal, melainkan rasa hormat pada teknik dan bahan. Rest in Cheese adalah wujud kecintaan itu, diracik langsung dari dapur rumah kami di Taman Grisenda, Pantai Indah Kapuk.",
+                info_main_label: "Bahan utama:",
+                info_shelf_label: "Daya tahan dan cara simpan:",
+                info_order_label: "Sistem pesanan:",
+                info_area_label: "Area pengiriman:",
+                info_area_val: "Jakarta, ongkir sesuai wilayah",
+                puggle_trigger: "Mainkan Pinball",
+                puggle_intro: "Pantulkan keju untuk memenangkan kupon diskon.",
+                puggle_status_init: "Tekan tombol untuk memulai",
+                puggle_status_dropping: "Keju sedang dijatuhkan...",
+                puggle_btn_drop: "Lempar Keju",
+                puggle_btn_again: "Main Lagi",
+                puggle_btn_done: "Kupon Masuk Dompet",
+                puggle_win_msg: "Selamat! Anda memenangkan diskon {percent}%!",
+                puggle_locked_title: "Pinball Terkunci",
+                puggle_locked_desc: "Selesaikan pesanan minimal Rp 300.000 untuk mendapatkan token.",
+                puggle_unlocked_title: "Pinball Terbuka ({tokens} Token)",
+                puggle_unlocked_desc: "Anda memiliki kesempatan bermain!",
+                puggle_play_now: "Mainkan",
+                cart_title: "Ringkasan Pesanan",
+                gift_label: "Kirim sebagai hadiah? (+ Kartu Ucapan)",
+                gift_placeholder: "Tulis pesan ucapan di sini...",
+                empty_cart: "Belum ada item dipilih.",
+                checkout_title: "Detail Pengiriman",
+                label_name: "Nama Pemesan",
+                placeholder_name: "e.g. Sarah Jenkins",
+                label_phone: "Nomor WhatsApp",
+                placeholder_phone: "e.g. 081380003850",
+                label_email: "Email",
+                placeholder_email: "e.g. sarah@gmail.com",
+                label_date: "Tanggal Kirim",
+                label_time: "Waktu Kirim",
+                label_area: "Wilayah Tujuan di Jakarta",
+                dist_label: "Estimasi Jarak:",
+                fee_label: "Ongkir:",
+                label_address: "Alamat Lengkap",
+                placeholder_address: "Jalan, Nomor Rumah, Patokan...",
+                summary_subtotal: "Subtotal Produk",
+                summary_delivery: "Ongkir",
+                summary_total: "Total Pembayaran",
+                btn_proceed: "Lanjut Pembayaran",
+                btn_processing: "Memproses...",
+                coupon_select_label: "Gunakan Kupon (Maks. 1):",
+                coupon_active: "Kupon aktif diterapkan",
+                coupon_tap: "Ketuk untuk pilih",
+                coupon_collection: "Koleksi Kupon ({count}):",
+                coupon_empty: "Belum ada kupon di dompet Anda.",
+                copy_btn: "Salin",
+                copy_alert: "Kupon {code} disalin.",
+                discount_unlocked: "Diskon 5% aktif (-{amount})",
+                discount_progress: "Tambah {amount} lagi untuk diskon 5%",
+                alert_fill_fields: "Mohon lengkapi nama, nomor WhatsApp, dan alamat lengkap.",
+                alert_invalid_email: "Mohon isi email yang valid.",
+                alert_pay_fail: "Pembayaran gagal. Silakan coba lagi.",
+                alert_pay_error: "Gagal memulai pembayaran. Coba lagi atau hubungi admin.",
+                alert_thanks: "Terima kasih, {name}! Pesanan Anda sudah tercatat.",
+                footer_wa: "WhatsApp Admin",
+                footer_copy: "© Rest in Cheese. Hak cipta dilindungi.",
+                ongkir_label: "Ongkir:"
+            }
+        };
+
+        let currentLang = localStorage.getItem('ric_lang') || 'en';
+
+        function t(key, vars = {}) {
+            let str = (I18N[currentLang] && I18N[currentLang][key]) || I18N['en'][key] || key;
+            for (let k in vars) {
+                str = str.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
+            }
+            return str;
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('ric_lang', lang);
+            document.documentElement.lang = lang;
+
+            document.getElementById('lang-en').className = lang === 'en' ? 'active' : '';
+            document.getElementById('lang-id').className = lang === 'id' ? 'active' : '';
+
+            applyStaticTranslations();
+            renderProducts();
+            renderBoomerPromos();
+            renderJakartaAreas();
+            updateUI();
+        }
+
+        function applyStaticTranslations() {
+            document.getElementById('t-cart-btn-label').innerText = t('cart_btn_label');
+            document.getElementById('t-nav-home').innerText = t('nav_home');
+            document.getElementById('t-nav-catalogue').innerText = t('nav_catalogue');
+            document.getElementById('t-nav-promos').innerText = t('nav_promos');
+            document.getElementById('t-nav-about').innerText = t('nav_about');
+            document.getElementById('t-nav-admin').innerText = t('nav_admin');
+            
+            document.getElementById('t-hero-title').innerText = t('hero_title');
+            document.getElementById('t-hero-desc').innerText = t('hero_desc');
+            document.getElementById('t-hero-btn').innerText = t('hero_btn');
+            
+            document.getElementById('t-pillar-1').innerText = t('pillar_1');
+            document.getElementById('t-pillar-2').innerText = t('pillar_2');
+            document.getElementById('t-pillar-3').innerText = t('pillar_3');
+            
+            document.getElementById('t-home-story-title').innerText = t('home_story_title');
+            document.getElementById('t-home-story-desc').innerText = t('home_story_desc');
+            document.getElementById('t-home-story-btn').innerText = t('home_story_btn');
+
+            document.getElementById('t-bundle-badge').innerText = t('bundle_badge');
+            document.getElementById('t-bundle-desc').innerText = t('bundle_desc');
+            document.getElementById('t-add-bundle-btn').innerText = t('add_bundle_btn');
+
+            document.getElementById('t-cat-title').innerText = t('cat_title');
+            document.getElementById('t-cat-subtitle').innerText = t('cat_subtitle');
+
+            document.getElementById('t-promos-title').innerText = t('promos_title');
+            document.getElementById('t-promos-desc').innerText = t('promos_desc');
+
+            document.getElementById('t-about-title').innerText = t('about_title');
+            document.getElementById('t-about-subtitle').innerText = t('about_subtitle');
+            document.getElementById('t-about-text').innerText = t('about_text');
+
+            document.getElementById('t-info-main-label').innerText = t('info_main_label');
+            document.getElementById('t-info-shelf-label').innerText = t('info_shelf_label');
+            document.getElementById('t-info-order-label').innerText = t('info_order_label');
+            document.getElementById('t-info-area-label').innerText = t('info_area_label');
+            document.getElementById('t-info-area-val').innerText = t('info_area_val');
+
+            document.getElementById('floating-puggle-trigger').innerText = t('puggle_trigger');
+            document.getElementById('t-puggle-intro').innerText = t('puggle_intro');
+            document.getElementById('puggle-status').innerText = t('puggle_status_init');
+            document.getElementById('puggle-drop-btn').innerText = t('puggle_btn_drop');
+
+            document.getElementById('t-cart-title').innerText = t('cart_title');
+            document.getElementById('t-gift-label').innerText = t('gift_label');
+            document.getElementById('gift-note').placeholder = t('gift_placeholder');
+            document.getElementById('t-empty-cart').innerText = t('empty_cart');
+            document.getElementById('t-checkout-title').innerText = t('checkout_title');
+
+            document.getElementById('t-label-name').innerText = t('label_name');
+            document.getElementById('cust-name').placeholder = t('placeholder_name');
+            document.getElementById('t-label-phone').innerText = t('label_phone');
+            document.getElementById('cust-phone').placeholder = t('placeholder_phone');
+            document.getElementById('t-label-email').innerText = t('label_email');
+            document.getElementById('cust-email').placeholder = t('placeholder_email');
+            document.getElementById('t-label-date').innerText = t('label_date');
+            document.getElementById('t-label-time').innerText = t('label_time');
+            document.getElementById('t-label-area').innerText = t('label_area');
+            
+            document.getElementById('t-dist-label').innerText = t('dist_label');
+            document.getElementById('t-fee-label').innerText = t('fee_label');
+            
+            document.getElementById('t-label-address').innerText = t('label_address');
+            document.getElementById('cust-address').placeholder = t('placeholder_address');
+
+            document.getElementById('t-summary-subtotal').innerText = t('summary_subtotal');
+            document.getElementById('t-summary-delivery').innerText = t('summary_delivery');
+            document.getElementById('t-summary-total').innerText = t('summary_total');
+            
+            const payBtnSpan = document.getElementById('whatsapp-btn').firstElementChild;
+            if (payBtnSpan && !payBusy) payBtnSpan.innerText = t('btn_proceed');
+
+            document.getElementById('t-footer-wa').innerText = t('footer_wa');
+            document.getElementById('t-footer-copy').innerText = t('footer_copy');
+        }
 
         const PRODUCTS = [
-            { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
-            { id: 2, name: "Roasted Banana & Honey", description: "Caramelized roasted banana puree paired with wild artisanal honey and cream cheese richness.", price: 65000, emoji: "🍌", badge: "" },
-            { id: 3, name: "Corn & Coconut", description: "Sweet sweetcorn cream layered with rich, aromatic coconut glaze and a buttery crumb base.", price: 65000, emoji: "🌽", badge: "" }
+            { 
+                id: 1, 
+                name: "Pumpkin & Vanilla Bean", 
+                description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", 
+                price: 70000, 
+                badge: "Signature",
+                story: {
+                    en: "Roasted yellow pumpkin—a familiar comfort from local kolak—meets rich cream cheese and vanilla bean.",
+                    id: "Labu kuning panggang, akrab dari kolak, bertemu krim keju gurih dan vanilla bean."
+                }
+            },
+            { 
+                id: 2, 
+                name: "Roasted Banana & Honey", 
+                description: "Caramelized roasted banana puree paired with wild artisanal honey and cream cheese richness.", 
+                price: 65000, 
+                badge: "",
+                story: {
+                    en: "Slow-roasted caramelized bananas paired with wild honey and velvety cream cheese.",
+                    id: "Pisang panggang karamel berpadu madu hutan liar dan kelembutan krim keju."
+                }
+            },
+            { 
+                id: 3, 
+                name: "Corn & Coconut", 
+                description: "Sweet sweetcorn cream layered with rich, aromatic coconut glaze and a buttery crumb base.", 
+                price: 65000, 
+                badge: "",
+                story: {
+                    en: "Sweetcorn cream topped with aromatic coconut glaze over a buttery, crunchy base.",
+                    id: "Krim jagung manis berlapis glase kelapa aromatik di atas dasar renyah yang mentega."
+                }
+            }
         ];
 
         const JAKARTA_AREAS = [
@@ -481,26 +1388,19 @@
             { name: "Cengkareng & Kalideres (Jakarta Barat)", fee: 22000, km: 8.0 }
         ];
 
-        const COGS_PER_JAR = 28500;
-        const BUNDLE_COGS = 28500 * 3;
-
         let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
         let couponInventory = JSON.parse(localStorage.getItem('ric_coupon_inventory')) || [];
         let activeSelectedCouponId = localStorage.getItem('ric_active_coupon_id') || null;
 
-        let uploadedReceiptFile = null;
         let currentDeliveryFee = 15000;
         let selectedAreaName = JAKARTA_AREAS[0].name;
         let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
-        let generatedWhatsAppMessage = "";
-        let orderPayloadForSheet = {};
         let calculatedGrandTotalNum = 0;
+        let payBusy = false;
 
         const DISCOUNT_MIN_ORDER = 250000;
         const PUGGLE_MIN_ORDER = 300000;
         const AUTO_DISCOUNT_PERCENTAGE = 0.05;
-
-        const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwURUdj3sPQ4AjN5hs7jRRxePCXWvGyCYGgXOHQBVFknDuUvqRFmoy70D3CPChmvJi_jg/exec";
 
         window.addEventListener('DOMContentLoaded', () => {
             const tomorrow = new Date();
@@ -521,38 +1421,20 @@
                 document.getElementById('gift-note').value = savedGiftNote;
             }
 
-            renderProducts();
-            renderBoomerPromos();
-            renderJakartaAreas();
-            updateUI();
+            setLanguage(currentLang);
         });
-
-        function handleReceiptUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                uploadedReceiptFile = file;
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('receipt-preview-img').src = e.target.result;
-                    document.getElementById('upload-placeholder').classList.add('hidden');
-                    document.getElementById('upload-preview-container').classList.remove('hidden');
-                    document.getElementById('receipt-filename').innerText = "✅ " + file.name;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
 
         function renderJakartaAreas() {
             const container = document.getElementById('jakarta-area-cards');
             container.innerHTML = JAKARTA_AREAS.map((area, index) => {
                 const isSelected = index === 0;
                 return `
-                    <div onclick="selectArea(${area.fee}, ${area.km}, '${area.name.replace(/'/g, "")}', this)" class="area-card p-3 rounded-xl border-2 ${isSelected ? 'border-amber-600 bg-amber-50' : 'border-neutral-200 bg-white'} cursor-pointer transition flex items-center justify-between">
+                    <div onclick="selectArea(${area.fee}, ${area.km}, '${area.name.replace(/'/g, "")}', this)" class="area-card" style="${isSelected ? 'background: rgba(168,86,31,0.05); font-weight: 500;' : ''}">
                         <div>
-                            <p class="font-extrabold text-xs ${isSelected ? 'text-amber-950' : 'text-neutral-800'}">${area.name}</p>
-                            <p class="text-[10px] text-neutral-500">Ongkir: Rp ${area.fee.toLocaleString("id-ID")} (~${area.km} km)</p>
+                            <div style="font-size: 14px; color: var(--ink);">${area.name}</div>
+                            <div style="font-size: 12px; color: var(--muted);">${t('ongkir_label')} Rp ${area.fee.toLocaleString("id-ID")} (~${area.km} km)</div>
                         </div>
-                        <span class="w-5 h-5 rounded-full ${isSelected ? 'bg-amber-600 text-white' : 'bg-neutral-200 text-transparent'} flex items-center justify-center text-xs font-bold check-icon">✓</span>
+                        <span class="check-icon" style="font-size: 12px; color: ${isSelected ? 'var(--accent)' : 'transparent'};">&#10003;</span>
                     </div>
                 `;
             }).join('');
@@ -564,22 +1446,14 @@
             selectedAreaName = name;
 
             document.querySelectorAll('.area-card').forEach(card => {
-                card.classList.remove('border-amber-600', 'bg-amber-50');
-                card.classList.add('border-neutral-200', 'bg-white');
-                const badge = card.querySelector('.check-icon');
-                badge.classList.remove('bg-amber-600', 'text-white');
-                badge.classList.add('bg-neutral-200', 'text-transparent');
-                card.querySelector('p').classList.remove('text-amber-950');
-                card.querySelector('p').classList.add('text-neutral-800');
+                card.style.background = 'var(--surface)';
+                card.style.fontWeight = '400';
+                card.querySelector('.check-icon').style.color = 'transparent';
             });
 
-            element.classList.remove('border-neutral-200', 'bg-white');
-            element.classList.add('border-amber-600', 'bg-amber-50');
-            element.querySelector('p').classList.remove('text-neutral-800');
-            element.querySelector('p').classList.add('text-amber-950');
-            const activeBadge = element.querySelector('.check-icon');
-            activeBadge.classList.remove('bg-neutral-200', 'text-transparent');
-            activeBadge.classList.add('bg-amber-600', 'text-white');
+            element.style.background = 'rgba(168,86,31,0.05)';
+            element.style.fontWeight = '500';
+            element.querySelector('.check-icon').style.color = 'var(--accent)';
 
             document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + " km";
             document.getElementById('calc-ongkir').innerText = "Rp " + currentDeliveryFee.toLocaleString("id-ID");
@@ -606,10 +1480,10 @@
             const panel = document.getElementById('menu-panel');
             if (drawer.classList.contains('hidden')) {
                 drawer.classList.remove('hidden');
-                setTimeout(() => panel.classList.remove('-translate-x-full'), 10);
+                setTimeout(() => panel.style.transform = 'translateX(0)', 10);
             } else {
-                panel.classList.add('-translate-x-full');
-                setTimeout(() => drawer.classList.add('hidden'), 300);
+                panel.style.transform = 'translateX(-100%)';
+                setTimeout(() => drawer.classList.add('hidden'), 350);
             }
         }
 
@@ -631,7 +1505,7 @@
         function openPuggleModal() {
             const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
             if (playTokens <= 0) {
-                alert("🔒 Mini-game terkunci! Selesaikan pesanan minimal Rp 300.000 terlebih dahulu untuk mendapatkan kesempatan main.");
+                alert(t('puggle_locked_desc'));
                 return;
             }
             document.getElementById('puggle-modal').classList.remove('hidden');
@@ -650,11 +1524,11 @@
             const status = document.getElementById('puggle-status');
 
             btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-            status.innerText = "🎯 Keju dilempar! Memantul liar ke kiri dan kanan dari pin ke pin...";
+            btn.classList.add('opacity-60');
+            status.innerText = t('puggle_status_dropping');
 
             const slots = document.querySelectorAll('#puggle-slots > div');
-            slots.forEach(s => s.classList.remove('bg-amber-400', 'text-amber-950', 'scale-105', 'font-extrabold', 'ring-2', 'ring-white'));
+            slots.forEach(s => s.style.background = 'rgba(255,255,255,0.05)');
 
             const rand = Math.random() * 100;
             let wonPercent = 2;
@@ -689,14 +1563,14 @@
 
                 slots.forEach(s => {
                     if (s.getAttribute('data-slot') == wonPercent) {
-                        s.classList.add('bg-amber-400', 'text-amber-950', 'scale-105', 'font-extrabold', 'ring-2', 'ring-white');
+                        s.style.background = 'var(--accent)';
                     }
                 });
 
-                status.innerHTML = `🎉 Selamat! Anda memenangkan <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span>!`;
-                btn.innerText = playTokens > 0 ? "🚀 Main Lagi!" : "✅ Kupon Masuk Wallet!";
+                status.innerHTML = t('puggle_win_msg', { percent: wonPercent });
+                btn.innerText = playTokens > 0 ? t('puggle_btn_again') : t('puggle_btn_done');
                 btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                btn.classList.remove('opacity-60');
 
                 renderBoomerPromos();
                 updateUI();
@@ -714,54 +1588,48 @@
 
             if (playTokens > 0) {
                 gameHtml = `
-                    <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 p-4 rounded-2xl shadow-md flex items-center justify-between mb-4">
+                    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                         <div>
-                            <p class="font-extrabold text-xs uppercase tracking-wide">🕹️ Puggle Pinball Unlocked! (${playTokens}x Token)</p>
-                            <p class="text-[11px] text-amber-950/80 mt-0.5">Anda memiliki token main dari pesanan sebelumnya!</p>
+                            <div style="font-weight: 500; font-size: 15px;">${t('puggle_unlocked_title', { tokens: playTokens })}</div>
+                            <div style="font-size: 13px; color: var(--muted); margin-top: 2px;">${t('puggle_unlocked_desc')}</div>
                         </div>
-                        <button onclick="openPuggleModal()" class="bg-white hover:bg-amber-50 text-amber-950 px-4 py-2.5 rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 cursor-pointer">
-                            Mainkan 🚀
-                        </button>
+                        <button onclick="openPuggleModal()" class="btn-primary" style="width: auto; padding: 10px 16px; font-size: 14px;">${t('puggle_play_now')}</button>
                     </div>
                 `;
             } else {
                 gameHtml = `
-                    <div class="bg-neutral-100 border border-amber-900/10 p-4 rounded-2xl text-center space-y-1.5 mb-4">
-                        <p class="text-xs font-extrabold text-neutral-800">🔒 Pinball Puggle Terkunci</p>
-                        <p class="text-[11px] text-neutral-500">Selesaikan pesanan dengan subtotal minimal <strong class="text-amber-900">Rp 300.000</strong> untuk mendapatkan token minigame.</p>
+                    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; text-align: center; margin-bottom: 24px;">
+                        <div style="font-weight: 500; font-size: 15px;">${t('puggle_locked_title')}</div>
+                        <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">${t('puggle_locked_desc')}</div>
                     </div>
                 `;
             }
 
             if (couponInventory.length === 0) {
                 container.innerHTML = gameHtml + `
-                    <div class="bg-amber-50 border border-amber-900/10 p-5 rounded-2xl text-center space-y-2">
-                        <p class="text-3xl">🎟️</p>
-                        <p class="text-xs font-bold text-amber-950">Belum ada kupon di wallet Anda.</p>
-                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan order 300k+ untuk bermain minigame dan kumpulkan kupon diskon Anda!</p>
+                    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 32px; text-align: center; color: var(--muted);">
+                        <p style="font-size: 15px;">${t('coupon_empty')}</p>
                     </div>
                 `;
                 return;
             }
 
             let inventoryHtml = couponInventory.map(c => `
-                <div class="bg-gradient-to-r from-amber-600 to-amber-800 text-white p-4 rounded-2xl shadow-md flex items-center justify-between">
-                    <div>
-                        <span class="bg-black/30 text-amber-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">🎁 Kupon Tersedia</span>
-                        <p class="text-sm font-mono font-extrabold mt-1">${c.label}</p>
+                <div class="voucher-card">
+                    <div class="voucher-info">
+                        <span class="voucher-code">${c.code}</span>
+                        <span style="font-size: 13px; color: var(--ink);">${c.percent}% OFF</span>
                     </div>
-                    <button onclick="copySpecificCoupon('${c.code}')" class="bg-white hover:bg-amber-50 text-amber-950 font-extrabold px-3 py-2 rounded-xl text-xs shadow transition cursor-pointer">
-                        Salin 📋
-                    </button>
+                    <button onclick="copySpecificCoupon('${c.code}')" class="btn-secondary">${t('copy_btn')}</button>
                 </div>
             `).join('');
 
-            container.innerHTML = gameHtml + `<div class="space-y-2"><p class="text-xs font-extrabold text-amber-950">Koleksi Kupon Anda (${couponInventory.length}):</p>` + inventoryHtml + `</div>`;
+            container.innerHTML = gameHtml + `<div style="display: flex; flex-direction: column; gap: 16px;"><div style="font-size: 14px; font-weight: 500;">${t('coupon_collection', { count: couponInventory.length })}</div>` + inventoryHtml + `</div>`;
         }
 
         function copySpecificCoupon(code) {
             navigator.clipboard.writeText(code);
-            alert("✅ Kupon " + code + " berhasil disalin!");
+            alert(t('copy_alert', { code: code }));
         }
 
         function toggleCouponSelection(id) {
@@ -777,20 +1645,26 @@
         function renderProducts() {
             const listEl = document.getElementById('product-list');
             listEl.innerHTML = PRODUCTS.map(p => `
-                <div class="glass-card p-4 rounded-3xl space-y-3">
-                    <div class="h-44 w-full bg-gradient-to-br from-amber-50 to-amber-100/60 rounded-2xl overflow-hidden relative border border-amber-900/10 flex items-center justify-center text-7xl shadow-inner">
-                        <span>${p.emoji}</span>
-                        ${p.badge ? `<span class="absolute top-3 left-3 bg-[#1C1616] text-amber-200 text-[10px] font-extrabold px-3 py-1 rounded-full shadow">${p.badge}</span>` : ''}
+                <div class="product-card">
+                    <div class="product-img">
+                        <!-- GANTI FOTO DI SINI -->
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'%3E%3Crect width='800' height='1000' fill='%23E4DBCF'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%238C8279'%3EProduct Photo%3C/text%3E%3C/svg%3E" alt="${p.name}" loading="lazy" width="800" height="1000">
                     </div>
-                    <div>
-                        <h3 class="font-extrabold text-base text-[#1C1616]">${p.name}</h3>
-                        <p class="text-xs text-neutral-500 mt-1 leading-relaxed">${p.description}</p>
-                        <p class="text-sm font-extrabold text-amber-900 mt-2.5">${formatRupiah(p.price)}</p>
-                    </div>
-                    <div class="flex items-center justify-end space-x-2 pt-2 border-t border-neutral-100">
-                        <button onclick="updateCart(${p.id}, -1)" class="w-10 h-10 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-extrabold flex items-center justify-center active:scale-95 transition">-</button>
-                        <span class="w-8 text-center font-extrabold text-sm" id="qty-${p.id}">${cart[p.id] || 0}</span>
-                        <button onclick="updateCart(${p.id}, 1)" class="w-10 h-10 rounded-xl bg-[#1C1616] hover:bg-neutral-800 text-white font-extrabold flex items-center justify-center active:scale-95 transition">+</button>
+                    <div class="product-body">
+                        <div class="product-title-row">
+                            <div>
+                                ${p.badge ? `<span class="badge-signature" style="display: block; margin-bottom: 4px;">${p.badge}</span>` : ''}
+                                <h3 class="product-title serif-font">${p.name}</h3>
+                            </div>
+                            <span class="product-price">${formatRupiah(p.price)}</span>
+                        </div>
+                        <p class="product-desc">${p.description}</p>
+                        <p class="product-story">${p.story[currentLang] || p.story.en}</p>
+                        <div class="product-actions">
+                            <button onclick="updateCart(${p.id}, -1)" class="qty-btn">-</button>
+                            <span class="qty-num" id="qty-${p.id}">${cart[p.id] || 0}</span>
+                            <button onclick="updateCart(${p.id}, 1)" class="qty-btn">+</button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -844,10 +1718,8 @@
                 if (qEl) qEl.innerText = cart[p.id] || 0;
             });
 
-            // STRICTLY CONTROLLED BY PLAY TOKENS ONLY — CART VALUE CAN NEVER TRIGGER IT
             const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
             const puggleTrigger = document.getElementById('floating-puggle-trigger');
-
             if (playTokens > 0) {
                 puggleTrigger.classList.remove('hidden');
             } else {
@@ -856,19 +1728,16 @@
 
             const walletContainer = document.getElementById('coupon-wallet-container');
             if (couponInventory.length > 0) {
-                let walletHtml = `<p class="text-xs font-extrabold text-amber-950 mb-1">🎁 Pilih Kupon untuk Order Ini (Maks. 1):</p>`;
+                let walletHtml = `<div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">${t('coupon_select_label')}</div>`;
                 walletHtml += couponInventory.map(c => {
                     const isSelected = activeSelectedCouponId === c.id;
                     return `
-                        <div onclick="toggleCouponSelection('${c.id}')" class="p-3 rounded-2xl border-2 ${isSelected ? 'border-amber-600 bg-amber-50 shadow-md' : 'border-amber-900/10 bg-white'} cursor-pointer transition flex items-center justify-between">
-                            <div class="flex items-center space-x-2.5">
-                                <span class="text-xl">🎟️</span>
-                                <div>
-                                    <p class="text-xs font-extrabold text-amber-950">${c.label}</p>
-                                    <p class="text-[10px] text-neutral-500">${isSelected ? 'Kupon Aktif Diterapkan' : 'Ketuk untuk pakai'}</p>
-                                </div>
+                        <div onclick="toggleCouponSelection('${c.id}')" style="background: var(--surface); border: 1px solid ${isSelected ? 'var(--accent)' : 'var(--line)'}; border-radius: 6px; padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <div>
+                                <div style="font-size: 14px; font-weight: 500;">${c.label}</div>
+                                <div style="font-size: 12px; color: var(--muted);">${isSelected ? t('coupon_active') : t('coupon_tap')}</div>
                             </div>
-                            <span class="w-5 h-5 rounded-full ${isSelected ? 'bg-amber-600 text-white' : 'bg-neutral-200 text-transparent'} flex items-center justify-center text-xs font-bold">✓</span>
+                            <span style="font-size: 14px; color: ${isSelected ? 'var(--accent)' : 'transparent'};">&#10003;</span>
                         </div>
                     `;
                 }).join('');
@@ -896,19 +1765,17 @@
 
             let totalDiscountAmount = autoDiscountAmount + couponDiscountAmount;
             let totalDiscountPercentNum = (productsTotal >= DISCOUNT_MIN_ORDER ? 5 : 0) + couponPctNum;
-            let discountLabel = `Diskon Stacked (${totalDiscountPercentNum}%)`;
+            let discountLabel = `${currentLang === 'id' ? 'Diskon' : 'Discount'} (${totalDiscountPercentNum}%)`;
 
             if (productsTotal >= DISCOUNT_MIN_ORDER) {
                 floatingBar.style.width = "100%";
-                floatingBadge.innerText = "100% UNLOCKED";
-                floatingBadge.className = "bg-emerald-600 text-white text-[10px] px-2.5 py-1 rounded-full font-extrabold";
-                floatingText.innerHTML = "🎉 <strong class='text-emerald-700'>Selamat! Diskon Aktif</strong> (-" + formatRupiah(totalDiscountAmount) + ")";
+                floatingBadge.innerText = "100%";
+                floatingText.innerHTML = t('discount_unlocked', { amount: formatRupiah(totalDiscountAmount) });
             } else {
                 const remaining = DISCOUNT_MIN_ORDER - productsTotal;
                 floatingBar.style.width = progressPercent + "%";
                 floatingBadge.innerText = progressPercent + "%";
-                floatingBadge.className = "bg-amber-100 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold";
-                floatingText.innerText = "Tambah " + formatRupiah(remaining) + " lagi untuk dapet Diskon 5%!";
+                floatingText.innerText = t('discount_progress', { amount: formatRupiah(remaining) });
             }
 
             if (totalDiscountAmount > 0) {
@@ -922,28 +1789,31 @@
             const cartItemsEl = document.getElementById('cart-items');
             const emptyCartEl = document.getElementById('empty-cart');
             const checkoutSection = document.getElementById('checkout-form-section');
+            const floatingBarContainer = document.getElementById('floating-bar-container');
 
             if (totalCount === 0) {
                 cartItemsEl.innerHTML = '';
                 emptyCartEl.classList.remove('hidden');
                 checkoutSection.classList.add('hidden');
+                floatingBarContainer.classList.add('hidden');
             } else {
                 emptyCartEl.classList.add('hidden');
                 checkoutSection.classList.remove('hidden');
+                floatingBarContainer.classList.remove('hidden');
 
                 let html = '';
                 if (cart['bundle']) {
                     html += `
-                        <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-amber-900/10 text-sm shadow-2xs">
+                        <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; justify-content: space-between; align-items: center;">
                             <div>
-                                <span class="font-extrabold text-[#1C1616]">🎁 The Ultimate Trio Bundle</span>
-                                <div class="text-xs text-neutral-500 mt-0.5">Rp 189.000 x ${cart['bundle']}</div>
+                                <div style="font-weight: 500; font-size: 15px;">The Ultimate Trio Bundle</div>
+                                <div style="font-size: 13px; color: var(--muted); margin-top: 2px;">Rp 189.000 &times; ${cart['bundle']}</div>
                             </div>
-                            <div class="flex items-center space-x-2">
-                                <span class="font-extrabold text-amber-900">${formatRupiah(189000 * cart['bundle'])}</span>
-                                <button onclick="updateCartBundle(-1)" class="w-7 h-7 bg-neutral-100 rounded-lg text-xs font-bold">-</button>
-                                <span class="text-xs font-bold">${cart['bundle']}</span>
-                                <button onclick="updateCartBundle(1)" class="w-7 h-7 bg-neutral-100 rounded-lg text-xs font-bold">+</button>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-weight: 500;">${formatRupiah(189000 * cart['bundle'])}</span>
+                                <button onclick="updateCartBundle(-1)" class="qty-btn" style="width: 32px; height: 32px; font-size: 14px;">-</button>
+                                <span style="font-weight: 700; min-width: 16px; text-align: center;">${cart['bundle']}</span>
+                                <button onclick="updateCartBundle(1)" class="qty-btn" style="width: 32px; height: 32px; font-size: 14px;">+</button>
                             </div>
                         </div>
                     `;
@@ -954,16 +1824,16 @@
                         const p = PRODUCTS.find(item => item.id == id);
                         const qty = cart[id];
                         html += `
-                            <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-amber-900/10 text-sm shadow-2xs">
+                            <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <span class="font-extrabold text-[#1C1616]">${p.name}</span>
-                                    <div class="text-xs text-neutral-500 mt-0.5">${formatRupiah(p.price)} x ${qty}</div>
+                                    <div style="font-weight: 500; font-size: 15px;">${p.name}</div>
+                                    <div style="font-size: 13px; color: var(--muted); margin-top: 2px;">${formatRupiah(p.price)} &times; ${qty}</div>
                                 </div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="font-extrabold text-amber-900">${formatRupiah(p.price * qty)}</span>
-                                    <button onclick="updateCart(${p.id}, -1)" class="w-7 h-7 bg-neutral-100 rounded-lg text-xs font-bold">-</button>
-                                    <span class="text-xs font-bold">${qty}</span>
-                                    <button onclick="updateCart(${p.id}, 1)" class="w-7 h-7 bg-neutral-100 rounded-lg text-xs font-bold">+</button>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-weight: 500;">${formatRupiah(p.price * qty)}</span>
+                                    <button onclick="updateCart(${p.id}, -1)" class="qty-btn" style="width: 32px; height: 32px; font-size: 14px;">-</button>
+                                    <span style="font-weight: 700; min-width: 16px; text-align: center;">${qty}</span>
+                                    <button onclick="updateCart(${p.id}, 1)" class="qty-btn" style="width: 32px; height: 32px; font-size: 14px;">+</button>
                                 </div>
                             </div>
                         `;
@@ -982,116 +1852,110 @@
             const panel = document.getElementById('drawer-panel');
             if (drawer.classList.contains('hidden')) {
                 drawer.classList.remove('hidden');
-                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+                setTimeout(() => panel.style.transform = 'translateX(0)', 10);
                 updateUI();
             } else {
-                panel.classList.add('translate-x-full');
-                setTimeout(() => drawer.classList.add('hidden'), 300);
+                panel.style.transform = 'translateX(100%)';
+                setTimeout(() => drawer.classList.add('hidden'), 350);
             }
         }
 
-        function previewWhatsAppOrder() {
+        function setPayBusy(busy) {
+            payBusy = busy;
+            const btn = document.getElementById('whatsapp-btn');
+            if (!btn) return;
+            btn.disabled = busy;
+            btn.classList.toggle('opacity-60', busy);
+            btn.firstElementChild.innerText = busy ? t('btn_processing') : t('btn_proceed');
+        }
+
+        function currentProductsTotal() {
+            let total = 0;
+            if (cart['bundle']) total += 189000 * cart['bundle'];
+            for (let id in cart) {
+                if (id !== 'bundle') {
+                    const p = PRODUCTS.find(item => item.id == id);
+                    if (p) total += p.price * cart[id];
+                }
+            }
+            return total;
+        }
+
+        function payWithMidtrans() {
+            if (payBusy) return;
+
             const name = document.getElementById('cust-name').value.trim();
             const phone = document.getElementById('cust-phone').value.trim();
+            const email = document.getElementById('cust-email').value.trim();
             const address = document.getElementById('cust-address').value.trim();
-            const deliveryDate = document.getElementById('delivery-date').value;
-            const deliveryTime = document.getElementById('delivery-time').value;
-            const isGift = document.getElementById('gift-option').checked;
-            const giftNote = document.getElementById('gift-note').value.trim();
 
             if (!name || !phone || !address) {
-                alert("Mohon masukkan nama, nomor WhatsApp Anda, dan alamat lengkap.");
+                alert(t('alert_fill_fields'));
+                return;
+            }
+            if (!/^\S+@\S+\.\S+$/.test(email)) {
+                alert(t('alert_invalid_email'));
                 return;
             }
 
-            let orderSummary = "";
-            let productsTotal = 0;
-            let totalCogs = 0;
+            const coupon = couponInventory.find(c => c.id === activeSelectedCouponId);
+            const areaIndex = JAKARTA_AREAS.findIndex(a => a.name.replace(/'/g, "") === selectedAreaName);
+            const deliveryDate = document.getElementById('delivery-date').value;
+            const deliveryTime = document.getElementById('delivery-time').value;
 
-            if (cart['bundle']) {
-                orderSummary += `- ${cart['bundle']}x The Ultimate Trio Bundle (${formatRupiah(189000 * cart['bundle'])})\n`;
-                productsTotal += 189000 * cart['bundle'];
-                totalCogs += BUNDLE_COGS * cart['bundle'];
-            }
+            setPayBusy(true);
 
-            for (let id in cart) {
-                if (id !== 'bundle') {
-                    const p = PRODUCTS.find(item => item.id == id);
-                    const qty = cart[id];
-                    orderSummary += `- ${qty}x ${p.name} (${formatRupiah(p.price * qty)})\n`;
-                    productsTotal += p.price * qty;
-                    totalCogs += COGS_PER_JAR * qty;
+            fetch(GOOGLE_SHEET_WEB_APP_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    action: 'create',
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    address: `${address} [Area: ${selectedAreaName}, ~${calculatedDeliveryKm.toFixed(1)}km]`,
+                    datetime: `${deliveryDate} (${deliveryTime})`,
+                    areaIndex: areaIndex,
+                    cart: cart,
+                    couponPercent: coupon ? coupon.percent : 0,
+                    couponCode: coupon ? coupon.code : '',
+                    gift: document.getElementById('gift-option').checked,
+                    giftNote: document.getElementById('gift-note').value.trim(),
+                    lang: currentLang
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.token) throw new Error(data.message || 'Token payment not received');
+                
+                if (window.snap && typeof window.snap.pay === 'function') {
+                    window.snap.pay(data.token, {
+                        onSuccess: function () { finishOrder(name); },
+                        onPending: function () { finishOrder(name); },
+                        onError: function () {
+                            alert(t('alert_pay_fail'));
+                            setPayBusy(false);
+                        },
+                        onClose: function () { setPayBusy(false); }
+                    });
+                } else {
+                    window.location.href = `https://app.midtrans.com/snap/v2/vtweb/${data.token}`;
                 }
-            }
-
-            let autoDiscountAmount = productsTotal >= DISCOUNT_MIN_ORDER ? Math.round(productsTotal * AUTO_DISCOUNT_PERCENTAGE) : 0;
-            let activeCouponObj = couponInventory.find(c => c.id === activeSelectedCouponId);
-            let couponDiscountAmount = activeCouponObj ? Math.round(productsTotal * (activeCouponObj.percent / 100)) : 0;
-            let totalDiscountAmount = autoDiscountAmount + couponDiscountAmount;
-
-            calculatedGrandTotalNum = Math.max(0, productsTotal - totalDiscountAmount) + currentDeliveryFee;
-
-            orderPayloadForSheet = {
-                name: name,
-                phone: phone,
-                datetime: `${deliveryDate} (${deliveryTime})`,
-                address: `${address} [Area: ${selectedAreaName}, ~${calculatedDeliveryKm.toFixed(1)}km]`,
-                items: orderSummary.trim(),
-                totalStr: formatRupiah(calculatedGrandTotalNum),
-                revenueNumber: calculatedGrandTotalNum,
-                cogsNumber: totalCogs
-            };
-
-            let usedCouponCodeStr = activeCouponObj ? activeCouponObj.code : 'Tidak ada';
-
-            generatedWhatsAppMessage = `*NEW ORDER & PAYMENT VERIFICATION - REST IN CHEESE* 🧀\n\n` +
-                `*Nama Pemesan:* ${name}\n` +
-                `*No. WA:* ${phone}\n` +
-                `*Alamat Kirim:* ${address}\n` +
-                `*Area & Estimasi Jarak:* ${selectedAreaName} (~${calculatedDeliveryKm.toFixed(1)} km dari PIK)\n` +
-                `*Jadwal Kirim:* ${deliveryDate} (${deliveryTime})\n` +
-                `*Status Bayar:* TRANSFER BCA (578 543 3570)\n` +
-                `*Kupon Dipakai:* ${usedCouponCodeStr}\n` +
-                `*Kartu Ucapan:* ${isGift ? 'Ya' : 'Tidak'}\n` +
-                (isGift && giftNote ? `*Pesan Ucapan:* "${giftNote}"\n` : '') + `\n` +
-                `*Rincian Item:*\n${orderSummary}\n` +
-                `*Subtotal Produk:* ${formatRupiah(productsTotal)}\n` +
-                (totalDiscountAmount > 0 ? `*Diskon Stacked:* -${formatRupiah(totalDiscountAmount)}\n` : '') +
-                `*Ongkir Presisi (${calculatedDeliveryKm.toFixed(1)} km):* ${formatRupiah(currentDeliveryFee)}\n` +
-                `*Total Tagihan:* ${formatRupiah(calculatedGrandTotalNum)}\n\n` +
-                `📌 *NOTE:* Bukti pembayaran telah diunggah di web & siap diverifikasi!`;
-
-            document.getElementById('modal-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
-            document.getElementById('wa-preview-modal').classList.remove('hidden');
+            })
+            .catch(err => {
+                console.error(err);
+                alert(t('alert_pay_error'));
+                setPayBusy(false);
+            });
         }
 
-        function closeWaPreview() {
-            document.getElementById('wa-preview-modal').classList.add('hidden');
-        }
+        function finishOrder(name) {
+            try { window.snap.hide(); } catch (e) {}
 
-        function verifyAndSendOrder() {
-            if (!uploadedReceiptFile) {
-                alert("⚠️ Harap unggah foto / screenshot Bukti Transfer BCA Anda terlebih dahulu!");
-                return;
-            }
-
-            let productsTotal = 0;
-            if (cart['bundle']) productsTotal += 189000 * cart['bundle'];
-            for (let id in cart) {
-                if (id !== 'bundle') {
-                    const p = PRODUCTS.find(item => item.id == id);
-                    if (p) productsTotal += p.price * cart[id];
-                }
-            }
-
-            // REWARD 1 GAME TOKEN ONLY IF THIS SUBMITTED ORDER IS 300K+
-            if (productsTotal >= PUGGLE_MIN_ORDER) {
-                let playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+            if (currentProductsTotal() >= PUGGLE_MIN_ORDER) {
+                const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
                 localStorage.setItem('ric_game_tokens', (playTokens + 1).toString());
             }
-
-            orderPayloadForSheet.name = orderPayloadForSheet.name + ` [Bukti Transfer: Uploaded]`;
-            generatedWhatsAppMessage += `\n*Bukti Transfer:* Terlampir di web`;
 
             if (activeSelectedCouponId) {
                 couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
@@ -1100,30 +1964,15 @@
                 localStorage.removeItem('ric_active_coupon_id');
             }
 
-            if (GOOGLE_SHEET_WEB_APP_URL) {
-                fetch(GOOGLE_SHEET_WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderPayloadForSheet)
-                }).catch(err => console.log("Google Sheets sync error:", err));
-            }
-
             cart = {};
             localStorage.removeItem('ric_cart');
-
-            closeWaPreview();
+            setPayBusy(false);
             updateUI();
             toggleCart();
+            renderBoomerPromos();
+            switchPage('home');
 
-            document.getElementById('instant-confirmed-modal').classList.remove('hidden');
-        }
-
-        function executeRedirectToWhatsApp() {
-            const sellerWhatsApp = "6282112002258";
-            const whatsappUrl = `https://wa.me/${sellerWhatsApp}?text=` + encodeURIComponent(generatedWhatsAppMessage);
-            window.open(whatsappUrl, '_blank');
-            document.getElementById('instant-confirmed-modal').classList.add('hidden');
+            alert(t('alert_thanks', { name: name }));
         }
     </script>
 </body>
