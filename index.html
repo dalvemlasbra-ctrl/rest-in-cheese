@@ -8,6 +8,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- EmailJS Browser SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@5/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            // Initialize EmailJS with your Public Key (Replace with your free key from emailjs.com)
+            emailjs.init({
+                publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
+            });
+        })();
+    </script>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -280,14 +290,14 @@
             <div class="text-5xl animate-bounce">🎉🧀</div>
             <div>
                 <h3 class="font-extrabold text-lg text-[#1C1616]">PESANAN BERHASIL DITERIMA!</h3>
-                <p class="text-xs text-neutral-500 mt-1">Sistem kami telah otomatis mencatat pesanan Anda.</p>
+                <p class="text-xs text-neutral-500 mt-1">Email notifikasi & pencatatan sistem telah dikirim.</p>
             </div>
             
             <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs text-left space-y-2">
                 <p class="font-bold text-amber-950 border-b border-amber-200 pb-1">🚚 Estimasi Pengiriman (ETA):</p>
                 <p class="text-neutral-700">• <strong>Dapur Origin:</strong> Taman Grisenda, PIK (Jakarta Utara)</p>
                 <p class="text-neutral-700">• <strong>Jadwal Kirim:</strong> Fresh diproses & dikirim via Instant/Sameday pada slot pilihan Anda.</p>
-                <p class="text-neutral-700">• <strong>Bukti Bayar:</strong> Terekam & terlampir.</p>
+                <p class="text-neutral-700">• <strong>Bukti Bayar & Email:</strong> Terkirim otomatis.</p>
             </div>
 
             <button onclick="executeRedirectToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 rounded-xl text-xs shadow-md transition">
@@ -479,7 +489,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Web Receipt Photo Upload Enabled! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c EmailJS Instant Inbox Alerts Enabled! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -678,20 +688,10 @@
             let wonPercent = 2;
             let landXCoord = "-130px";
 
-            // Probabilities: 2% (47.5%), 3% (47.5%), 4% (2.5%), 5% (2.5%)
-            if (rand < 47.5) { 
-                wonPercent = 2; 
-                landXCoord = "-130px"; 
-            } else if (rand < 95.0) { 
-                wonPercent = 3; 
-                landXCoord = "-45px"; 
-            } else if (rand < 97.5) { 
-                wonPercent = 4; 
-                landXCoord = "45px"; 
-            } else { 
-                wonPercent = 5; 
-                landXCoord = "130px"; 
-            }
+            if (rand < 47.5) { wonPercent = 2; landXCoord = "-130px"; } 
+            else if (rand < 95.0) { wonPercent = 3; landXCoord = "-45px"; } 
+            else if (rand < 97.5) { wonPercent = 4; landXCoord = "45px"; } 
+            else { wonPercent = 5; landXCoord = "130px"; }
 
             cheese.style.setProperty('--land-x', landXCoord);
             cheese.classList.remove('hidden');
@@ -718,9 +718,7 @@
                 renderBoomerPromos();
                 updateUI();
                 
-                setTimeout(() => {
-                    closePuggleModal();
-                }, 2500);
+                setTimeout(() => { closePuggleModal(); }, 2500);
             }, 8000);
         }
 
@@ -888,7 +886,6 @@
             const floatingText = document.getElementById('floating-progress-text');
             const discountRow = document.getElementById('discount-row');
             
-            // STACKED DISCOUNTS: Auto 5% + Game Voucher percentage (2% to 5%)
             let autoDiscountAmount = productsTotal >= DISCOUNT_MIN_ORDER ? Math.round(productsTotal * AUTO_DISCOUNT_PERCENTAGE) : 0;
             let promoDiscountAmount = appliedPromoDiscount > 0 ? Math.round(productsTotal * appliedPromoDiscount) : 0;
             
@@ -1055,7 +1052,7 @@
                 (discountAmount > 0 ? `*Diskon Stacked:* -${formatRupiah(discountAmount)}\n` : '') +
                 `*Ongkir Presisi (${calculatedDeliveryKm.toFixed(1)} km):* ${formatRupiah(currentDeliveryFee)}\n` +
                 `*Total Tagihan:* ${formatRupiah(calculatedGrandTotalNum)}\n\n` +
-                `📌 *NOTE:* Bukti pembayaran telah diunggah di web. Mohon verifikasi & proses pesanan!`;
+                `📌 *NOTE:* Bukti pembayaran telah diunggah di web & email notifikasi telah terkirim ke Admin!`;
 
             document.getElementById('modal-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
             document.getElementById('wa-preview-modal').classList.remove('hidden');
@@ -1083,7 +1080,7 @@
 
             localStorage.setItem('ric_order_completed', 'true');
 
-            // Send payload to Google Sheet Web App
+            // 1. Send data to Google Sheets backend
             if (GOOGLE_SHEET_WEB_APP_URL) {
                 fetch(GOOGLE_SHEET_WEB_APP_URL, {
                     method: 'POST',
@@ -1093,6 +1090,26 @@
                 }).catch(err => console.log("Google Sheets sync error:", err));
             }
 
+            // 2. SIMULTANEOUS EMAIL ALERT TO YOUR INBOX VIA EMAILJS
+            // (Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your free emailjs credentials)
+            const emailParams = {
+                to_name: "Admin Rest in Cheese",
+                customer_name: orderPayloadForSheet.name,
+                customer_phone: orderPayloadForSheet.phone,
+                order_items: orderPayloadForSheet.items,
+                order_total: orderPayloadForSheet.totalStr,
+                delivery_schedule: orderPayloadForSheet.datetime,
+                delivery_address: orderPayloadForSheet.address,
+                bca_reference: refNumber
+            };
+
+            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", emailParams)
+                .then(function(response) {
+                    console.log("Email alert successfully sent!", response.status, response.text);
+                }, function(error) {
+                    console.log("Email dispatch failed...", error);
+                });
+
             cart = {};
             localStorage.removeItem('ric_cart');
 
@@ -1100,7 +1117,7 @@
             updateUI();
             toggleCart();
 
-            // POP UP THE SLEEP PROOF CONFIRMATION MODAL FIRST
+            // Pop up the confirmation success modal
             document.getElementById('instant-confirmed-modal').classList.remove('hidden');
         }
 
