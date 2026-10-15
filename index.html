@@ -78,19 +78,19 @@
                 <div class="space-y-3">
                     <p class="text-[10px] font-extrabold uppercase tracking-widest text-amber-800/80">Menu Utama</p>
                     <button onclick="switchPage('home'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
-                        <span class="text-lg">🏠</span> <span>Beranda</span>
+                        <span class="text-lg">🏠</span> <span>Home</span>
                     </button>
                     <button onclick="switchPage('products'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
-                        <span class="text-lg">✨</span> <span>Katalog Jar</span>
+                        <span class="text-lg">✨</span> <span>Catalogue</span>
                     </button>
                     <button onclick="switchPage('promos'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-amber-900 hover:text-amber-950 py-2.5 px-3 rounded-xl bg-amber-100/60 transition shadow-2xs">
-                        <span class="text-lg">🎟️</span> <span>Kupon & Diskon Saya</span>
+                        <span class="text-lg">🎟️</span> <span>Coupons & Discounts</span>
                     </button>
                     <button onclick="switchPage('about'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
-                        <span class="text-lg">📖</span> <span>Tentang Kami</span>
+                        <span class="text-lg">📖</span> <span>About Us</span>
                     </button>
                     <a href="https://wa.me/6282112002258?text=Halo%20Admin%20Rest%20in%20Cheese,%20saya%20mau%20tanya-tanya%20dulu%20sebelum%20order." target="_blank" class="w-full text-left flex items-center space-x-3 font-bold text-emerald-800 py-2.5 px-3 rounded-xl bg-emerald-100/70 hover:bg-emerald-100 transition shadow-2xs">
-                        <span class="text-lg">💬</span> <span>Chat Admin / Tanya-tanya</span>
+                        <span class="text-lg">💬</span> <span>Chat Admin</span>
                     </a>
                 </div>
                 <div class="pt-4 border-t border-amber-900/10 space-y-2">
@@ -180,7 +180,7 @@
                 <div class="flex items-center space-x-3">
                     <span class="text-3xl">🎟️</span>
                     <div>
-                        <h2 class="font-extrabold text-base text-[#1C1616]">Kupon & Diskon Saya</h2>
+                        <h2 class="font-extrabold text-base text-[#1C1616]">Coupons & Discounts</h2>
                         <p class="text-xs text-neutral-500">Semua voucher hadiah game Anda tersimpan otomatis di sini.</p>
                     </div>
                 </div>
@@ -257,12 +257,11 @@
 
                     <div id="puggle-cheese" class="absolute left-1/2 top-2 -translate-x-1/2 text-3xl hidden z-20">🧀</div>
 
-                    <div id="puggle-slots" class="grid grid-cols-5 gap-1 pt-2 border-t border-amber-700/60 text-[10px] font-extrabold text-center text-amber-200 bg-amber-900/60 rounded-xl p-1.5">
+                    <div id="puggle-slots" class="grid grid-cols-4 gap-1 pt-2 border-t border-amber-700/60 text-[10px] font-extrabold text-center text-amber-200 bg-amber-900/60 rounded-xl p-1.5">
+                        <div data-slot="2" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">2%</div>
+                        <div data-slot="3" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">3%</div>
                         <div data-slot="4" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">4%</div>
-                        <div data-slot="5" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">5%</div>
-                        <div data-slot="6" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">6%</div>
-                        <div data-slot="7" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">7%</div>
-                        <div data-slot="8" class="bg-amber-800/80 rounded py-1.5 border border-amber-600 text-amber-300">8%</div>
+                        <div data-slot="5" class="bg-amber-800/80 rounded py-1.5 border border-amber-600 text-amber-300">5%</div>
                     </div>
                 </div>
 
@@ -313,7 +312,7 @@
                 <div class="glass-card p-3.5 rounded-2xl space-y-2">
                     <label class="block text-xs font-bold text-amber-900">🎟️ Punya Kode Referral / Diskon?</label>
                     <div class="flex space-x-2">
-                        <input type="text" id="promo-code-input" placeholder="Contoh: RIC-6%..." class="flex-1 px-3 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs uppercase font-mono focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <input type="text" id="promo-code-input" placeholder="Contoh: RIC-3%..." class="flex-1 px-3 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs uppercase font-mono focus:outline-none focus:ring-2 focus:ring-amber-500">
                         <button onclick="applyPromoCode()" class="bg-[#1C1616] hover:bg-neutral-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Pakai</button>
                     </div>
                     <p id="promo-feedback" class="text-[11px] font-semibold hidden"></p>
@@ -397,7 +396,7 @@
                         <span id="summary-products-total" class="font-semibold">Rp 0</span>
                     </div>
                     <div id="discount-row" class="flex justify-between text-emerald-700 font-bold hidden">
-                        <span>Diskon (5% Off)</span>
+                        <span id="discount-label-text">Diskon Stacked</span>
                         <span id="summary-discount">-Rp 0</span>
                     </div>
                     <div class="flex justify-between text-neutral-600">
@@ -455,7 +454,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Google Sheets Connected & Ready! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Stacked Margins Safe & Active! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -489,6 +488,7 @@
         let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
         let savedPuggleReward = localStorage.getItem('ric_puggle_reward') || null;
         let appliedPromoDiscount = 0;
+        let appliedPromoCodeName = "";
         
         let currentDeliveryFee = 15000;
         let selectedAreaName = JAKARTA_AREAS[0].name;
@@ -499,9 +499,8 @@
 
         const DISCOUNT_MIN_ORDER = 250000;
         const PUGGLE_MIN_ORDER = 300000;
-        const DISCOUNT_PERCENTAGE = 0.05;
+        const AUTO_DISCOUNT_PERCENTAGE = 0.05;
 
-        // 🔗 YOUR LIVE GOOGLE APPS SCRIPT WEB APP URL IS CONNECTED HERE
         const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwURUdj3sPQ4AjN5hs7jRRxePCXWvGyCYGgXOHQBVFknDuUvqRFmoy70D3CPChmvJi_jg/exec";
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -634,15 +633,24 @@
             btn.classList.add('opacity-50', 'cursor-not-allowed');
             status.innerText = "🎯 Keju dilempar! Memantul melewati pinball...";
 
-            const rand = Math.random() * 1000;
-            let wonPercent = 4;
+            const rand = Math.random() * 100;
+            let wonPercent = 2;
             let landXCoord = "-130px";
 
-            if (rand < 800) { wonPercent = 4; landXCoord = "-130px"; }
-            else if (rand < 900) { wonPercent = 5; landXCoord = "-65px"; }
-            else if (rand < 950) { wonPercent = 6; landXCoord = "0px"; }
-            else if (rand < 999) { wonPercent = 7; landXCoord = "65px"; }
-            else { wonPercent = 8; landXCoord = "130px"; }
+            // Exact probabilities: 2% (47.5%), 3% (47.5%), 4% (2.5%), 5% (2.5%)
+            if (rand < 47.5) { 
+                wonPercent = 2; 
+                landXCoord = "-130px"; 
+            } else if (rand < 95.0) { 
+                wonPercent = 3; 
+                landXCoord = "-45px"; 
+            } else if (rand < 97.5) { 
+                wonPercent = 4; 
+                landXCoord = "45px"; 
+            } else { 
+                wonPercent = 5; 
+                landXCoord = "130px"; 
+            }
 
             cheese.style.setProperty('--land-x', landXCoord);
             cheese.classList.remove('hidden');
@@ -721,6 +729,7 @@
             if (!codeInput) {
                 feedback.innerText = "Masukkan kode kupon terlebih dahulu.";
                 feedback.className = "text-[11px] font-semibold text-red-600 block mt-1";
+                feedback.classList.remove('hidden');
                 return;
             }
 
@@ -729,10 +738,12 @@
                 const pctStr = parts[1].replace("%", "");
                 const pct = parseInt(pctStr);
 
-                if (pct >= 4 && pct <= 8) {
+                if (pct >= 2 && pct <= 5) {
                     appliedPromoDiscount = pct / 100;
+                    appliedPromoCodeName = codeInput;
                     feedback.innerText = `✅ Berhasil! Kupon ${codeInput} memberikan Diskon ${pct}%!`;
                     feedback.className = "text-[11px] font-semibold text-emerald-600 block mt-1";
+                    feedback.classList.remove('hidden');
                     updateUI();
                     return;
                 }
@@ -740,6 +751,7 @@
 
             feedback.innerText = "❌ Kode kupon tidak valid.";
             feedback.className = "text-[11px] font-semibold text-red-600 block mt-1";
+            feedback.classList.remove('hidden');
         }
 
         function renderProducts() {
@@ -835,23 +847,32 @@
             const floatingText = document.getElementById('floating-progress-text');
             const discountRow = document.getElementById('discount-row');
             
-            let discountAmount = 0;
+            // STACKED DISCOUNTS: Auto 5% + Game Voucher percentage (2% to 5%)
+            let autoDiscountAmount = productsTotal >= DISCOUNT_MIN_ORDER ? Math.round(productsTotal * AUTO_DISCOUNT_PERCENTAGE) : 0;
+            let promoDiscountAmount = appliedPromoDiscount > 0 ? Math.round(productsTotal * appliedPromoDiscount) : 0;
+            
+            let discountAmount = autoDiscountAmount + promoDiscountAmount;
+            let totalDiscountPercentNum = (productsTotal >= DISCOUNT_MIN_ORDER ? 5 : 0) + (appliedPromoDiscount > 0 ? Math.round(appliedPromoDiscount * 100) : 0);
+            let discountLabel = `Diskon (${totalDiscountPercentNum}% Off Stacked)`;
 
             if (productsTotal >= DISCOUNT_MIN_ORDER) {
-                discountAmount = Math.round(productsTotal * DISCOUNT_PERCENTAGE);
                 floatingBar.style.width = "100%";
                 floatingBadge.innerText = "100% UNLOCKED";
                 floatingBadge.className = "bg-emerald-600 text-white text-[10px] px-2.5 py-1 rounded-full font-extrabold";
-                floatingText.innerHTML = "🎉 <strong class='text-emerald-700'>Selamat! Diskon 5% Aktif</strong> (-" + formatRupiah(discountAmount) + ")";
-                
-                discountRow.classList.remove('hidden');
-                document.getElementById('summary-discount').innerText = "-" + formatRupiah(discountAmount);
+                floatingText.innerHTML = "🎉 <strong class='text-emerald-700'>Selamat! Diskon Aktif</strong> (-" + formatRupiah(discountAmount) + ")";
             } else {
                 const remaining = DISCOUNT_MIN_ORDER - productsTotal;
                 floatingBar.style.width = progressPercent + "%";
                 floatingBadge.innerText = progressPercent + "%";
                 floatingBadge.className = "bg-amber-100 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold";
                 floatingText.innerText = "Tambah " + formatRupiah(remaining) + " lagi untuk dapet Diskon 5%!";
+            }
+
+            if (discountAmount > 0) {
+                discountRow.classList.remove('hidden');
+                document.getElementById('discount-label-text').innerText = discountLabel;
+                document.getElementById('summary-discount').innerText = "-" + formatRupiah(discountAmount);
+            } else {
                 discountRow.classList.add('hidden');
             }
 
@@ -895,7 +916,12 @@
                                     <span class="font-extrabold text-[#1C1616]">${p.name}</span>
                                     <div class="text-xs text-neutral-500 mt-0.5">${formatRupiah(p.price)} x ${qty}</div>
                                 </div>
-                                <span class="font-extrabold text-amber-900">${formatRupiah(p.price * qty)}</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-extrabold text-amber-900">${formatRupiah(p.price * qty)}</span>
+                                    <button onclick="updateCart(${p.id}, -1)" class="w-7 h-7 bg-neutral-100 rounded-lg text-xs font-bold">-</button>
+                                    <span class="text-xs font-bold">${qty}</span>
+                                    <button onclick="updateCart(${p.id}, 1)" class="w-7 h-7 bg-neutral-100 rounded-lg text-xs font-bold">+</button>
+                                </div>
                             </div>
                         `;
                     }
@@ -955,10 +981,9 @@
                 }
             }
 
-            let discountAmount = 0;
-            if (productsTotal >= DISCOUNT_MIN_ORDER) {
-                discountAmount = Math.round(productsTotal * DISCOUNT_PERCENTAGE);
-            }
+            let autoDiscountAmount = productsTotal >= DISCOUNT_MIN_ORDER ? Math.round(productsTotal * AUTO_DISCOUNT_PERCENTAGE) : 0;
+            let promoDiscountAmount = appliedPromoDiscount > 0 ? Math.round(productsTotal * appliedPromoDiscount) : 0;
+            let discountAmount = autoDiscountAmount + promoDiscountAmount;
 
             calculatedGrandTotalNum = Math.max(0, productsTotal - discountAmount) + currentDeliveryFee;
 
@@ -982,10 +1007,11 @@
                 `*Payment Status:* TRANSFER BCA (578 543 3570)\n` +
                 `*Gift Card:* ${isGift ? 'Ya' : 'Tidak'}\n` +
                 (isGift && giftNote ? `*Greeting Note:* "${giftNote}"\n` : '') +
+                (appliedPromoCodeName ? `*Applied Promo Voucher:* ${appliedPromoCodeName}\n` : '') +
                 (savedPuggleReward ? `*Unlocked Puggle Reward:* ${savedPuggleReward}\n` : '') + `\n` +
                 `*Order Items:*\n${orderSummary}\n` +
                 `*Subtotal Produk:* ${formatRupiah(productsTotal)}\n` +
-                (discountAmount > 0 ? `*Diskon (5% Off):* -${formatRupiah(discountAmount)}\n` : '') +
+                (discountAmount > 0 ? `*Diskon Stacked:* -${formatRupiah(discountAmount)}\n` : '') +
                 `*Ongkir Presisi (${calculatedDeliveryKm.toFixed(1)} km):* ${formatRupiah(currentDeliveryFee)}\n` +
                 `*Total Tagihan:* ${formatRupiah(calculatedGrandTotalNum)}\n\n` +
                 `*Instruksi:* Saya sudah transfer via BCA. Mohon cek mutasi & konfirmasi!`;
