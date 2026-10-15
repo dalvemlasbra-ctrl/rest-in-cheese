@@ -210,7 +210,7 @@
     <div id="floating-puggle-trigger" class="fixed bottom-20 right-4 z-40 hidden">
         <button onclick="openPuggleModal()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 font-extrabold text-xs border-2 border-white floating-cheese-trigger active:scale-95 transition">
             <span class="text-xl">🧀</span>
-            <span>Mainkan Puggle Diskon!</span>
+            <span id="floating-trigger-label">Mainkan Puggle Diskon!</span>
         </button>
     </div>
 
@@ -233,7 +233,7 @@
         </div>
     </div>
 
-    <!-- TALL VERTICAL BOUNCING PUGGLE GAME MODAL (CHAOS PINBALL BOARD) -->
+    <!-- TALL VERTICAL BOUNCING PUGGLE GAME MODAL -->
     <div id="puggle-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
         <div class="bg-gradient-to-b from-neutral-900 via-amber-950 to-neutral-900 w-full max-w-sm rounded-3xl border-4 border-amber-500/80 shadow-2xl overflow-hidden flex flex-col text-white">
             
@@ -249,7 +249,6 @@
                 <p class="text-[11px] text-amber-200 text-center">Keju memantul liar ke kiri dan kanan dari pin ke pin!</p>
                 
                 <div id="puggle-board" class="w-full h-[460px] bg-neutral-950 border-2 border-amber-600/50 rounded-2xl relative overflow-hidden shadow-inner flex flex-col justify-between p-3">
-                    <!-- DENSE PINBALL PEGS ROWS -->
                     <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
                     <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
                     <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
@@ -308,8 +307,8 @@
 
             <div class="flex-1 overflow-y-auto p-4 space-y-4">
                 
-                <!-- ONE-TAP SHINY BOUNCING COUPON BOX -->
-                <div id="available-coupons-container"></div>
+                <!-- COUPON SELECTION WALLET IN CART -->
+                <div id="coupon-wallet-container" class="space-y-2"></div>
 
                 <div class="bg-amber-50/70 border border-amber-900/10 p-3.5 rounded-2xl space-y-3">
                     <div class="flex items-center space-x-3">
@@ -344,7 +343,6 @@
                         <input type="tel" id="cust-phone" placeholder="e.g. 081380003850" class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
                     </div>
 
-                    <!-- FIXED ROW LAYOUT FOR DATE & TIME PICKER -->
                     <div class="grid grid-cols-2 gap-2 bg-white p-3 rounded-2xl border border-amber-900/10 items-center">
                         <div class="flex flex-col">
                             <label class="block text-[10px] font-bold text-amber-900 mb-1">📅 Tanggal Kirim</label>
@@ -408,7 +406,7 @@
         </div>
     </div>
 
-    <!-- STREAMLINED PROOF UPLOAD MODAL (NO REF REQUIRED) -->
+    <!-- STREAMLINED PROOF UPLOAD MODAL -->
     <div id="wa-preview-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col p-6 space-y-4">
             <div class="flex items-center space-x-3">
@@ -431,7 +429,6 @@
                 </div>
             </div>
 
-            <!-- FILE UPLOAD BOX FOR BUKTI PEMBAYARAN -->
             <div class="space-y-1.5">
                 <label class="block text-xs font-bold text-neutral-700">Unggah Foto Bukti Transfer BCA:</label>
                 <div class="border-2 border-dashed border-amber-500/50 hover:border-amber-600 bg-amber-50/50 p-4 rounded-2xl text-center cursor-pointer relative transition" onclick="document.getElementById('receipt-file-input').click()">
@@ -456,7 +453,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Fixed date & time grid orientation! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Coupon inventory wallet & strict order completion sync fixed! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -488,11 +485,12 @@
         const BUNDLE_COGS = 28500 * 3;
 
         let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
-        let savedPuggleReward = localStorage.getItem('ric_puggle_reward') || null;
-        let appliedPromoDiscount = 0;
-        let appliedPromoCodeName = "";
-        let uploadedReceiptFile = null;
         
+        // COUPON WALLET ARRAY (Storable & Stackable multiple coupons)
+        let couponInventory = JSON.parse(localStorage.getItem('ric_coupon_inventory')) || [];
+        let activeSelectedCouponId = localStorage.getItem('ric_active_coupon_id') || null;
+
+        let uploadedReceiptFile = null;
         let currentDeliveryFee = 15000;
         let selectedAreaName = JAKARTA_AREAS[0].name;
         let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
@@ -633,9 +631,9 @@
         }
 
         function openPuggleModal() {
-            const isOrderDone = localStorage.getItem('ric_order_completed') === 'true';
-            if (!isOrderDone) {
-                alert("🔒 Mini-game ini terkunci! Selesaikan pesanan minimal Rp 300.000 terlebih dahulu untuk membukanya.");
+            const currentOrderUnlocked = localStorage.getItem('ric_current_order_unlocked') === 'true';
+            if (!currentOrderUnlocked) {
+                alert("🔒 Mini-game terkunci! Selesaikan pesanan minimal Rp 300.000 terlebih dahulu pada pesanan aktif Anda.");
                 return;
             }
             document.getElementById('puggle-modal').classList.remove('hidden');
@@ -646,8 +644,6 @@
         }
 
         function startPuggleDrop() {
-            if (savedPuggleReward) return;
-
             const btn = document.getElementById('puggle-drop-btn');
             const cheese = document.getElementById('puggle-cheese');
             const status = document.getElementById('puggle-status');
@@ -663,24 +659,30 @@
             let wonPercent = 2;
             let targetX = "-105px";
 
-            if (rand < 45) { 
-                wonPercent = 2; targetX = "-105px"; 
-            } else if (rand < 85) { 
-                wonPercent = 3; targetX = "-35px"; 
-            } else if (rand < 95) { 
-                wonPercent = 4; targetX = "35px"; 
-            } else { 
-                wonPercent = 5; targetX = "105px"; 
-            }
+            if (rand < 45) { wonPercent = 2; targetX = "-105px"; } 
+            else if (rand < 85) { wonPercent = 3; targetX = "-35px"; } 
+            else if (rand < 95) { wonPercent = 4; targetX = "35px"; } 
+            else { wonPercent = 5; targetX = "105px"; }
 
             cheese.style.setProperty('--target-x', targetX);
             cheese.classList.remove('hidden');
             cheese.classList.add('bouncing-drop-anim');
 
             setTimeout(() => {
+                const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
                 const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
-                savedPuggleReward = `${wonPercent}% OFF (${rewardCode})`;
-                localStorage.setItem('ric_puggle_reward', savedPuggleReward);
+                
+                // PUSH TO INVENTORY (Allows stacking multiple coupons)
+                couponInventory.push({
+                    id: uniqueId,
+                    percent: wonPercent,
+                    code: rewardCode,
+                    label: `${wonPercent}% OFF (${rewardCode})`
+                });
+                localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
+
+                // CONSUME THE UNLOCK STATUS SO USER CANNOT RE-PLAY WITHOUT NEW 300K ORDER
+                localStorage.setItem('ric_current_order_unlocked', 'false');
 
                 cheese.classList.remove('bouncing-drop-anim');
                 cheese.classList.add('hidden');
@@ -691,8 +693,8 @@
                     }
                 });
 
-                status.innerHTML = `🎉 Selamat! Keju masuk pas ke slot <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span>!`;
-                btn.innerText = "✅ Kupon Tersimpan!";
+                status.innerHTML = `🎉 Selamat! Anda memenangkan <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span> & masuk ke wallet kupon!`;
+                btn.innerText = "✅ Kupon Masuk Wallet!";
                 
                 renderBoomerPromos();
                 updateUI();
@@ -706,14 +708,14 @@
             if (!container) return;
 
             let gameHtml = "";
-            const isOrderDone = localStorage.getItem('ric_order_completed') === 'true';
+            const currentOrderUnlocked = localStorage.getItem('ric_current_order_unlocked') === 'true';
 
-            if (isOrderDone) {
+            if (currentOrderUnlocked) {
                 gameHtml = `
                     <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 p-4 rounded-2xl shadow-md flex items-center justify-between mb-4">
                         <div>
                             <p class="font-extrabold text-xs uppercase tracking-wide">🕹️ Puggle Pinball Unlocked!</p>
-                            <p class="text-[11px] text-amber-950/80 mt-0.5">Pesanan 300k+ Anda telah selesai. Mainkan sekarang!</p>
+                            <p class="text-[11px] text-amber-950/80 mt-0.5">Pesanan 300k+ Anda memenuhi syarat. Mainkan sekarang!</p>
                         </div>
                         <button onclick="openPuggleModal()" class="bg-white hover:bg-amber-50 text-amber-950 px-4 py-2.5 rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 cursor-pointer">
                             Mainkan 🚀
@@ -724,58 +726,50 @@
                 gameHtml = `
                     <div class="bg-neutral-100 border border-amber-900/10 p-4 rounded-2xl text-center space-y-1.5 mb-4">
                         <p class="text-xs font-extrabold text-neutral-800">🔒 Pinball Puggle Terkunci</p>
-                        <p class="text-[11px] text-neutral-500">Mini-game pinball akan terbuka otomatis di sini setelah Anda menyelesaikan order minimal <strong class="text-amber-900">Rp 300.000</strong>.</p>
+                        <p class="text-[11px] text-neutral-500">Mini-game pinball akan terbuka otomatis di sini setelah Anda membuat order dengan subtotal minimal <strong class="text-amber-900">Rp 300.000</strong>.</p>
                     </div>
                 `;
             }
 
-            if (!savedPuggleReward) {
+            if (couponInventory.length === 0) {
                 container.innerHTML = gameHtml + `
                     <div class="bg-amber-50 border border-amber-900/10 p-5 rounded-2xl text-center space-y-2">
                         <p class="text-3xl">🎟️</p>
-                        <p class="text-xs font-bold text-amber-950">Belum ada kupon aktif.</p>
-                        <p class="text-[11px] text-neutral-600 leading-relaxed">Menangkan kupon diskon eksklusif dengan menyelesaikan pesanan dan memainkan minigame kami!</p>
+                        <p class="text-xs font-bold text-amber-950">Belum ada kupon di wallet Anda.</p>
+                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan order 300k+ untuk bermain minigame dan kumpulkan kupon diskon Anda!</p>
                     </div>
                 `;
                 return;
             }
 
-            container.innerHTML = gameHtml + `
-                <div class="bg-gradient-to-r from-amber-600 to-amber-800 text-white p-5 rounded-2xl shadow-md space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="bg-black/30 text-amber-200 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">🎁 Kupon Aktif Anda</span>
-                        <span class="text-xs font-bold text-amber-100">Siap Pakai</span>
-                    </div>
+            let inventoryHtml = couponInventory.map(c => `
+                <div class="bg-gradient-to-r from-amber-600 to-amber-800 text-white p-4 rounded-2xl shadow-md flex items-center justify-between">
                     <div>
-                        <p class="text-lg font-mono font-extrabold tracking-wide" id="boomer-code-display">${savedPuggleReward}</p>
-                        <p class="text-[11px] text-amber-100 mt-0.5">Gunakan kupon ini langsung di keranjang belanja.</p>
+                        <span class="bg-black/30 text-amber-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">🎁 Kupon Tersedia</span>
+                        <p class="text-sm font-mono font-extrabold mt-1">${c.label}</p>
                     </div>
-                    <button onclick="copyBoomerCode()" class="w-full bg-white hover:bg-amber-50 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow transition cursor-pointer">
-                        📋 Salin Kode Kupon
+                    <button onclick="copySpecificCoupon('${c.code}')" class="bg-white hover:bg-amber-50 text-amber-950 font-extrabold px-3 py-2 rounded-xl text-xs shadow transition cursor-pointer">
+                        Salin 📋
                     </button>
                 </div>
-            `;
+            `).join('');
+
+            container.innerHTML = gameHtml + `<div class="space-y-2"><p class="text-xs font-extrabold text-amber-950">Koleksi Kupon Anda (${couponInventory.length}):</p>` + inventoryHtml + `</div>`;
         }
 
-        function copyBoomerCode() {
-            if (!savedPuggleReward) return;
-            const codeOnly = savedPuggleReward.split(' ')[2].replace(/[()]/g, '');
-            navigator.clipboard.writeText(codeOnly);
-            alert("✅ Kode kupon " + codeOnly + " berhasil disalin!");
+        function copySpecificCoupon(code) {
+            navigator.clipboard.writeText(code);
+            alert("✅ Kupon " + code + " berhasil disalin!");
         }
 
-        function applyOneTapCoupon() {
-            if (!savedPuggleReward) return;
-            const parts = savedPuggleReward.split(" ")[0];
-            const pct = parseInt(parts);
-
-            appliedPromoDiscount = pct / 100;
-            appliedPromoCodeName = savedPuggleReward.split(' ')[2].replace(/[()]/g, '');
-            
-            savedPuggleReward = null;
-            localStorage.removeItem('ric_puggle_reward');
-
-            renderBoomerPromos();
+        // TOGGLE COUPON CHOICE (Select or Unselect for current order)
+        function toggleCouponSelection(id) {
+            if (activeSelectedCouponId === id) {
+                activeSelectedCouponId = null; // Deselect if clicked again
+            } else {
+                activeSelectedCouponId = id; // Select this coupon
+            }
+            localStorage.setItem('ric_active_coupon_id', activeSelectedCouponId || '');
             updateUI();
         }
 
@@ -849,31 +843,43 @@
                 if (qEl) qEl.innerText = cart[p.id] || 0;
             });
 
-            const isOrderDone = localStorage.getItem('ric_order_completed') === 'true';
+            const currentOrderUnlocked = localStorage.getItem('ric_current_order_unlocked') === 'true';
             const puggleTrigger = document.getElementById('floating-puggle-trigger');
-            
-            if (isOrderDone && productsTotal >= PUGGLE_MIN_ORDER && !savedPuggleReward) {
+            const triggerLabel = document.getElementById('floating-trigger-label');
+
+            if (productsTotal >= PUGGLE_MIN_ORDER) {
+                localStorage.setItem('ric_current_order_unlocked', 'true');
+            }
+
+            if (currentOrderUnlocked || productsTotal >= PUGGLE_MIN_ORDER) {
                 puggleTrigger.classList.remove('hidden');
+                triggerLabel.innerText = "Mainkan Pinball!";
             } else {
                 puggleTrigger.classList.add('hidden');
             }
 
-            const couponContainer = document.getElementById('available-coupons-container');
-            if (savedPuggleReward) {
-                couponContainer.innerHTML = `
-                    <div onclick="applyOneTapCoupon()" class="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white p-4 rounded-3xl shadow-xl cursor-pointer shiny-coupon-box border-2 border-amber-300 flex items-center justify-between active:scale-95 transition">
-                        <div class="flex items-center space-x-3">
-                            <span class="text-3xl animate-bounce">🎁</span>
-                            <div>
-                                <p class="text-[10px] uppercase font-extrabold tracking-wider text-amber-100">1 Kupon Tersedia (Puggle Reward)</p>
-                                <p class="text-sm font-extrabold">${savedPuggleReward}</p>
+            // RENDER COUPON WALLET CHOICE IN CART DRAWER
+            const walletContainer = document.getElementById('coupon-wallet-container');
+            if (couponInventory.length > 0) {
+                let walletHtml = `<p class="text-xs font-extrabold text-amber-950 mb-1">🎁 Pilih Kupon untuk Order Ini (Maks. 1):</p>`;
+                walletHtml += couponInventory.map(c => {
+                    const isSelected = activeSelectedCouponId === c.id;
+                    return `
+                        <div onclick="toggleCouponSelection('${c.id}')" class="p-3 rounded-2xl border-2 ${isSelected ? 'border-amber-600 bg-amber-50 shadow-md' : 'border-amber-900/10 bg-white'} cursor-pointer transition flex items-center justify-between">
+                            <div class="flex items-center space-x-2.5">
+                                <span class="text-xl">🎟️</span>
+                                <div>
+                                    <p class="text-xs font-extrabold text-amber-950">${c.label}</p>
+                                    <p class="text-[10px] text-neutral-500">${isSelected ? 'Kupon Aktif Diterapkan' : 'Ketuk untuk pakai'}</p>
+                                </div>
                             </div>
+                            <span class="w-5 h-5 rounded-full ${isSelected ? 'bg-amber-600 text-white' : 'bg-neutral-200 text-transparent'} flex items-center justify-center text-xs font-bold">✓</span>
                         </div>
-                        <span class="bg-white text-amber-900 px-3 py-1.5 rounded-2xl text-xs font-extrabold shadow-sm">Pakai ✨</span>
-                    </div>
-                `;
+                    `;
+                }).join('');
+                walletContainer.innerHTML = walletHtml;
             } else {
-                couponContainer.innerHTML = '';
+                walletContainer.innerHTML = '';
             }
 
             const progressPercent = Math.min(100, Math.round((productsTotal / DISCOUNT_MIN_ORDER) * 100));
@@ -883,17 +889,25 @@
             const discountRow = document.getElementById('discount-row');
             
             let autoDiscountAmount = productsTotal >= DISCOUNT_MIN_ORDER ? Math.round(productsTotal * AUTO_DISCOUNT_PERCENTAGE) : 0;
-            let promoDiscountAmount = appliedPromoDiscount > 0 ? Math.round(productsTotal * appliedPromoDiscount) : 0;
             
-            let discountAmount = autoDiscountAmount + promoDiscountAmount;
-            let totalDiscountPercentNum = (productsTotal >= DISCOUNT_MIN_ORDER ? 5 : 0) + (appliedPromoDiscount > 0 ? Math.round(appliedPromoDiscount * 100) : 0);
-            let discountLabel = `Diskon (${totalDiscountPercentNum}% Off Stacked)`;
+            let activeCouponObj = couponInventory.find(c => c.id === activeSelectedCouponId);
+            let couponDiscountAmount = 0;
+            let couponPctNum = 0;
+
+            if (activeCouponObj) {
+                couponPctNum = activeCouponObj.percent;
+                couponDiscountAmount = Math.round(productsTotal * (couponPctNum / 100));
+            }
+
+            let totalDiscountAmount = autoDiscountAmount + couponDiscountAmount;
+            let totalDiscountPercentNum = (productsTotal >= DISCOUNT_MIN_ORDER ? 5 : 0) + couponPctNum;
+            let discountLabel = `Diskon Stacked (${totalDiscountPercentNum}%)`;
 
             if (productsTotal >= DISCOUNT_MIN_ORDER) {
                 floatingBar.style.width = "100%";
                 floatingBadge.innerText = "100% UNLOCKED";
                 floatingBadge.className = "bg-emerald-600 text-white text-[10px] px-2.5 py-1 rounded-full font-extrabold";
-                floatingText.innerHTML = "🎉 <strong class='text-emerald-700'>Selamat! Diskon Aktif</strong> (-" + formatRupiah(discountAmount) + ")";
+                floatingText.innerHTML = "🎉 <strong class='text-emerald-700'>Selamat! Diskon Aktif</strong> (-" + formatRupiah(totalDiscountAmount) + ")";
             } else {
                 const remaining = DISCOUNT_MIN_ORDER - productsTotal;
                 floatingBar.style.width = progressPercent + "%";
@@ -902,10 +916,10 @@
                 floatingText.innerText = "Tambah " + formatRupiah(remaining) + " lagi untuk dapet Diskon 5%!";
             }
 
-            if (discountAmount > 0) {
+            if (totalDiscountAmount > 0) {
                 discountRow.classList.remove('hidden');
                 document.getElementById('discount-label-text').innerText = discountLabel;
-                document.getElementById('summary-discount').innerText = "-" + formatRupiah(discountAmount);
+                document.getElementById('summary-discount').innerText = "-" + formatRupiah(totalDiscountAmount);
             } else {
                 discountRow.classList.add('hidden');
             }
@@ -963,7 +977,7 @@
                 cartItemsEl.innerHTML = html;
             }
 
-            calculatedGrandTotalNum = Math.max(0, productsTotal - discountAmount) + currentDeliveryFee;
+            calculatedGrandTotalNum = Math.max(0, productsTotal - totalDiscountAmount) + currentDeliveryFee;
             document.getElementById('summary-delivery-fee').innerText = formatRupiah(currentDeliveryFee);
             document.getElementById('summary-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
         }
@@ -1016,10 +1030,11 @@
             }
 
             let autoDiscountAmount = productsTotal >= DISCOUNT_MIN_ORDER ? Math.round(productsTotal * AUTO_DISCOUNT_PERCENTAGE) : 0;
-            let promoDiscountAmount = appliedPromoDiscount > 0 ? Math.round(productsTotal * appliedPromoDiscount) : 0;
-            let discountAmount = autoDiscountAmount + promoDiscountAmount;
+            let activeCouponObj = couponInventory.find(c => c.id === activeSelectedCouponId);
+            let couponDiscountAmount = activeCouponObj ? Math.round(productsTotal * (activeCouponObj.percent / 100)) : 0;
+            let totalDiscountAmount = autoDiscountAmount + couponDiscountAmount;
 
-            calculatedGrandTotalNum = Math.max(0, productsTotal - discountAmount) + currentDeliveryFee;
+            calculatedGrandTotalNum = Math.max(0, productsTotal - totalDiscountAmount) + currentDeliveryFee;
 
             orderPayloadForSheet = {
                 name: name,
@@ -1032,6 +1047,8 @@
                 cogsNumber: totalCogs
             };
 
+            let usedCouponCodeStr = activeCouponObj ? activeCouponObj.code : 'Tidak ada';
+
             generatedWhatsAppMessage = `*NEW ORDER & PAYMENT VERIFICATION - REST IN CHEESE* 🧀\n\n` +
                 `*Nama Pemesan:* ${name}\n` +
                 `*No. WA:* ${phone}\n` +
@@ -1039,12 +1056,12 @@
                 `*Area & Estimasi Jarak:* ${selectedAreaName} (~${calculatedDeliveryKm.toFixed(1)} km dari PIK)\n` +
                 `*Jadwal Kirim:* ${deliveryDate} (${deliveryTime})\n` +
                 `*Status Bayar:* TRANSFER BCA (578 543 3570)\n` +
+                `*Kupon Dipakai:* ${usedCouponCodeStr}\n` +
                 `*Kartu Ucapan:* ${isGift ? 'Ya' : 'Tidak'}\n` +
-                (isGift && giftNote ? `*Pesan Ucapan:* "${giftNote}"\n` : '') +
-                (appliedPromoCodeName ? `*Kode Promo:* ${appliedPromoCodeName}\n` : '') + `\n` +
+                (isGift && giftNote ? `*Pesan Ucapan:* "${giftNote}"\n` : '') + `\n` +
                 `*Rincian Item:*\n${orderSummary}\n` +
                 `*Subtotal Produk:* ${formatRupiah(productsTotal)}\n` +
-                (discountAmount > 0 ? `*Diskon Stacked:* -${formatRupiah(discountAmount)}\n` : '') +
+                (totalDiscountAmount > 0 ? `*Diskon Stacked:* -${formatRupiah(totalDiscountAmount)}\n` : '') +
                 `*Ongkir Presisi (${calculatedDeliveryKm.toFixed(1)} km):* ${formatRupiah(currentDeliveryFee)}\n` +
                 `*Total Tagihan:* ${formatRupiah(calculatedGrandTotalNum)}\n\n` +
                 `📌 *NOTE:* Bukti pembayaran telah diunggah di web & siap diverifikasi!`;
@@ -1066,7 +1083,16 @@
             orderPayloadForSheet.name = orderPayloadForSheet.name + ` [Bukti Transfer: Uploaded]`;
             generatedWhatsAppMessage += `\n*Bukti Transfer:* Terlampir di web`;
 
-            localStorage.setItem('ric_order_completed', 'true');
+            // PERMANENTLY REMOVE THE USED COUPON FROM INVENTORY IF ONE WAS APPLIED
+            if (activeSelectedCouponId) {
+                couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
+                localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
+                activeSelectedCouponId = null;
+                localStorage.removeItem('ric_active_coupon_id');
+            }
+
+            // RESET UNLOCK STATE SO USER MUST SPEND 300K+ AGAIN FOR THE NEXT MINIGAME PLAY
+            localStorage.setItem('ric_current_order_unlocked', 'false');
 
             if (GOOGLE_SHEET_WEB_APP_URL) {
                 fetch(GOOGLE_SHEET_WEB_APP_URL, {
