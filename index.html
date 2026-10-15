@@ -352,14 +352,15 @@
                         <input type="tel" id="cust-phone" placeholder="e.g. 081380003850" class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 bg-white p-3.5 rounded-2xl border border-amber-900/10">
-                        <div>
+                    <!-- ALIGNED DATE AND TIME SELECTOR BOX -->
+                    <div class="grid grid-cols-2 gap-3 bg-white p-3.5 rounded-2xl border border-amber-900/10 items-end">
+                        <div class="flex flex-col">
                             <label class="block text-[11px] font-bold text-amber-900 mb-1">📅 Tanggal Kirim</label>
-                            <input type="date" id="delivery-date" class="w-full px-2.5 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <input type="date" id="delivery-date" class="w-full px-2.5 py-2.5 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs h-10 focus:outline-none focus:ring-2 focus:ring-amber-500">
                         </div>
-                        <div>
+                        <div class="flex flex-col">
                             <label class="block text-[11px] font-bold text-amber-900 mb-1">⏰ Waktu Kirim</label>
-                            <select id="delivery-time" class="w-full px-2.5 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <select id="delivery-time" class="w-full px-2.5 py-2.5 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs h-10 focus:outline-none focus:ring-2 focus:ring-amber-500">
                                 <option value="Morning (10:00 - 13:00)">Pagi (10 - 13)</option>
                                 <option value="Afternoon (13:00 - 16:00)" selected>Siang (13 - 16)</option>
                                 <option value="Evening (16:00 - 19:00)">Sore (16 - 19)</option>
@@ -409,15 +410,17 @@
                     </div>
                 </div>
 
+                <!-- UPDATED BUTTON WITH BANK EMOJI -->
                 <button onclick="previewWhatsAppOrder()" id="whatsapp-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 px-4 rounded-2xl shadow-md transition flex items-center justify-center space-x-2">
-                    <span>💬 Lanjut ke Pembayaran BCA</span>
+                    <span class="text-lg">🏦</span>
+                    <span>Lanjut ke Pembayaran BCA</span>
                 </button>
             </div>
 
         </div>
     </div>
 
-    <!-- STRICT BCA TRANSACTION REFERENCE MODAL -->
+    <!-- STRICT BCA TRANSACTION REFERENCE & PROOF MODAL -->
     <div id="wa-preview-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col p-6 space-y-4">
             <div class="flex items-center space-x-3">
@@ -443,7 +446,9 @@
             <div class="space-y-1.5">
                 <label class="block text-xs font-bold text-neutral-700">Nomor Referensi Transaksi BCA:</label>
                 <input type="text" id="bca-ref-number" placeholder="e.g. FT26105XYZ99" class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-xs font-mono uppercase focus:outline-none focus:ring-2 focus:ring-amber-500">
-                <p class="text-[10px] text-neutral-500">Contoh: Nomor ref/journal m-BCA atau myBCA setelah transfer berhasil.</p>
+                <p class="text-[10px] text-amber-900 font-semibold bg-amber-100/60 p-2 rounded-lg mt-1">
+                    📌 <strong>PENTING:</strong> Lampirkan screenshot / foto <u>Bukti Pembayaran</u> di WhatsApp saat mengirim pesan ini ke Admin!
+                </p>
             </div>
 
             <div class="flex space-x-2 pt-2">
@@ -454,7 +459,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Stacked Margins Safe & Active! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Fully Fixed & Ready! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -1014,7 +1019,7 @@
                 (discountAmount > 0 ? `*Diskon Stacked:* -${formatRupiah(discountAmount)}\n` : '') +
                 `*Ongkir Presisi (${calculatedDeliveryKm.toFixed(1)} km):* ${formatRupiah(currentDeliveryFee)}\n` +
                 `*Total Tagihan:* ${formatRupiah(calculatedGrandTotalNum)}\n\n` +
-                `*Instruksi:* Saya sudah transfer via BCA. Mohon cek mutasi & konfirmasi!`;
+                `📌 *NOTE:* Saya sudah transfer via BCA. Foto / screenshot Bukti Pembayaran dilampirkan di bawah!`;
 
             document.getElementById('modal-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
             document.getElementById('wa-preview-modal').classList.remove('hidden');
