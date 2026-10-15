@@ -344,14 +344,15 @@
                         <input type="tel" id="cust-phone" placeholder="e.g. 081380003850" class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 bg-white p-3.5 rounded-2xl border border-amber-900/10 items-end">
+                    <!-- FIXED ROW LAYOUT FOR DATE & TIME PICKER -->
+                    <div class="grid grid-cols-2 gap-2 bg-white p-3 rounded-2xl border border-amber-900/10 items-center">
                         <div class="flex flex-col">
-                            <label class="block text-[11px] font-bold text-amber-900 mb-1">📅 Tanggal Kirim</label>
-                            <input type="date" id="delivery-date" class="w-full px-2.5 py-2.5 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs h-10 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <label class="block text-[10px] font-bold text-amber-900 mb-1">📅 Tanggal Kirim</label>
+                            <input type="date" id="delivery-date" class="w-full px-2 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
                         </div>
                         <div class="flex flex-col">
-                            <label class="block text-[11px] font-bold text-amber-900 mb-1">⏰ Waktu Kirim</label>
-                            <select id="delivery-time" class="w-full px-2.5 py-2.5 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs h-10 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <label class="block text-[10px] font-bold text-amber-900 mb-1">⏰ Waktu Kirim</label>
+                            <select id="delivery-time" class="w-full px-2 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
                                 <option value="Morning (10:00 - 13:00)">Pagi (10 - 13)</option>
                                 <option value="Afternoon (13:00 - 16:00)" selected>Siang (13 - 16)</option>
                                 <option value="Evening (16:00 - 19:00)">Sore (16 - 19)</option>
@@ -455,7 +456,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Chaos pinball left-right bouncing synced with slots! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Fixed date & time grid orientation! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -655,13 +656,12 @@
             btn.classList.add('opacity-50', 'cursor-not-allowed');
             status.innerText = "🎯 Keju dilempar! Memantul liar ke kiri dan kanan dari pin ke pin...";
 
-            // RESET SLOTS HIGHLIGHT
             const slots = document.querySelectorAll('#puggle-slots > div');
             slots.forEach(s => s.classList.remove('bg-amber-400', 'text-amber-950', 'scale-105', 'font-extrabold', 'ring-2', 'ring-white'));
 
             const rand = Math.random() * 100;
             let wonPercent = 2;
-            let targetX = "-105px"; // Slot 2%
+            let targetX = "-105px";
 
             if (rand < 45) { 
                 wonPercent = 2; targetX = "-105px"; 
@@ -670,7 +670,7 @@
             } else if (rand < 95) { 
                 wonPercent = 4; targetX = "35px"; 
             } else { 
-                wonPercent = 5; targetX = "105px"; // Slot 5%
+                wonPercent = 5; targetX = "105px"; 
             }
 
             cheese.style.setProperty('--target-x', targetX);
