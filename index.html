@@ -455,7 +455,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Direct WhatsApp 082112002258 Active! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Google Sheets Connected & Ready! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -501,8 +501,8 @@
         const PUGGLE_MIN_ORDER = 300000;
         const DISCOUNT_PERCENTAGE = 0.05;
 
-        // 🔗 REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const GOOGLE_SHEET_WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+        // 🔗 YOUR LIVE GOOGLE APPS SCRIPT WEB APP URL IS CONNECTED HERE
+        const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwURUdj3sPQ4AjN5hs7jRRxePCXWvGyCYGgXOHQBVFknDuUvqRFmoy70D3CPChmvJi_jg/exec";
 
         window.addEventListener('DOMContentLoaded', () => {
             const tomorrow = new Date();
@@ -1011,10 +1011,9 @@
 
             localStorage.setItem('ric_order_completed', 'true');
 
-            // Trigger In-App Popup & Sound Notification for Admin
             triggerInstantNotification(orderPayloadForSheet);
 
-            if (GOOGLE_SHEET_WEB_APP_URL && GOOGLE_SHEET_WEB_APP_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+            if (GOOGLE_SHEET_WEB_APP_URL) {
                 fetch(GOOGLE_SHEET_WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -1026,7 +1025,6 @@
             cart = {};
             localStorage.removeItem('ric_cart');
 
-            // SEND WHATSAPP MESSAGE DIRECTLY TO 082112002258
             const sellerWhatsApp = "6282112002258";
             const whatsappUrl = `https://wa.me/${sellerWhatsApp}?text=` + encodeURIComponent(generatedWhatsAppMessage);
             window.open(whatsappUrl, '_blank');
@@ -1037,13 +1035,12 @@
         }
 
         function triggerInstantNotification(payload) {
-            // Play alert sound using Web Audio API beep
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5 note
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
                 gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
@@ -1051,7 +1048,6 @@
                 osc.stop(audioCtx.currentTime + 0.4);
             } catch(e) { console.log(e); }
 
-            // Show live modal alert
             const detailsHtml = `
                 <p><strong>Pemesan:</strong> ${payload.name}</p>
                 <p><strong>Total:</strong> ${payload.totalStr}</p>
