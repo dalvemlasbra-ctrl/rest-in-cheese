@@ -206,11 +206,11 @@
 
     </main>
 
-    <!-- FLOATING HOME PUGLLE TRIGGER -->
+    <!-- FLOATING HOME PUGLLE TRIGGER (ONLY VISIBLE IF A 300K+ ORDER HAS BEEN COMPLETED) -->
     <div id="floating-puggle-trigger" class="fixed bottom-20 right-4 z-40 hidden">
         <button onclick="openPuggleModal()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 font-extrabold text-xs border-2 border-white floating-cheese-trigger active:scale-95 transition">
             <span class="text-xl">🧀</span>
-            <span id="floating-trigger-label">Mainkan Puggle Diskon!</span>
+            <span>Mainkan Pinball!</span>
         </button>
     </div>
 
@@ -453,7 +453,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Coupon inventory wallet & strict order completion sync fixed! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Game unlocks ONLY after completing an order! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -485,8 +485,6 @@
         const BUNDLE_COGS = 28500 * 3;
 
         let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
-        
-        // COUPON WALLET ARRAY (Storable & Stackable multiple coupons)
         let couponInventory = JSON.parse(localStorage.getItem('ric_coupon_inventory')) || [];
         let activeSelectedCouponId = localStorage.getItem('ric_active_coupon_id') || null;
 
@@ -631,9 +629,9 @@
         }
 
         function openPuggleModal() {
-            const currentOrderUnlocked = localStorage.getItem('ric_current_order_unlocked') === 'true';
-            if (!currentOrderUnlocked) {
-                alert("🔒 Mini-game terkunci! Selesaikan pesanan minimal Rp 300.000 terlebih dahulu pada pesanan aktif Anda.");
+            const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+            if (playTokens <= 0) {
+                alert("🔒 Mini-game terkunci! Selesaikan pesanan minimal Rp 300.000 terlebih dahulu untuk mendapatkan 1x kesempatan main.");
                 return;
             }
             document.getElementById('puggle-modal').classList.remove('hidden');
@@ -644,6 +642,9 @@
         }
 
         function startPuggleDrop() {
+            let playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+            if (playTokens <= 0) return;
+
             const btn = document.getElementById('puggle-drop-btn');
             const cheese = document.getElementById('puggle-cheese');
             const status = document.getElementById('puggle-status');
@@ -672,7 +673,6 @@
                 const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
                 const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
                 
-                // PUSH TO INVENTORY (Allows stacking multiple coupons)
                 couponInventory.push({
                     id: uniqueId,
                     percent: wonPercent,
@@ -681,8 +681,9 @@
                 });
                 localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
 
-                // CONSUME THE UNLOCK STATUS SO USER CANNOT RE-PLAY WITHOUT NEW 300K ORDER
-                localStorage.setItem('ric_current_order_unlocked', 'false');
+                // DEDUCT 1 GAME TOKEN WHEN PLAYED
+                playTokens = Math.max(0, playTokens - 1);
+                localStorage.setItem('ric_game_tokens', playTokens.toString());
 
                 cheese.classList.remove('bouncing-drop-anim');
                 cheese.classList.add('hidden');
@@ -693,9 +694,11 @@
                     }
                 });
 
-                status.innerHTML = `🎉 Selamat! Anda memenangkan <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span> & masuk ke wallet kupon!`;
-                btn.innerText = "✅ Kupon Masuk Wallet!";
-                
+                status.innerHTML = `🎉 Selamat! Anda memenangkan <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span>!`;
+                btn.innerText = playTokens > 0 ? "🚀 Main Lagi!" : "✅ Kupon Masuk Wallet!";
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+
                 renderBoomerPromos();
                 updateUI();
                 
@@ -708,14 +711,14 @@
             if (!container) return;
 
             let gameHtml = "";
-            const currentOrderUnlocked = localStorage.getItem('ric_current_order_unlocked') === 'true';
+            const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
 
-            if (currentOrderUnlocked) {
+            if (playTokens > 0) {
                 gameHtml = `
                     <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 p-4 rounded-2xl shadow-md flex items-center justify-between mb-4">
                         <div>
-                            <p class="font-extrabold text-xs uppercase tracking-wide">🕹️ Puggle Pinball Unlocked!</p>
-                            <p class="text-[11px] text-amber-950/80 mt-0.5">Pesanan 300k+ Anda memenuhi syarat. Mainkan sekarang!</p>
+                            <p class="font-extrabold text-xs uppercase tracking-wide">🕹️ Puggle Pinball Unlocked! (${playTokens}x Token)</p>
+                            <p class="text-[11px] text-amber-950/80 mt-0.5">Terima kasih telah memesan! Mainkan sekarang untuk dapat diskon berikutnya.</p>
                         </div>
                         <button onclick="openPuggleModal()" class="bg-white hover:bg-amber-50 text-amber-950 px-4 py-2.5 rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 cursor-pointer">
                             Mainkan 🚀
@@ -726,7 +729,7 @@
                 gameHtml = `
                     <div class="bg-neutral-100 border border-amber-900/10 p-4 rounded-2xl text-center space-y-1.5 mb-4">
                         <p class="text-xs font-extrabold text-neutral-800">🔒 Pinball Puggle Terkunci</p>
-                        <p class="text-[11px] text-neutral-500">Mini-game pinball akan terbuka otomatis di sini setelah Anda membuat order dengan subtotal minimal <strong class="text-amber-900">Rp 300.000</strong>.</p>
+                        <p class="text-[11px] text-neutral-500">Selesaikan pesanan minimal <strong class="text-amber-900">Rp 300.000</strong> terlebih dahulu untuk membuka 1x kesempatan main minigame.</p>
                     </div>
                 `;
             }
@@ -736,7 +739,7 @@
                     <div class="bg-amber-50 border border-amber-900/10 p-5 rounded-2xl text-center space-y-2">
                         <p class="text-3xl">🎟️</p>
                         <p class="text-xs font-bold text-amber-950">Belum ada kupon di wallet Anda.</p>
-                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan order 300k+ untuk bermain minigame dan kumpulkan kupon diskon Anda!</p>
+                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan order 300k+ untuk mendapatkan kesempatan main minigame!</p>
                     </div>
                 `;
                 return;
@@ -762,12 +765,11 @@
             alert("✅ Kupon " + code + " berhasil disalin!");
         }
 
-        // TOGGLE COUPON CHOICE (Select or Unselect for current order)
         function toggleCouponSelection(id) {
             if (activeSelectedCouponId === id) {
-                activeSelectedCouponId = null; // Deselect if clicked again
+                activeSelectedCouponId = null;
             } else {
-                activeSelectedCouponId = id; // Select this coupon
+                activeSelectedCouponId = id;
             }
             localStorage.setItem('ric_active_coupon_id', activeSelectedCouponId || '');
             updateUI();
@@ -843,17 +845,12 @@
                 if (qEl) qEl.innerText = cart[p.id] || 0;
             });
 
-            const currentOrderUnlocked = localStorage.getItem('ric_current_order_unlocked') === 'true';
+            // GAME BUTTON VISIBILITY DEPENDS EXCLUSIVELY ON COMPLETED ORDER TOKENS
+            const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
             const puggleTrigger = document.getElementById('floating-puggle-trigger');
-            const triggerLabel = document.getElementById('floating-trigger-label');
 
-            if (productsTotal >= PUGGLE_MIN_ORDER) {
-                localStorage.setItem('ric_current_order_unlocked', 'true');
-            }
-
-            if (currentOrderUnlocked || productsTotal >= PUGGLE_MIN_ORDER) {
+            if (playTokens > 0) {
                 puggleTrigger.classList.remove('hidden');
-                triggerLabel.innerText = "Mainkan Pinball!";
             } else {
                 puggleTrigger.classList.add('hidden');
             }
@@ -1080,19 +1077,31 @@
                 return;
             }
 
+            let productsTotal = 0;
+            if (cart['bundle']) productsTotal += 189000 * cart['bundle'];
+            for (let id in cart) {
+                if (id !== 'bundle') {
+                    const p = PRODUCTS.find(item => item.id == id);
+                    if (p) productsTotal += p.price * cart[id];
+                }
+            }
+
+            // UNLOCK 1 GAME TOKEN ONLY IF THIS SUBMITTED ORDER IS 300K+
+            if (productsTotal >= PUGGLE_MIN_ORDER) {
+                let playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+                localStorage.setItem('ric_game_tokens', (playTokens + 1).toString());
+            }
+
             orderPayloadForSheet.name = orderPayloadForSheet.name + ` [Bukti Transfer: Uploaded]`;
             generatedWhatsAppMessage += `\n*Bukti Transfer:* Terlampir di web`;
 
-            // PERMANENTLY REMOVE THE USED COUPON FROM INVENTORY IF ONE WAS APPLIED
+            // PERMANENTLY CONSUME USED COUPON
             if (activeSelectedCouponId) {
                 couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
                 localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
                 activeSelectedCouponId = null;
                 localStorage.removeItem('ric_active_coupon_id');
             }
-
-            // RESET UNLOCK STATE SO USER MUST SPEND 300K+ AGAIN FOR THE NEXT MINIGAME PLAY
-            localStorage.setItem('ric_current_order_unlocked', 'false');
 
             if (GOOGLE_SHEET_WEB_APP_URL) {
                 fetch(GOOGLE_SHEET_WEB_APP_URL, {
