@@ -19,23 +19,30 @@
         .progress-bar-fill { transition: width 0.4s ease-in-out; }
         .area-list-box { max-height: 220px; overflow-y: auto; }
 
-        @keyframes bounceDrop {
+        @keyframes chaosPinball {
             0%   { transform: translate(0px, 0px) rotate(0deg); }
-            15%  { transform: translate(35px, 60px) rotate(45deg); }
-            30%  { transform: translate(-30px, 130px) rotate(90deg); }
-            45%  { transform: translate(40px, 200px) rotate(160deg); }
-            60%  { transform: translate(-25px, 270px) rotate(220deg); }
-            75%  { transform: translate(30px, 340px) rotate(280deg); }
-            90%  { transform: translate(-15px, 410px) rotate(330deg); }
-            100% { transform: translate(var(--land-x), 465px) rotate(360deg); }
+            12%  { transform: translate(-45px, 60px) rotate(-35deg); }
+            25%  { transform: translate(40px, 120px) rotate(45deg); }
+            38%  { transform: translate(-35px, 180px) rotate(-60deg); }
+            50%  { transform: translate(45px, 240px) rotate(90deg); }
+            62%  { transform: translate(-40px, 300px) rotate(-120deg); }
+            75%  { transform: translate(30px, 360px) rotate(180deg); }
+            88%  { transform: translate(var(--target-x), 420px) rotate(270deg); }
+            100% { transform: translate(var(--target-x), 450px) rotate(360deg); }
         }
-        .bouncing-drop-anim { animation: bounceDrop 8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
+        .bouncing-drop-anim { animation: chaosPinball 5s cubic-bezier(0.36, 0, 0.66, 1) forwards; }
 
         @keyframes floatBtn {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
         .floating-cheese-trigger { animation: floatBtn 2.5s ease-in-out infinite; }
+
+        @keyframes shinyBounce {
+            0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 4px 20px rgba(217, 119, 6, 0.2); }
+            50% { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 30px rgba(217, 119, 6, 0.4); }
+        }
+        .shiny-coupon-box { animation: shinyBounce 2s ease-in-out infinite; }
         
         .glass-nav { background: rgba(248, 245, 240, 0.85); backdrop-filter: blur(12px); }
         .glass-card { background: #FFFFFF; border: 1px solid rgba(217, 119, 6, 0.12); box-shadow: 0 10px 30px -10px rgba(28, 22, 22, 0.04); }
@@ -226,28 +233,29 @@
         </div>
     </div>
 
-    <!-- TALL VERTICAL BOUNCING PUGGLE GAME MODAL -->
+    <!-- TALL VERTICAL BOUNCING PUGGLE GAME MODAL (CHAOS PINBALL BOARD) -->
     <div id="puggle-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
         <div class="bg-gradient-to-b from-neutral-900 via-amber-950 to-neutral-900 w-full max-w-sm rounded-3xl border-4 border-amber-500/80 shadow-2xl overflow-hidden flex flex-col text-white">
             
             <div class="bg-amber-950 p-3.5 border-b border-amber-700/60 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">🕹️</span>
-                    <h3 class="font-extrabold text-sm tracking-wide text-amber-300">PUGGLE BOUNCING DROP</h3>
+                    <h3 class="font-extrabold text-sm tracking-wide text-amber-300">PUGGLE PINBALL DROP</h3>
                 </div>
                 <button onclick="closePuggleModal()" class="text-neutral-400 hover:text-white text-xl font-bold px-2">&times;</button>
             </div>
 
             <div class="p-4 flex flex-col items-center space-y-3">
-                <p class="text-[11px] text-amber-200 text-center">Keju memantul bebas dari pin ke pin!</p>
+                <p class="text-[11px] text-amber-200 text-center">Keju memantul liar ke kiri dan kanan dari pin ke pin!</p>
                 
-                <div id="puggle-board" class="w-full h-[480px] bg-neutral-950 border-2 border-amber-600/50 rounded-2xl relative overflow-hidden shadow-inner flex flex-col justify-between p-3">
-                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span><span>📍</span></div>
-                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span></div>
-                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span><span>📍</span></div>
-                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span></div>
-                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span><span>📍</span></div>
-                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span></div>
+                <div id="puggle-board" class="w-full h-[460px] bg-neutral-950 border-2 border-amber-600/50 rounded-2xl relative overflow-hidden shadow-inner flex flex-col justify-between p-3">
+                    <!-- DENSE PINBALL PEGS ROWS -->
+                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
+                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
+                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
+                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
+                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
+                    <div class="flex justify-around opacity-70 text-[10px]"><span>📌</span><span>📌</span><span>📌</span><span>📌</span></div>
 
                     <div id="puggle-cheese" class="absolute left-1/2 top-2 -translate-x-1/2 text-3xl hidden z-20">🧀</div>
 
@@ -261,7 +269,7 @@
 
                 <div id="puggle-status" class="text-xs font-bold text-amber-300 text-center h-5">Tekan tombol untuk melempar keju!</div>
 
-                <button id="puggle-drop-btn" onclick="startPuggleDrop()" class="w-full bg-amber-400 hover:bg-amber-300 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition active:scale-95">
+                <button id="puggle-drop-btn" onclick="startPuggleDrop()" class="w-full bg-amber-400 hover:bg-amber-300 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition active:scale-95 cursor-pointer">
                     🚀 Lempar & Pantulkan Keju!
                 </button>
             </div>
@@ -300,22 +308,8 @@
 
             <div class="flex-1 overflow-y-auto p-4 space-y-4">
                 
-                <div id="active-reward-banner" class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-2xl flex items-center justify-between text-xs hidden shadow-xs">
-                    <div>
-                        <p class="font-bold text-emerald-900">🎟️ Puggle Reward Secured:</p>
-                        <p id="reward-code-text" class="text-emerald-700 font-mono font-extrabold text-sm mt-0.5"></p>
-                    </div>
-                    <span id="reward-badge-status" class="bg-emerald-200 text-emerald-900 text-[10px] font-extrabold px-2 py-1 rounded-full">Ready 🎯</span>
-                </div>
-
-                <div class="glass-card p-3.5 rounded-2xl space-y-2">
-                    <label class="block text-xs font-bold text-amber-900">🎟️ Punya Kode Referral / Diskon?</label>
-                    <div class="flex space-x-2">
-                        <input type="text" id="promo-code-input" placeholder="Contoh: RIC-3%..." class="flex-1 px-3 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs uppercase font-mono focus:outline-none focus:ring-2 focus:ring-amber-500">
-                        <button onclick="applyPromoCode()" class="bg-[#1C1616] hover:bg-neutral-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Pakai</button>
-                    </div>
-                    <p id="promo-feedback" class="text-[11px] font-semibold hidden"></p>
-                </div>
+                <!-- ONE-TAP SHINY BOUNCING COUPON BOX -->
+                <div id="available-coupons-container"></div>
 
                 <div class="bg-amber-50/70 border border-amber-900/10 p-3.5 rounded-2xl space-y-3">
                     <div class="flex items-center space-x-3">
@@ -461,7 +455,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Fixed coupon consumption & visible promotional game status! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Chaos pinball left-right bouncing synced with slots! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -638,6 +632,11 @@
         }
 
         function openPuggleModal() {
+            const isOrderDone = localStorage.getItem('ric_order_completed') === 'true';
+            if (!isOrderDone) {
+                alert("🔒 Mini-game ini terkunci! Selesaikan pesanan minimal Rp 300.000 terlebih dahulu untuk membukanya.");
+                return;
+            }
             document.getElementById('puggle-modal').classList.remove('hidden');
         }
 
@@ -654,18 +653,27 @@
 
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
-            status.innerText = "🎯 Keju dilempar! Memantul melewati pinball...";
+            status.innerText = "🎯 Keju dilempar! Memantul liar ke kiri dan kanan dari pin ke pin...";
+
+            // RESET SLOTS HIGHLIGHT
+            const slots = document.querySelectorAll('#puggle-slots > div');
+            slots.forEach(s => s.classList.remove('bg-amber-400', 'text-amber-950', 'scale-105', 'font-extrabold', 'ring-2', 'ring-white'));
 
             const rand = Math.random() * 100;
             let wonPercent = 2;
-            let landXCoord = "-130px";
+            let targetX = "-105px"; // Slot 2%
 
-            if (rand < 47.5) { wonPercent = 2; landXCoord = "-130px"; } 
-            else if (rand < 95.0) { wonPercent = 3; landXCoord = "-45px"; } 
-            else if (rand < 97.5) { wonPercent = 4; landXCoord = "45px"; } 
-            else { wonPercent = 5; landXCoord = "130px"; }
+            if (rand < 45) { 
+                wonPercent = 2; targetX = "-105px"; 
+            } else if (rand < 85) { 
+                wonPercent = 3; targetX = "-35px"; 
+            } else if (rand < 95) { 
+                wonPercent = 4; targetX = "35px"; 
+            } else { 
+                wonPercent = 5; targetX = "105px"; // Slot 5%
+            }
 
-            cheese.style.setProperty('--land-x', landXCoord);
+            cheese.style.setProperty('--target-x', targetX);
             cheese.classList.remove('hidden');
             cheese.classList.add('bouncing-drop-anim');
 
@@ -677,21 +685,20 @@
                 cheese.classList.remove('bouncing-drop-anim');
                 cheese.classList.add('hidden');
 
-                const slots = document.querySelectorAll('#puggle-slots > div');
                 slots.forEach(s => {
                     if (s.getAttribute('data-slot') == wonPercent) {
                         s.classList.add('bg-amber-400', 'text-amber-950', 'scale-105', 'font-extrabold', 'ring-2', 'ring-white');
                     }
                 });
 
-                status.innerHTML = `🎉 Selamat! Keju memantul pas ke slot <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span>!`;
+                status.innerHTML = `🎉 Selamat! Keju masuk pas ke slot <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span>!`;
                 btn.innerText = "✅ Kupon Tersimpan!";
                 
                 renderBoomerPromos();
                 updateUI();
                 
                 setTimeout(() => { closePuggleModal(); }, 2500);
-            }, 8000);
+            }, 5000);
         }
 
         function renderBoomerPromos() {
@@ -705,10 +712,10 @@
                 gameHtml = `
                     <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 p-4 rounded-2xl shadow-md flex items-center justify-between mb-4">
                         <div>
-                            <p class="font-extrabold text-xs uppercase tracking-wide">🕹️ Puggle Mini-Game Unlocked!</p>
+                            <p class="font-extrabold text-xs uppercase tracking-wide">🕹️ Puggle Pinball Unlocked!</p>
                             <p class="text-[11px] text-amber-950/80 mt-0.5">Pesanan 300k+ Anda telah selesai. Mainkan sekarang!</p>
                         </div>
-                        <button onclick="openPuggleModal()" class="bg-white hover:bg-amber-50 text-amber-950 px-4 py-2.5 rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95">
+                        <button onclick="openPuggleModal()" class="bg-white hover:bg-amber-50 text-amber-950 px-4 py-2.5 rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 cursor-pointer">
                             Mainkan 🚀
                         </button>
                     </div>
@@ -716,8 +723,8 @@
             } else {
                 gameHtml = `
                     <div class="bg-neutral-100 border border-amber-900/10 p-4 rounded-2xl text-center space-y-1.5 mb-4">
-                        <p class="text-xs font-extrabold text-neutral-800">🔒 Mini-Game Puggle Terkunci</p>
-                        <p class="text-[11px] text-neutral-500">Mini-game akan terbuka otomatis di sini setelah Anda melakukan order minimal <strong class="text-amber-900">Rp 300.000</strong>.</p>
+                        <p class="text-xs font-extrabold text-neutral-800">🔒 Pinball Puggle Terkunci</p>
+                        <p class="text-[11px] text-neutral-500">Mini-game pinball akan terbuka otomatis di sini setelah Anda menyelesaikan order minimal <strong class="text-amber-900">Rp 300.000</strong>.</p>
                     </div>
                 `;
             }
@@ -741,9 +748,9 @@
                     </div>
                     <div>
                         <p class="text-lg font-mono font-extrabold tracking-wide" id="boomer-code-display">${savedPuggleReward}</p>
-                        <p class="text-[11px] text-amber-100 mt-0.5">Gunakan kode ini di keranjang belanja berikutnya.</p>
+                        <p class="text-[11px] text-amber-100 mt-0.5">Gunakan kupon ini langsung di keranjang belanja.</p>
                     </div>
-                    <button onclick="copyBoomerCode()" class="w-full bg-white hover:bg-amber-50 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow transition">
+                    <button onclick="copyBoomerCode()" class="w-full bg-white hover:bg-amber-50 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow transition cursor-pointer">
                         📋 Salin Kode Kupon
                     </button>
                 </div>
@@ -754,44 +761,22 @@
             if (!savedPuggleReward) return;
             const codeOnly = savedPuggleReward.split(' ')[2].replace(/[()]/g, '');
             navigator.clipboard.writeText(codeOnly);
-            alert("✅ Kode kupon " + codeOnly + " berhasil disalin! Tempel di kotak kupon saat checkout.");
+            alert("✅ Kode kupon " + codeOnly + " berhasil disalin!");
         }
 
-        function applyPromoCode() {
-            const codeInput = document.getElementById('promo-code-input').value.trim().toUpperCase();
-            const feedback = document.getElementById('promo-feedback');
+        function applyOneTapCoupon() {
+            if (!savedPuggleReward) return;
+            const parts = savedPuggleReward.split(" ")[0];
+            const pct = parseInt(parts);
 
-            if (!codeInput) {
-                feedback.innerText = "Masukkan kode kupon terlebih dahulu.";
-                feedback.className = "text-[11px] font-semibold text-red-600 block mt-1";
-                feedback.classList.remove('hidden');
-                return;
-            }
+            appliedPromoDiscount = pct / 100;
+            appliedPromoCodeName = savedPuggleReward.split(' ')[2].replace(/[()]/g, '');
+            
+            savedPuggleReward = null;
+            localStorage.removeItem('ric_puggle_reward');
 
-            if (savedPuggleReward && savedPuggleReward.includes(codeInput)) {
-                const parts = savedPuggleReward.split(" ")[0];
-                const pct = parseInt(parts);
-
-                appliedPromoDiscount = pct / 100;
-                appliedPromoCodeName = codeInput;
-                
-                // COMPLETELY REMOVE REWARD FROM STORAGE SO IT CANNOT BE RE-USED
-                savedPuggleReward = null;
-                localStorage.removeItem('ric_puggle_reward');
-
-                feedback.innerText = `✅ Berhasil! Kupon ${codeInput} memberikan Diskon ${pct}% (Kupon diterapkan & dihapus dari inventori).`;
-                feedback.className = "text-[11px] font-semibold text-emerald-600 block mt-1";
-                feedback.classList.remove('hidden');
-                
-                document.getElementById('promo-code-input').value = "";
-                renderBoomerPromos();
-                updateUI();
-                return;
-            }
-
-            feedback.innerText = "❌ Kode kupon tidak valid atau sudah pernah digunakan.";
-            feedback.className = "text-[11px] font-semibold text-red-600 block mt-1";
-            feedback.classList.remove('hidden');
+            renderBoomerPromos();
+            updateUI();
         }
 
         function renderProducts() {
@@ -873,12 +858,22 @@
                 puggleTrigger.classList.add('hidden');
             }
 
-            const activeRewardBanner = document.getElementById('active-reward-banner');
+            const couponContainer = document.getElementById('available-coupons-container');
             if (savedPuggleReward) {
-                activeRewardBanner.classList.remove('hidden');
-                document.getElementById('reward-code-text').innerText = savedPuggleReward;
+                couponContainer.innerHTML = `
+                    <div onclick="applyOneTapCoupon()" class="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white p-4 rounded-3xl shadow-xl cursor-pointer shiny-coupon-box border-2 border-amber-300 flex items-center justify-between active:scale-95 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-3xl animate-bounce">🎁</span>
+                            <div>
+                                <p class="text-[10px] uppercase font-extrabold tracking-wider text-amber-100">1 Kupon Tersedia (Puggle Reward)</p>
+                                <p class="text-sm font-extrabold">${savedPuggleReward}</p>
+                            </div>
+                        </div>
+                        <span class="bg-white text-amber-900 px-3 py-1.5 rounded-2xl text-xs font-extrabold shadow-sm">Pakai ✨</span>
+                    </div>
+                `;
             } else {
-                activeRewardBanner.classList.add('hidden');
+                couponContainer.innerHTML = '';
             }
 
             const progressPercent = Math.min(100, Math.round((productsTotal / DISCOUNT_MIN_ORDER) * 100));
