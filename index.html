@@ -175,7 +175,7 @@
                     <span class="text-3xl">🎟️</span>
                     <div>
                         <h2 class="font-extrabold text-base text-[#1C1616]">Coupons & Discounts</h2>
-                        <p class="text-xs text-neutral-500">Semua voucher hadiah game Anda tersimpan otomatis di sini.</p>
+                        <p class="text-xs text-neutral-500">Semua voucher dan mini-game eksklusif Anda di sini.</p>
                     </div>
                 </div>
                 <div id="boomer-promo-list" class="space-y-3 pt-2"></div>
@@ -305,7 +305,7 @@
                         <p class="font-bold text-emerald-900">🎟️ Puggle Reward Secured:</p>
                         <p id="reward-code-text" class="text-emerald-700 font-mono font-extrabold text-sm mt-0.5"></p>
                     </div>
-                    <span class="bg-emerald-200 text-emerald-900 text-[10px] font-extrabold px-2 py-1 rounded-full">Locked 🔒</span>
+                    <span id="reward-badge-status" class="bg-emerald-200 text-emerald-900 text-[10px] font-extrabold px-2 py-1 rounded-full">Ready 🎯</span>
                 </div>
 
                 <div class="glass-card p-3.5 rounded-2xl space-y-2">
@@ -461,7 +461,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Game explicitly requires 300k order unlock! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Fixed coupon consumption & visible promotional game status! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -698,18 +698,42 @@
             const container = document.getElementById('boomer-promo-list');
             if (!container) return;
 
+            let gameHtml = "";
+            const isOrderDone = localStorage.getItem('ric_order_completed') === 'true';
+
+            if (isOrderDone) {
+                gameHtml = `
+                    <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 p-4 rounded-2xl shadow-md flex items-center justify-between mb-4">
+                        <div>
+                            <p class="font-extrabold text-xs uppercase tracking-wide">🕹️ Puggle Mini-Game Unlocked!</p>
+                            <p class="text-[11px] text-amber-950/80 mt-0.5">Pesanan 300k+ Anda telah selesai. Mainkan sekarang!</p>
+                        </div>
+                        <button onclick="openPuggleModal()" class="bg-white hover:bg-amber-50 text-amber-950 px-4 py-2.5 rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95">
+                            Mainkan 🚀
+                        </button>
+                    </div>
+                `;
+            } else {
+                gameHtml = `
+                    <div class="bg-neutral-100 border border-amber-900/10 p-4 rounded-2xl text-center space-y-1.5 mb-4">
+                        <p class="text-xs font-extrabold text-neutral-800">🔒 Mini-Game Puggle Terkunci</p>
+                        <p class="text-[11px] text-neutral-500">Mini-game akan terbuka otomatis di sini setelah Anda melakukan order minimal <strong class="text-amber-900">Rp 300.000</strong>.</p>
+                    </div>
+                `;
+            }
+
             if (!savedPuggleReward) {
-                container.innerHTML = `
+                container.innerHTML = gameHtml + `
                     <div class="bg-amber-50 border border-amber-900/10 p-5 rounded-2xl text-center space-y-2">
-                        <p class="text-3xl">🔒</p>
-                        <p class="text-xs font-bold text-amber-950">Game Terkunci (Min. Belanja Rp 300.000)</p>
-                        <p class="text-[11px] text-neutral-600 leading-relaxed">Mini-game <strong class="text-amber-900">Puggle Bouncing Drop</strong> akan terbuka otomatis setelah Anda menyelesaikan pesanan senilai minimal <strong class="text-amber-900">Rp 300.000</strong>. Mainkan untuk memenangkan kupon diskon pesanan berikutnya!</p>
+                        <p class="text-3xl">🎟️</p>
+                        <p class="text-xs font-bold text-amber-950">Belum ada kupon aktif.</p>
+                        <p class="text-[11px] text-neutral-600 leading-relaxed">Menangkan kupon diskon eksklusif dengan menyelesaikan pesanan dan memainkan minigame kami!</p>
                     </div>
                 `;
                 return;
             }
 
-            container.innerHTML = `
+            container.innerHTML = gameHtml + `
                 <div class="bg-gradient-to-r from-amber-600 to-amber-800 text-white p-5 rounded-2xl shadow-md space-y-3">
                     <div class="flex justify-between items-center">
                         <span class="bg-black/30 text-amber-200 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">🎁 Kupon Aktif Anda</span>
@@ -751,13 +775,15 @@
                 appliedPromoDiscount = pct / 100;
                 appliedPromoCodeName = codeInput;
                 
+                // COMPLETELY REMOVE REWARD FROM STORAGE SO IT CANNOT BE RE-USED
                 savedPuggleReward = null;
                 localStorage.removeItem('ric_puggle_reward');
 
-                feedback.innerText = `✅ Berhasil! Kupon ${codeInput} memberikan Diskon ${pct}% (Kupon telah digunakan & dihapus).`;
+                feedback.innerText = `✅ Berhasil! Kupon ${codeInput} memberikan Diskon ${pct}% (Kupon diterapkan & dihapus dari inventori).`;
                 feedback.className = "text-[11px] font-semibold text-emerald-600 block mt-1";
                 feedback.classList.remove('hidden');
                 
+                document.getElementById('promo-code-input').value = "";
                 renderBoomerPromos();
                 updateUI();
                 return;
