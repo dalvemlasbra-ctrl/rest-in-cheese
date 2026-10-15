@@ -274,17 +274,28 @@
         </div>
     </div>
 
-    <!-- LIVE NOTIFICATION ALERT POPUP -->
-    <div id="live-order-alert-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col p-6 space-y-4 text-center border-4 border-emerald-500">
-            <div class="text-5xl animate-bounce">🚨🧀</div>
+    <!-- AUTOMATED ON-SCREEN CONFIRMATION MODAL (SLEEP PROOF) -->
+    <div id="instant-confirmed-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col p-6 space-y-4 text-center border-4 border-amber-500">
+            <div class="text-5xl animate-bounce">🎉🧀</div>
             <div>
-                <h3 class="font-extrabold text-lg text-emerald-900">PESANAN BARU MASUK!</h3>
-                <p class="text-xs text-neutral-500 mt-1">Notifikasi instan untuk dapur & admin.</p>
+                <h3 class="font-extrabold text-lg text-[#1C1616]">PESANAN BERHASIL DITERIMA!</h3>
+                <p class="text-xs text-neutral-500 mt-1">Sistem kami telah otomatis mencatat pesanan Anda.</p>
             </div>
-            <div id="live-alert-details" class="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl text-xs text-left space-y-1 font-medium text-neutral-800"></div>
-            <button onclick="closeLiveAlert()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl text-xs shadow transition">
-                Tutup & Proses Pesanan 👍
+            
+            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs text-left space-y-2">
+                <p class="font-bold text-amber-950 border-b border-amber-200 pb-1">🚚 Estimasi Pengiriman (ETA):</p>
+                <p class="text-neutral-700">• <strong>Dapur Origin:</strong> Taman Grisenda, PIK (Jakarta Utara)</p>
+                <p class="text-neutral-700">• <strong>Jadwal Kirim:</strong> Fresh diproses & dikirim via Instant/Sameday pada slot yang Anda pilih.</p>
+                <p class="text-neutral-700">• <strong>Status Pembayaran:</strong> Referensi BCA terekam.</p>
+            </div>
+
+            <p class="text-[11px] text-neutral-500 italic leading-snug">
+                WhatsApp akan terbuka otomatis di nomor admin kami. Mohon lampirkan foto/screenshot Bukti Transfer Anda!
+            </p>
+
+            <button onclick="executeRedirectToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 rounded-xl text-xs shadow-md transition">
+                Buka WhatsApp Admin 💬
             </button>
         </div>
     </div>
@@ -348,11 +359,11 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-neutral-700 mb-1">Nomor WhatsApp</label>
+                        <label class="block text-xs font-bold text-neutral-700 mb-1">Nomor WhatsApp Anda</label>
                         <input type="tel" id="cust-phone" placeholder="e.g. 081380003850" class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
                     </div>
 
-                    <!-- ALIGNED DATE AND TIME SELECTOR BOX -->
+                    <!-- PERFECTLY ALIGNED DATE AND TIME SELECTOR BOX -->
                     <div class="grid grid-cols-2 gap-3 bg-white p-3.5 rounded-2xl border border-amber-900/10 items-end">
                         <div class="flex flex-col">
                             <label class="block text-[11px] font-bold text-amber-900 mb-1">📅 Tanggal Kirim</label>
@@ -372,7 +383,7 @@
                     <div class="space-y-2">
                         <label class="block text-xs font-bold text-neutral-700">Pilih Wilayah / Area Tujuan di Jakarta</label>
                         <div class="grid grid-cols-1 gap-2 area-list-box p-1 bg-white rounded-2xl border border-amber-900/10" id="jakarta-area-cards">
-                            <!-- Cards will be populated dynamically via script -->
+                            <!-- Cards populated dynamically via script -->
                         </div>
                     </div>
 
@@ -447,7 +458,7 @@
                 <label class="block text-xs font-bold text-neutral-700">Nomor Referensi Transaksi BCA:</label>
                 <input type="text" id="bca-ref-number" placeholder="e.g. FT26105XYZ99" class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-xs font-mono uppercase focus:outline-none focus:ring-2 focus:ring-amber-500">
                 <p class="text-[10px] text-amber-900 font-semibold bg-amber-100/60 p-2 rounded-lg mt-1">
-                    📌 <strong>PENTING:</strong> Lampirkan screenshot / foto <u>Bukti Pembayaran</u> di WhatsApp saat mengirim pesan ini ke Admin!
+                    📌 <strong>PENTING:</strong> Lampirkan screenshot / foto <u>Bukti Pembayaran</u> di WhatsApp saat mengirim pesan ini!
                 </p>
             </div>
 
@@ -459,7 +470,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Fully Fixed & Ready! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Ready for Photo Integration! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -642,7 +653,7 @@
             let wonPercent = 2;
             let landXCoord = "-130px";
 
-            // Exact probabilities: 2% (47.5%), 3% (47.5%), 4% (2.5%), 5% (2.5%)
+            // Probabilities: 2% (47.5%), 3% (47.5%), 4% (2.5%), 5% (2.5%)
             if (rand < 47.5) { 
                 wonPercent = 2; 
                 landXCoord = "-130px"; 
@@ -962,7 +973,7 @@
             const giftNote = document.getElementById('gift-note').value.trim();
 
             if (!name || !phone || !address) {
-                alert("Mohon masukkan nama, nomor WhatsApp, dan alamat lengkap.");
+                alert("Mohon masukkan nama, nomor WhatsApp Anda, dan alamat lengkap.");
                 return;
             }
 
@@ -1004,17 +1015,17 @@
             };
 
             generatedWhatsAppMessage = `*NEW ORDER & PAYMENT VERIFICATION - REST IN CHEESE* 🧀\n\n` +
-                `*Customer Name:* ${name}\n` +
-                `*Phone:* ${phone}\n` +
-                `*Delivery Address:* ${address}\n` +
-                `*Estimated Area & Distance:* ${selectedAreaName} (~${calculatedDeliveryKm.toFixed(1)} km from PIK)\n` +
-                `*Delivery Date:* ${deliveryDate} (${deliveryTime})\n` +
-                `*Payment Status:* TRANSFER BCA (578 543 3570)\n` +
-                `*Gift Card:* ${isGift ? 'Ya' : 'Tidak'}\n` +
-                (isGift && giftNote ? `*Greeting Note:* "${giftNote}"\n` : '') +
-                (appliedPromoCodeName ? `*Applied Promo Voucher:* ${appliedPromoCodeName}\n` : '') +
-                (savedPuggleReward ? `*Unlocked Puggle Reward:* ${savedPuggleReward}\n` : '') + `\n` +
-                `*Order Items:*\n${orderSummary}\n` +
+                `*Nama Pemesan:* ${name}\n` +
+                `*No. WA:* ${phone}\n` +
+                `*Alamat Kirim:* ${address}\n` +
+                `*Area & Estimasi Jarak:* ${selectedAreaName} (~${calculatedDeliveryKm.toFixed(1)} km dari PIK)\n` +
+                `*Jadwal Kirim:* ${deliveryDate} (${deliveryTime})\n` +
+                `*Status Bayar:* TRANSFER BCA (578 543 3570)\n` +
+                `*Kartu Ucapan:* ${isGift ? 'Ya' : 'Tidak'}\n` +
+                (isGift && giftNote ? `*Pesan Ucapan:* "${giftNote}"\n` : '') +
+                (appliedPromoCodeName ? `*Kode Promo:* ${appliedPromoCodeName}\n` : '') +
+                (savedPuggleReward ? `*Puggle Reward:* ${savedPuggleReward}\n` : '') + `\n` +
+                `*Rincian Item:*\n${orderSummary}\n` +
                 `*Subtotal Produk:* ${formatRupiah(productsTotal)}\n` +
                 (discountAmount > 0 ? `*Diskon Stacked:* -${formatRupiah(discountAmount)}\n` : '') +
                 `*Ongkir Presisi (${calculatedDeliveryKm.toFixed(1)} km):* ${formatRupiah(currentDeliveryFee)}\n` +
@@ -1038,12 +1049,11 @@
             }
 
             orderPayloadForSheet.name = orderPayloadForSheet.name + ` (BCA Ref: ${refNumber})`;
-            generatedWhatsAppMessage += `\n*BCA Ref Number:* ${refNumber}`;
+            generatedWhatsAppMessage += `\n*No. Ref BCA:* ${refNumber}`;
 
             localStorage.setItem('ric_order_completed', 'true');
 
-            triggerInstantNotification(orderPayloadForSheet);
-
+            // Send payload to Google Sheet Web App
             if (GOOGLE_SHEET_WEB_APP_URL) {
                 fetch(GOOGLE_SHEET_WEB_APP_URL, {
                     method: 'POST',
@@ -1056,40 +1066,19 @@
             cart = {};
             localStorage.removeItem('ric_cart');
 
+            closeWaPreview();
+            updateUI();
+            toggleCart();
+
+            // POP UP THE SLEEP PROOF CONFIRMATION MODAL FIRST
+            document.getElementById('instant-confirmed-modal').classList.remove('hidden');
+        }
+
+        function executeRedirectToWhatsApp() {
             const sellerWhatsApp = "6282112002258";
             const whatsappUrl = `https://wa.me/${sellerWhatsApp}?text=` + encodeURIComponent(generatedWhatsAppMessage);
             window.open(whatsappUrl, '_blank');
-            closeWaPreview();
-            
-            updateUI();
-            toggleCart();
-        }
-
-        function triggerInstantNotification(payload) {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.4);
-            } catch(e) { console.log(e); }
-
-            const detailsHtml = `
-                <p><strong>Pemesan:</strong> ${payload.name}</p>
-                <p><strong>Total:</strong> ${payload.totalStr}</p>
-                <p><strong>Jadwal:</strong> ${payload.datetime}</p>
-            `;
-            document.getElementById('live-alert-details').innerHTML = detailsHtml;
-            document.getElementById('live-order-alert-modal').classList.remove('hidden');
-        }
-
-        function closeLiveAlert() {
-            document.getElementById('live-order-alert-modal').classList.add('hidden');
+            document.getElementById('instant-confirmed-modal').classList.add('hidden');
         }
     </script>
 </body>
