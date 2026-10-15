@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -8,91 +8,94 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Leaflet CSS for Interactive Pinpoint Map -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#d97706">
+    <meta name="theme-color" content="#1C1616">
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .drawer-slide { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        #map { height: 220px; width: 100%; border-radius: 0.75rem; z-index: 10; }
-        .suggestions-list { max-height: 160px; overflow-y: auto; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8F5F0; color: #1C1616; }
+        .drawer-slide { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
         .progress-bar-fill { transition: width 0.4s ease-in-out; }
+        .area-list-box { max-height: 220px; overflow-y: auto; }
 
-        @keyframes naturalGravityDrop {
-            0%   { transform: translateY(0px) rotate(0deg); }
-            15%  { transform: translateY(70px) rotate(45deg); }
-            30%  { transform: translateY(150px) rotate(110deg); }
-            45%  { transform: translateY(230px) rotate(180deg); }
-            60%  { transform: translateY(310px) rotate(250deg); }
-            75%  { transform: translateY(380px) rotate(310deg); }
-            90%  { transform: translateY(430px) rotate(350deg); }
-            100% { transform: translateY(465px) rotate(360deg); }
+        @keyframes bounceDrop {
+            0%   { transform: translate(0px, 0px) rotate(0deg); }
+            15%  { transform: translate(35px, 60px) rotate(45deg); }
+            30%  { transform: translate(-30px, 130px) rotate(90deg); }
+            45%  { transform: translate(40px, 200px) rotate(160deg); }
+            60%  { transform: translate(-25px, 270px) rotate(220deg); }
+            75%  { transform: translate(30px, 340px) rotate(280deg); }
+            90%  { transform: translate(-15px, 410px) rotate(330deg); }
+            100% { transform: translate(var(--land-x), 465px) rotate(360deg); }
         }
-        .natural-puggle-anim { animation: naturalGravityDrop 10s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        .bouncing-drop-anim { animation: bounceDrop 8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; }
 
         @keyframes floatBtn {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-8px); }
         }
         .floating-cheese-trigger { animation: floatBtn 2.5s ease-in-out infinite; }
+        
+        .glass-nav { background: rgba(248, 245, 240, 0.85); backdrop-filter: blur(12px); }
+        .glass-card { background: #FFFFFF; border: 1px solid rgba(217, 119, 6, 0.12); box-shadow: 0 10px 30px -10px rgba(28, 22, 22, 0.04); }
     </style>
 </head>
-<body class="bg-[#FFFDF9] text-[#2D2424] antialiased pb-32">
+<body class="antialiased pb-36">
 
     <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-100 shadow-xs">
-        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+    <header class="sticky top-0 z-40 glass-nav border-b border-amber-900/10">
+        <div class="max-w-md mx-auto px-4 py-3.5 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <button onclick="toggleMenu()" class="text-neutral-700 hover:text-amber-900 p-1 text-2xl focus:outline-none transition">
+                <button onclick="toggleMenu()" class="text-neutral-800 hover:text-amber-700 p-1.5 text-2xl focus:outline-none transition active:scale-95">
                     ☰
                 </button>
-                <div class="flex items-center space-x-1.5 cursor-pointer" onclick="switchPage('home')">
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="switchPage('home')">
                     <span class="text-2xl">🧀</span>
-                    <span class="font-extrabold text-lg tracking-tight text-[#2D2424]">Rest in Cheese</span>
+                    <span class="font-extrabold text-lg tracking-tight text-[#1C1616]">Rest in Cheese</span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
-                <button onclick="toggleCart()" class="bg-[#2D2424] text-white px-3.5 py-2 rounded-full font-semibold text-xs flex items-center space-x-1.5 shadow-sm active:scale-95 transition">
+                <button onclick="toggleCart()" class="bg-[#1C1616] text-white px-4 py-2 rounded-full font-bold text-xs flex items-center space-x-1.5 shadow-md active:scale-95 transition">
                     <span>🛒 Cart</span>
-                    <span id="cart-count" class="bg-amber-400 text-[#2D2424] px-1.5 py-0.2 rounded-full text-[11px] font-bold">0</span>
+                    <span id="cart-count" class="bg-amber-500 text-white px-1.5 py-0.2 rounded-full text-[11px] font-extrabold">0</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Clean Navigation Drawer -->
-    <div id="menu-drawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex justify-start">
-        <div class="w-72 bg-white h-full flex flex-col shadow-2xl drawer-slide transform -translate-x-full" id="menu-panel">
-            <div class="p-5 border-b border-amber-100 flex items-center justify-between bg-amber-50/50">
+    <!-- Navigation Drawer -->
+    <div id="menu-drawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex justify-start">
+        <div class="w-72 bg-[#F8F5F0] h-full flex flex-col shadow-2xl drawer-slide transform -translate-x-full border-r border-amber-900/10" id="menu-panel">
+            <div class="p-5 border-b border-amber-900/10 flex items-center justify-between bg-white">
                 <div class="flex items-center space-x-2">
                     <span class="text-2xl">🧀</span>
-                    <span class="font-extrabold text-base text-[#2D2424]">Rest in Cheese</span>
+                    <span class="font-extrabold text-base text-[#1C1616]">Rest in Cheese</span>
                 </div>
-                <button onclick="toggleMenu()" class="text-neutral-400 hover:text-neutral-700 text-2xl font-bold">&times;</button>
+                <button onclick="toggleMenu()" class="text-neutral-400 hover:text-neutral-800 text-2xl font-bold">&times;</button>
             </div>
             <div class="flex-1 p-6 space-y-6 overflow-y-auto text-sm">
-                <div class="space-y-4">
-                    <p class="text-[11px] font-extrabold uppercase tracking-widest text-amber-800">Navigation</p>
-                    <button onclick="switchPage('home'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-700 hover:text-amber-900 py-2 border-b border-neutral-100">
-                        <span class="text-lg">🏠</span> <span>Home</span>
+                <div class="space-y-3">
+                    <p class="text-[10px] font-extrabold uppercase tracking-widest text-amber-800/80">Menu Utama</p>
+                    <button onclick="switchPage('home'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
+                        <span class="text-lg">🏠</span> <span>Beranda</span>
                     </button>
-                    <button onclick="switchPage('products'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-700 hover:text-amber-900 py-2 border-b border-neutral-100">
-                        <span class="text-lg">✨</span> <span>Products</span>
+                    <button onclick="switchPage('products'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
+                        <span class="text-lg">✨</span> <span>Katalog Jar</span>
                     </button>
-                    <button onclick="switchPage('promos'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-amber-900 hover:text-amber-950 py-2 border-b border-amber-100 bg-amber-50/60 px-3 rounded-xl">
-                        <span class="text-lg">🎟️</span> <span>Cek Promo & Kupon Saya</span>
+                    <button onclick="switchPage('promos'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-amber-900 hover:text-amber-950 py-2.5 px-3 rounded-xl bg-amber-100/60 transition shadow-2xs">
+                        <span class="text-lg">🎟️</span> <span>Kupon & Diskon Saya</span>
                     </button>
-                    <button onclick="switchPage('about'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-700 hover:text-amber-900 py-2 border-b border-neutral-100">
-                        <span class="text-lg">📖</span> <span>About</span>
+                    <button onclick="switchPage('about'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-800 hover:text-amber-700 py-2.5 px-3 rounded-xl hover:bg-white transition">
+                        <span class="text-lg">📖</span> <span>Tentang Kami</span>
                     </button>
+                    <a href="https://wa.me/6282112002258?text=Halo%20Admin%20Rest%20in%20Cheese,%20saya%20mau%20tanya-tanya%20dulu%20sebelum%20order." target="_blank" class="w-full text-left flex items-center space-x-3 font-bold text-emerald-800 py-2.5 px-3 rounded-xl bg-emerald-100/70 hover:bg-emerald-100 transition shadow-2xs">
+                        <span class="text-lg">💬</span> <span>Chat Admin / Tanya-tanya</span>
+                    </a>
                 </div>
-                <div class="pt-2 space-y-2">
-                    <p class="text-[11px] font-extrabold uppercase tracking-widest text-amber-800">Kitchen Base</p>
-                    <p class="text-xs text-neutral-600 leading-relaxed">Taman Grisenda, PIK, North Jakarta. Freshly baked daily.</p>
+                <div class="pt-4 border-t border-amber-900/10 space-y-2">
+                    <p class="text-[10px] font-extrabold uppercase tracking-widest text-amber-800/80">Lokasi Dapur</p>
+                    <p class="text-xs text-neutral-600 leading-relaxed font-medium">Taman Grisenda, Pantai Indah Kapuk (PIK), Jakarta Utara. Freshly baked daily.</p>
                 </div>
             </div>
         </div>
@@ -103,56 +106,60 @@
 
         <!-- PAGE 1: HOME -->
         <div id="page-home" class="space-y-6">
-            <div class="bg-gradient-to-br from-amber-500 via-amber-600 to-amber-800 rounded-3xl p-7 text-white shadow-lg relative overflow-hidden text-center">
-                <div class="absolute -right-8 -bottom-8 text-9xl opacity-10 select-none">🧀</div>
-                <h1 class="text-2xl font-extrabold tracking-tight mb-2 leading-snug">
-                    Artisanal Cheesecake in a Jar
+            <div class="bg-gradient-to-br from-[#1C1616] via-[#2D2424] to-[#1C1616] rounded-3xl p-7 text-white shadow-xl relative overflow-hidden text-center border border-amber-500/20">
+                <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 select-none">🧀</div>
+                <span class="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-widest">
+                    ✨ Artisanal Pastry in PIK
+                </span>
+                <h1 class="text-2xl font-extrabold tracking-tight mt-3 mb-2 leading-snug">
+                    Cheesecake in a Jar
                 </h1>
-                <p class="text-xs text-amber-100 mb-6 leading-relaxed max-w-xs mx-auto">
-                    Velvety, rich, and meticulously crafted fresh daily in Taman Grisenda, PIK.
+                <p class="text-xs text-neutral-300 mb-6 leading-relaxed max-w-xs mx-auto">
+                    Velvety, rich, and meticulously crafted fresh daily with master hotel-grade technique.
                 </p>
                 <div class="flex items-center justify-center">
-                    <button onclick="switchPage('products')" class="bg-white text-amber-900 hover:bg-amber-50 font-extrabold text-xs px-6 py-3.5 rounded-2xl shadow-md active:scale-95 transition">
-                        Order Jars Now 🛒
+                    <button onclick="switchPage('products')" class="bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs px-7 py-4 rounded-2xl shadow-lg active:scale-95 transition">
+                        Pesan Jar Sekarang 🛒
                     </button>
                 </div>
             </div>
 
             <!-- FEATURE CARDS -->
             <div class="grid grid-cols-3 gap-2 text-center">
-                <div class="bg-white p-2.5 rounded-2xl border border-amber-100 shadow-2xs flex flex-col items-center justify-center space-y-0.5 min-w-0">
-                    <span class="text-lg">🌟</span>
-                    <p class="text-[11px] font-extrabold text-[#2D2424] leading-tight truncate w-full">Hotel Grade</p>
-                    <p class="text-[9px] text-neutral-500 leading-tight truncate w-full">Master Recipe</p>
+                <div class="glass-card p-3 rounded-2xl flex flex-col items-center justify-center space-y-1">
+                    <span class="text-xl">🌟</span>
+                    <p class="text-[11px] font-extrabold text-[#1C1616]">Hotel Grade</p>
+                    <p class="text-[9px] text-neutral-500">Master Recipe</p>
                 </div>
-                <div class="bg-white p-2.5 rounded-2xl border border-amber-100 shadow-2xs flex flex-col items-center justify-center space-y-0.5 min-w-0">
-                    <span class="text-lg">🌿</span>
-                    <p class="text-[11px] font-extrabold text-[#2D2424] leading-tight truncate w-full">100% Pure</p>
-                    <p class="text-[9px] text-neutral-500 leading-tight truncate w-full">Natural Ingredients</p>
+                <div class="glass-card p-3 rounded-2xl flex flex-col items-center justify-center space-y-1">
+                    <span class="text-xl">🌿</span>
+                    <p class="text-[11px] font-extrabold text-[#1C1616]">100% Pure</p>
+                    <p class="text-[9px] text-neutral-500">Natural Dairy</p>
                 </div>
-                <div class="bg-white p-2.5 rounded-2xl border border-amber-100 shadow-2xs flex flex-col items-center justify-center space-y-0.5 min-w-0">
-                    <span class="text-lg">🛵</span>
-                    <p class="text-[11px] font-extrabold text-[#2D2424] leading-tight truncate w-full">Instant</p>
-                    <p class="text-[9px] text-neutral-500 leading-tight truncate w-full">GoSend / Grab</p>
+                <div class="glass-card p-3 rounded-2xl flex flex-col items-center justify-center space-y-1">
+                    <span class="text-xl">🛵</span>
+                    <p class="text-[11px] font-extrabold text-[#1C1616]">Instant</p>
+                    <p class="text-[9px] text-neutral-500">GoSend / Grab</p>
                 </div>
             </div>
 
-            <div class="bg-gradient-to-r from-amber-600 to-amber-700 rounded-3xl p-5 text-white shadow-md relative overflow-hidden">
-                <div class="absolute right-[-10px] bottom-[-10px] text-7xl opacity-20">🎁</div>
-                <span class="bg-amber-900/60 text-amber-200 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+            <!-- SPECIAL BUNDLE CARD -->
+            <div class="bg-gradient-to-r from-amber-700 to-amber-900 rounded-3xl p-5 text-white shadow-lg relative overflow-hidden border border-amber-500/30">
+                <div class="absolute right-[-10px] bottom-[-10px] text-7xl opacity-15">🎁</div>
+                <span class="bg-white/20 text-amber-100 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
                     🔥 Special Bundle Offer
                 </span>
-                <h3 class="font-extrabold text-lg mt-2">The Ultimate Trio Bundle</h3>
+                <h3 class="font-extrabold text-lg mt-2.5">The Ultimate Trio Bundle</h3>
                 <p class="text-xs text-amber-100 mt-1 leading-relaxed">
-                    Experience all 3 signature flavors in one box. Save more and taste perfection.
+                    Nikmati kelezatan 3 varian signature sekaligus dalam satu box eksklusif.
                 </p>
-                <div class="flex items-center justify-between mt-4 pt-3 border-t border-amber-500/40">
+                <div class="flex items-center justify-between mt-4 pt-3 border-t border-white/20">
                     <div>
                         <span class="text-[11px] line-through text-amber-200">Rp 200.000</span>
                         <p class="text-base font-extrabold text-white">Rp 189.000</p>
                     </div>
-                    <button onclick="addBundleToCart()" class="bg-white text-amber-900 hover:bg-amber-50 px-4 py-2 rounded-xl font-bold text-xs shadow-sm active:scale-95 transition">
-                        + Add Bundle
+                    <button onclick="addBundleToCart()" class="bg-white hover:bg-amber-50 text-amber-950 px-4.5 py-2.5 rounded-xl font-extrabold text-xs shadow-md active:scale-95 transition">
+                        + Tambah Bundle
                     </button>
                 </div>
             </div>
@@ -160,65 +167,64 @@
 
         <!-- PAGE 2: PRODUCTS -->
         <div id="page-products" class="space-y-4 hidden">
-            <div class="flex items-center justify-between mb-2">
-                <h2 class="text-lg font-bold text-[#2D2424]">Our Signature Jars</h2>
-                <span class="text-xs font-semibold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full">Fresh Batch</span>
+            <div class="flex items-center justify-between mb-1">
+                <h2 class="text-lg font-extrabold text-[#1C1616]">Katalog Signature Jars</h2>
+                <span class="text-xs font-bold text-amber-800 bg-amber-100/80 px-3 py-1 rounded-full">Fresh Batch Today</span>
             </div>
             <div id="product-list" class="space-y-4"></div>
         </div>
 
-        <!-- PAGE 3: BOOMER-FRIENDLY PROMOS PAGE -->
+        <!-- PAGE 3: PROMOS PAGE -->
         <div id="page-promos" class="space-y-4 hidden">
-            <div class="bg-white p-6 rounded-3xl border border-amber-100 shadow-xs space-y-4">
+            <div class="glass-card p-6 rounded-3xl space-y-4">
                 <div class="flex items-center space-x-3">
                     <span class="text-3xl">🎟️</span>
                     <div>
-                        <h2 class="font-extrabold text-base text-[#2D2424]">Kupon & Diskon Saya</h2>
+                        <h2 class="font-extrabold text-base text-[#1C1616]">Kupon & Diskon Saya</h2>
                         <p class="text-xs text-neutral-500">Semua voucher hadiah game Anda tersimpan otomatis di sini.</p>
                     </div>
                 </div>
-
                 <div id="boomer-promo-list" class="space-y-3 pt-2"></div>
             </div>
         </div>
 
         <!-- PAGE 4: ABOUT -->
         <div id="page-about" class="space-y-4 hidden">
-            <div class="bg-white p-6 rounded-3xl border border-amber-100 shadow-xs space-y-4">
+            <div class="glass-card p-6 rounded-3xl space-y-4">
                 <div class="text-3xl">🧑‍🍳</div>
-                <h3 class="font-extrabold text-lg text-[#2D2424]">The Passion Behind Rest in Cheese</h3>
+                <h3 class="font-extrabold text-lg text-[#1C1616]">The Passion Behind Rest in Cheese</h3>
                 <p class="text-xs text-neutral-600 leading-relaxed">
-                    This is my absolute passion. Trained as an ex-intern from The Landmark Mandarin Oriental, I learned early on that high-end pastry isn't just about expensive labels—it's about respect for technique, flavor, and turning ordinary components into extraordinary.
+                    This is my absolute passion. Trained as an ex-intern from The Landmark Mandarin Oriental, I learned early on that high-end pastry isn't just about expensive labels—it's about respect for technique, flavor, and turning ordinary components into extraordinary culinary experiences.
                 </p>
-                <div class="pt-2 border-t border-amber-100 space-y-2">
-                    <p class="text-xs font-bold text-amber-900">📍 Kitchen Base</p>
-                    <p class="text-xs text-neutral-600">Taman Grisenda, Pantai Indah Kapuk, North Jakarta.</p>
+                <div class="pt-3 border-t border-neutral-100 space-y-2">
+                    <p class="text-xs font-extrabold text-amber-900">📍 Kitchen Base</p>
+                    <p class="text-xs text-neutral-600">Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara.</p>
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- FLOATING HOME PUGLLE TRIGGER (ONLY APPEARS AFTER BCA PAYMENT & > Rp 300k) -->
+    <!-- FLOATING HOME PUGLLE TRIGGER -->
     <div id="floating-puggle-trigger" class="fixed bottom-20 right-4 z-40 hidden">
-        <button onclick="openPuggleModal()" class="bg-gradient-to-r from-amber-500 to-amber-700 text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 font-extrabold text-xs border-2 border-amber-200 floating-cheese-trigger active:scale-95 transition">
+        <button onclick="openPuggleModal()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 font-extrabold text-xs border-2 border-white floating-cheese-trigger active:scale-95 transition">
             <span class="text-xl">🧀</span>
             <span>Mainkan Puggle Diskon!</span>
         </button>
     </div>
 
     <!-- FLOATING BOTTOM LIVE BAR -->
-    <div class="fixed bottom-0 left-0 right-0 z-35 bg-white/95 backdrop-blur-md border-t border-amber-200/80 p-3 shadow-lg">
+    <div class="fixed bottom-0 left-0 right-0 z-35 bg-white/95 backdrop-blur-md border-t border-amber-900/10 p-3.5 shadow-xl">
         <div class="max-w-md mx-auto space-y-1.5">
             <div class="flex justify-between items-center text-xs">
                 <div>
-                    <span class="text-[10px] uppercase font-bold text-neutral-400 block -mb-0.5">Total Spending</span>
-                    <span id="floating-spending-amount" class="font-extrabold text-amber-950 text-sm">Rp 0</span>
+                    <span class="text-[10px] uppercase font-bold text-neutral-400 block -mb-0.5">Total Belanja</span>
+                    <span id="floating-spending-amount" class="font-extrabold text-[#1C1616] text-sm">Rp 0</span>
                 </div>
-                <span id="floating-progress-badge" class="bg-amber-200 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold">0%</span>
+                <span id="floating-progress-badge" class="bg-amber-100 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold">0%</span>
             </div>
-            <div class="w-full bg-amber-200/60 rounded-full h-2 overflow-hidden">
-                <div id="floating-progress-bar" class="bg-gradient-to-r from-amber-500 to-amber-700 h-2 rounded-full progress-bar-fill" style="width: 0%"></div>
+            <div class="w-full bg-neutral-100 rounded-full h-2 overflow-hidden">
+                <div id="floating-progress-bar" class="bg-gradient-to-r from-amber-500 to-amber-600 h-2 rounded-full progress-bar-fill" style="width: 0%"></div>
             </div>
             <p id="floating-progress-text" class="text-[10px] text-amber-800 font-semibold leading-tight truncate">
                 Diskon 5% min. belanja Rp 250.000!
@@ -226,20 +232,20 @@
         </div>
     </div>
 
-    <!-- TALL VERTICAL PUGGLE ARCADE GAME MODAL -->
+    <!-- TALL VERTICAL BOUNCING PUGGLE GAME MODAL -->
     <div id="puggle-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
         <div class="bg-gradient-to-b from-neutral-900 via-amber-950 to-neutral-900 w-full max-w-sm rounded-3xl border-4 border-amber-500/80 shadow-2xl overflow-hidden flex flex-col text-white">
             
             <div class="bg-amber-950 p-3.5 border-b border-amber-700/60 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <span class="text-lg">🕹️</span>
-                    <h3 class="font-extrabold text-sm tracking-wide text-amber-300">PUGGLE CHEESE DROP (10s)</h3>
+                    <h3 class="font-extrabold text-sm tracking-wide text-amber-300">PUGGLE BOUNCING DROP</h3>
                 </div>
                 <button onclick="closePuggleModal()" class="text-neutral-400 hover:text-white text-xl font-bold px-2">&times;</button>
             </div>
 
             <div class="p-4 flex flex-col items-center space-y-3">
-                <p class="text-[11px] text-amber-200 text-center">Tinggi & panjang! Keju jatuh alami menuruni pinball.</p>
+                <p class="text-[11px] text-amber-200 text-center">Keju memantul bebas dari pin ke pin!</p>
                 
                 <div id="puggle-board" class="w-full h-[480px] bg-neutral-950 border-2 border-amber-600/50 rounded-2xl relative overflow-hidden shadow-inner flex flex-col justify-between p-3">
                     <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span><span>📍</span></div>
@@ -260,25 +266,40 @@
                     </div>
                 </div>
 
-                <div id="puggle-status" class="text-xs font-bold text-amber-300 text-center h-5">Tekan tombol untuk mulai menjatuhkan keju!</div>
+                <div id="puggle-status" class="text-xs font-bold text-amber-300 text-center h-5">Tekan tombol untuk melempar keju!</div>
 
                 <button id="puggle-drop-btn" onclick="startPuggleDrop()" class="w-full bg-amber-400 hover:bg-amber-300 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition active:scale-95">
-                    🚀 Lepas Keju (10 Detik)
+                    🚀 Lempar & Pantulkan Keju!
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- LIVE NOTIFICATION ALERT POPUP -->
+    <div id="live-order-alert-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col p-6 space-y-4 text-center border-4 border-emerald-500">
+            <div class="text-5xl animate-bounce">🚨🧀</div>
+            <div>
+                <h3 class="font-extrabold text-lg text-emerald-900">PESANAN BARU MASUK!</h3>
+                <p class="text-xs text-neutral-500 mt-1">Notifikasi instan untuk dapur & admin.</p>
+            </div>
+            <div id="live-alert-details" class="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl text-xs text-left space-y-1 font-medium text-neutral-800"></div>
+            <button onclick="closeLiveAlert()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl text-xs shadow transition">
+                Tutup & Proses Pesanan 👍
+            </button>
+        </div>
+    </div>
+
     <!-- Cart Drawer Modal -->
-    <div id="cart-drawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex justify-end">
-        <div class="w-full max-w-md bg-[#FFFDF9] h-full flex flex-col shadow-2xl drawer-slide transform translate-x-full" id="drawer-panel">
+    <div id="cart-drawer" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex justify-end">
+        <div class="w-full max-w-md bg-[#F8F5F0] h-full flex flex-col shadow-2xl drawer-slide transform translate-x-full" id="drawer-panel">
             
-            <div class="p-4 border-b border-amber-100 flex items-center justify-between bg-white">
-                <h2 class="font-bold text-lg text-[#2D2424]">Your Order Summary</h2>
-                <button onclick="toggleCart()" class="text-neutral-400 hover:text-neutral-700 p-2 text-xl font-bold">&times;</button>
+            <div class="p-4 border-b border-amber-900/10 flex items-center justify-between bg-white">
+                <h2 class="font-extrabold text-base text-[#1C1616]">Ringkasan Pesanan</h2>
+                <button onclick="toggleCart()" class="text-neutral-400 hover:text-neutral-800 p-2 text-xl font-bold">&times;</button>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-4 space-y-5">
+            <div class="flex-1 overflow-y-auto p-4 space-y-4">
                 
                 <div id="active-reward-banner" class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-2xl flex items-center justify-between text-xs hidden shadow-xs">
                     <div>
@@ -289,26 +310,26 @@
                 </div>
 
                 <!-- Referral / Promo Code Input Box -->
-                <div class="bg-white border border-amber-200 p-3.5 rounded-2xl space-y-2 shadow-2xs">
+                <div class="glass-card p-3.5 rounded-2xl space-y-2">
                     <label class="block text-xs font-bold text-amber-900">🎟️ Punya Kode Referral / Diskon?</label>
                     <div class="flex space-x-2">
-                        <input type="text" id="promo-code-input" placeholder="Contoh: RIC-6%..." class="flex-1 px-3 py-2 bg-amber-50/50 border border-amber-200 rounded-xl text-xs uppercase font-mono focus:outline-none focus:ring-2 focus:ring-amber-400">
-                        <button onclick="applyPromoCode()" class="bg-[#2D2424] hover:bg-amber-900 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Pakai</button>
+                        <input type="text" id="promo-code-input" placeholder="Contoh: RIC-6%..." class="flex-1 px-3 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs uppercase font-mono focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <button onclick="applyPromoCode()" class="bg-[#1C1616] hover:bg-neutral-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Pakai</button>
                     </div>
                     <p id="promo-feedback" class="text-[11px] font-semibold hidden"></p>
                 </div>
 
                 <!-- Gift Note Option -->
-                <div class="bg-amber-50 border border-amber-200/60 p-3.5 rounded-2xl space-y-3">
+                <div class="bg-amber-50/70 border border-amber-900/10 p-3.5 rounded-2xl space-y-3">
                     <div class="flex items-center space-x-3">
-                        <input type="checkbox" id="gift-option" onchange="toggleGiftBox()" class="w-4 h-4 text-amber-600 rounded border-amber-300 focus:ring-amber-400">
-                        <label for="gift-option" class="text-xs font-bold text-amber-900 cursor-pointer">
+                        <input type="checkbox" id="gift-option" onchange="toggleGiftBox()" class="w-4 h-4 text-amber-600 rounded border-amber-300 focus:ring-amber-500">
+                        <label for="gift-option" class="text-xs font-bold text-amber-950 cursor-pointer">
                             🎁 Kirim sebagai hadiah? (+ Kartu Ucapan)
                         </label>
                     </div>
-                    <div id="gift-note-container" class="hidden pt-2 border-t border-amber-200/60">
-                        <label class="block text-[11px] font-bold text-amber-900 mb-1">Greeting Card Message / Note</label>
-                        <textarea id="gift-note" rows="2" placeholder="e.g. Happy Birthday Sarah! — from Alex" oninput="saveGiftNote(this.value)" class="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+                    <div id="gift-note-container" class="hidden pt-2 border-t border-amber-900/10">
+                        <label class="block text-[11px] font-bold text-amber-950 mb-1">Pesan Kartu Ucapan</label>
+                        <textarea id="gift-note" rows="2" placeholder="e.g. Happy Birthday Sarah! — from Alex" oninput="saveGiftNote(this.value)" class="w-full px-3 py-2 bg-white border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
                     </div>
                 </div>
 
@@ -316,121 +337,125 @@
 
                 <div id="empty-cart" class="text-center py-10 text-neutral-400">
                     <p class="text-4xl mb-2">🛒</p>
-                    <p class="text-sm font-medium">Belum ada item dipilih. Silahkan tambah jar di menu!</p>
+                    <p class="text-sm font-medium">Belum ada item dipilih. Silahkan tambah jar di katalog!</p>
                 </div>
 
-                <div id="checkout-form-section" class="space-y-4 pt-4 border-t border-amber-100 hidden">
-                    <h3 class="font-bold text-sm text-[#2D2424]">Delivery Details</h3>
+                <div id="checkout-form-section" class="space-y-4 pt-4 border-t border-amber-900/10 hidden">
+                    <h3 class="font-extrabold text-sm text-[#1C1616]">Detail Pengiriman (Seluruh Jakarta)</h3>
                     
                     <div>
-                        <label class="block text-xs font-bold text-neutral-600 mb-1">Customer Name</label>
-                        <input type="text" id="cust-name" placeholder="e.g. Sarah Jenkins" class="w-full px-3 py-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400">
+                        <label class="block text-xs font-bold text-neutral-700 mb-1">Nama Pemesan</label>
+                        <input type="text" id="cust-name" placeholder="e.g. Sarah Jenkins" class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-neutral-600 mb-1">WhatsApp Phone Number</label>
-                        <input type="tel" id="cust-phone" placeholder="e.g. 081380003850" class="w-full px-3 py-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400">
+                        <label class="block text-xs font-bold text-neutral-700 mb-1">Nomor WhatsApp</label>
+                        <input type="tel" id="cust-phone" placeholder="e.g. 081380003850" class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3 bg-amber-50/50 p-3.5 rounded-2xl border border-amber-200/60">
+                    <div class="grid grid-cols-2 gap-3 bg-white p-3.5 rounded-2xl border border-amber-900/10">
                         <div>
-                            <label class="block text-[11px] font-bold text-amber-900 mb-1">📅 Delivery Date</label>
-                            <input type="date" id="delivery-date" class="w-full px-2.5 py-2 bg-white border border-amber-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-400">
+                            <label class="block text-[11px] font-bold text-amber-900 mb-1">📅 Tanggal Kirim</label>
+                            <input type="date" id="delivery-date" class="w-full px-2.5 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
                         </div>
                         <div>
-                            <label class="block text-[11px] font-bold text-amber-900 mb-1">⏰ Time Slot</label>
-                            <select id="delivery-time" class="w-full px-2.5 py-2 bg-white border border-amber-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-400">
-                                <option value="Morning (10:00 - 13:00)">Morning (10 - 13)</option>
-                                <option value="Afternoon (13:00 - 16:00)" selected>Afternoon (13 - 16)</option>
-                                <option value="Evening (16:00 - 19:00)">Evening (16 - 19)</option>
+                            <label class="block text-[11px] font-bold text-amber-900 mb-1">⏰ Waktu Kirim</label>
+                            <select id="delivery-time" class="w-full px-2.5 py-2 bg-neutral-50 border border-amber-900/10 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <option value="Morning (10:00 - 13:00)">Pagi (10 - 13)</option>
+                                <option value="Afternoon (13:00 - 16:00)" selected>Siang (13 - 16)</option>
+                                <option value="Evening (16:00 - 19:00)">Sore (16 - 19)</option>
                             </select>
                         </div>
                     </div>
 
-                    <!-- Debounced Location Search -->
-                    <div class="relative">
-                        <label class="block text-xs font-bold text-neutral-600 mb-1">Search Location / Address (Debounced)</label>
-                        <input type="text" id="search-address" placeholder="Type area (e.g., Taman Grisenda, Grogol, Gading Serpong, BSD)..." oninput="debouncedSearchLocation(this.value)" class="w-full px-3 py-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" autocomplete="off">
-                        <div id="suggestions" class="absolute left-0 right-0 bg-white border border-amber-200 rounded-xl mt-1 shadow-lg z-30 suggestions-list hidden"></div>
-                    </div>
-
-                    <!-- Interactive Pinpoint Map -->
-                    <div>
-                        <div class="flex items-center justify-between mb-1">
-                            <p class="text-[11px] text-neutral-500 font-semibold">📍 Drag or Click Marker to Set Pin Point</p>
-                        </div>
-                        <div id="map"></div>
-                        <div id="distance-info" class="text-xs font-semibold text-amber-900 mt-2 bg-amber-50 p-2.5 rounded-lg border border-amber-200 space-y-1">
-                            <p>📍 Jarak dari Taman Grisenda: 0.0 km | Estimasi Ongkir: Rp 10.200</p>
-                            <p>⏱️ Est. Pengiriman: ~15 mins (GoSend / Grab Instant)</p>
+                    <!-- ALL-JAKARTA CLICKABLE AREA SELECTOR CARDS -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-neutral-700">Pilih Wilayah / Area Tujuan di Jakarta</label>
+                        <div class="grid grid-cols-1 gap-2 area-list-box p-1 bg-white rounded-2xl border border-amber-900/10" id="jakarta-area-cards">
+                            <!-- Cards will be populated dynamically via script -->
                         </div>
                     </div>
 
+                    <div id="distance-info" class="text-xs font-semibold text-amber-900 bg-amber-50 p-3 rounded-xl border border-amber-900/10 space-y-1">
+                        <p>📍 Estimasi Jarak dari Dapur PIK: <strong id="dist-km">2.0 km</strong></p>
+                        <p>🛵 Ongkir Sesuai Wilayah: <strong id="calc-ongkir">Rp 15.000</strong></p>
+                    </div>
+
                     <div>
-                        <label class="block text-xs font-bold text-neutral-600 mb-1">Apartment Unit, Tower, or Gate Notes</label>
-                        <textarea id="cust-notes" rows="2" placeholder="e.g. Tower B, Unit 12-A..." class="w-full px-3 py-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+                        <label class="block text-xs font-bold text-neutral-700 mb-1">Alamat Lengkap (Jl., No. Rumah/Gedung, Unit)</label>
+                        <textarea id="cust-address" rows="3" placeholder="e.g. Jl. Sudirman No. 45, Tower B Unit 12..." class="w-full px-3 py-2.5 bg-white border border-amber-900/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"></textarea>
                     </div>
                 </div>
 
             </div>
 
             <!-- Cart Footer -->
-            <div class="p-4 bg-white border-t border-amber-100 space-y-3">
+            <div class="p-4 bg-white border-t border-amber-900/10 space-y-3 shadow-lg">
                 <div class="space-y-1 text-sm">
                     <div class="flex justify-between text-neutral-600">
                         <span>Subtotal Produk</span>
                         <span id="summary-products-total" class="font-semibold">Rp 0</span>
                     </div>
-                    <div id="discount-row" class="flex justify-between text-emerald-600 font-bold hidden">
+                    <div id="discount-row" class="flex justify-between text-emerald-700 font-bold hidden">
                         <span>Diskon (5% Off)</span>
                         <span id="summary-discount">-Rp 0</span>
                     </div>
                     <div class="flex justify-between text-neutral-600">
-                        <span>Estimasi Ongkir (Fix via WA)</span>
-                        <span id="summary-delivery-fee" class="font-semibold">Rp 10.200</span>
+                        <span>Ongkir Real-Time</span>
+                        <span id="summary-delivery-fee" class="font-semibold">Rp 15.000</span>
                     </div>
-                    <div class="flex justify-between text-base font-extrabold text-[#2D2424] pt-2 border-t border-dashed border-amber-200">
+                    <div class="flex justify-between text-base font-extrabold text-[#1C1616] pt-2 border-t border-dashed border-amber-900/20">
                         <span>Total Pembayaran</span>
-                        <span id="summary-grand-total">Rp 10.200</span>
+                        <span id="summary-grand-total">Rp 15.000</span>
                     </div>
                 </div>
 
-                <button onclick="previewWhatsAppOrder()" id="whatsapp-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
-                    <span>💬 Pesan & Konfirmasi Transfer via WA</span>
+                <button onclick="previewWhatsAppOrder()" id="whatsapp-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 px-4 rounded-2xl shadow-md transition flex items-center justify-center space-x-2">
+                    <span>💬 Lanjut ke Pembayaran BCA</span>
                 </button>
             </div>
 
         </div>
     </div>
 
-    <!-- WhatsApp Chat Preview Modal -->
-    <div id="wa-preview-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
-        <div class="bg-[#ECE5DD] w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            <div class="bg-[#075E54] text-white px-4 py-3 flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full bg-amber-200 flex items-center justify-center text-xl">🧀</div>
+    <!-- STRICT BCA TRANSACTION REFERENCE MODAL -->
+    <div id="wa-preview-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col p-6 space-y-4">
+            <div class="flex items-center space-x-3">
+                <span class="text-3xl">🏦</span>
                 <div>
-                    <h3 class="font-bold text-sm">Rest in Cheese (Order Bot)</h3>
-                    <p class="text-[10px] text-emerald-200">Online</p>
+                    <h3 class="font-extrabold text-base text-[#1C1616]">Verifikasi Pembayaran BCA</h3>
+                    <p class="text-xs text-neutral-500">Wajib masukkan No. Referensi Transfer yang sah.</p>
                 </div>
             </div>
-            <div class="p-4 overflow-y-auto flex-1 space-y-3">
-                <div class="bg-white rounded-2xl rounded-tl-xs p-3.5 shadow-sm max-w-[90%] text-xs text-[#2D2424] leading-relaxed whitespace-pre-line font-mono" id="wa-preview-text"></div>
+
+            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl space-y-2 text-xs">
+                <p class="font-bold text-amber-900">Transfer tepat ke Rekening BCA:</p>
+                <div class="bg-white p-3 rounded-xl border border-amber-200 font-mono font-extrabold text-sm text-center text-[#1C1616]">
+                    578 543 3570
+                </div>
+                <p class="text-[11px] text-neutral-600 text-center">Atas Nama: <strong class="text-amber-950">Rest in Cheese</strong></p>
+                <div class="pt-2 border-t border-amber-200 flex justify-between items-center font-bold">
+                    <span>Total Tagihan:</span>
+                    <span id="modal-grand-total" class="text-amber-900 text-sm">Rp 0</span>
+                </div>
             </div>
-            <div class="bg-white p-3 border-t border-neutral-200 flex space-x-2">
-                <button onclick="closeWaPreview()" class="flex-1 bg-neutral-200 hover:bg-neutral-300 text-neutral-700 font-bold py-2.5 px-3 rounded-xl text-xs transition">Batal</button>
-                <button onclick="confirmAndSendWhatsApp()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-1"><span>Kirim ke WA & Bayar ➔</span></button>
+
+            <div class="space-y-1.5">
+                <label class="block text-xs font-bold text-neutral-700">Nomor Referensi Transaksi BCA:</label>
+                <input type="text" id="bca-ref-number" placeholder="e.g. FT26105XYZ99" class="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-xs font-mono uppercase focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <p class="text-[10px] text-neutral-500">Contoh: Nomor ref/journal m-BCA atau myBCA setelah transfer berhasil.</p>
+            </div>
+
+            <div class="flex space-x-2 pt-2">
+                <button onclick="closeWaPreview()" class="flex-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold py-3 px-3 rounded-xl text-xs transition">Batal</button>
+                <button onclick="verifyAndSendOrder()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-1"><span>Kirim No. Ref & Pesan ➔</span></button>
             </div>
         </div>
     </div>
 
-    <!-- Leaflet JS for Pinpoint Map -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        console.log(
-            "%c 🧀 Rest in Cheese %c BCA Transfer Gateway & Cart Reset Loaded! ",
-            "background: #d97706; color: #fff; font-weight: bold; padding: 4px 8px; border-radius: 4px 0 0 4px;",
-            "background: #2d2424; color: #fff; padding: 4px 8px; border-radius: 0 4px 4px 0;"
-        );
+        console.log("%c 🧀 Rest in Cheese %c Direct WhatsApp 082112002258 Active! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -438,24 +463,46 @@
             { id: 3, name: "Corn & Coconut", description: "Sweet sweetcorn cream layered with rich, aromatic coconut glaze and a buttery crumb base.", price: 65000, emoji: "🌽", badge: "" }
         ];
 
+        const JAKARTA_AREAS = [
+            { name: "PIK, Kapuk & Taman Grisenda (Dekat Dapur)", fee: 15000, km: 2.0 },
+            { name: "Muara Karang & Pluit", fee: 18000, km: 4.5 },
+            { name: "Penjaringan & Ancol", fee: 22000, km: 7.0 },
+            { name: "Grogol Petamburan & Jelambar", fee: 25000, km: 9.0 },
+            { name: "Tanjung Duren & Tomang", fee: 28000, km: 11.0 },
+            { name: "Kebon Jeruk & Puri Indah", fee: 32000, km: 14.0 },
+            { name: "Kota Tua & Mangga Dua", fee: 35000, km: 16.5 },
+            { name: "Harmoni & Sawah Besar (Jakarta Pusat)", fee: 38000, km: 18.0 },
+            { name: "Menteng, Cikini & Gambir", fee: 42000, km: 21.0 },
+            { name: "Tanah Abang & Senen", fee: 45000, km: 23.0 },
+            { name: "Senayan, SCBD & Kebayoran Baru (Jaksel)", fee: 48000, km: 25.0 },
+            { name: "Pondok Indah, Lebak Bulus & Cilandak", fee: 55000, km: 29.0 },
+            { name: "Tebet, Kuningan & Setiabudi", fee: 52000, km: 27.0 },
+            { name: "Kelapa Gading & Sunter (Jakarta Utara)", fee: 35000, km: 15.0 },
+            { name: "Rawamangun, Jatinegara & Duren Sawit (Jaktim)", fee: 55000, km: 28.0 },
+            { name: "Cibubur, Cipayung & Ciracas (Jakarta Timur)", fee: 65000, km: 35.0 },
+            { name: "Cengkareng & Kalideres (Jakarta Barat)", fee: 22000, km: 8.0 }
+        ];
+
+        const COGS_PER_JAR = 28500;
+        const BUNDLE_COGS = 28500 * 3;
+
         let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
         let savedPuggleReward = localStorage.getItem('ric_puggle_reward') || null;
-        let orderCompleted = localStorage.getItem('ric_order_completed') === 'true';
         let appliedPromoDiscount = 0;
-        let map = null;
-        let marker = null;
-        let deliveryDistanceKm = 0;
-        let deliveryFee = 10200;
-        let estimatedMinutes = 15;
-        let selectedAddressText = "";
+        
+        let currentDeliveryFee = 15000;
+        let selectedAreaName = JAKARTA_AREAS[0].name;
+        let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
         let generatedWhatsAppMessage = "";
+        let orderPayloadForSheet = {};
+        let calculatedGrandTotalNum = 0;
 
         const DISCOUNT_MIN_ORDER = 250000;
         const PUGGLE_MIN_ORDER = 300000;
         const DISCOUNT_PERCENTAGE = 0.05;
 
-        const KITCHEN_LAT = -6.1105;
-        const KITCHEN_LNG = 106.7402;
+        // 🔗 REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        const GOOGLE_SHEET_WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
 
         window.addEventListener('DOMContentLoaded', () => {
             const tomorrow = new Date();
@@ -478,8 +525,54 @@
 
             renderProducts();
             renderBoomerPromos();
+            renderJakartaAreas();
             updateUI();
         });
+
+        function renderJakartaAreas() {
+            const container = document.getElementById('jakarta-area-cards');
+            container.innerHTML = JAKARTA_AREAS.map((area, index) => {
+                const isSelected = index === 0;
+                return `
+                    <div onclick="selectArea(${area.fee}, ${area.km}, '${area.name.replace(/'/g, "")}', this)" class="area-card p-3 rounded-xl border-2 ${isSelected ? 'border-amber-600 bg-amber-50' : 'border-neutral-200 bg-white'} cursor-pointer transition flex items-center justify-between">
+                        <div>
+                            <p class="font-extrabold text-xs ${isSelected ? 'text-amber-950' : 'text-neutral-800'}">${area.name}</p>
+                            <p class="text-[10px] text-neutral-500">Ongkir: Rp ${area.fee.toLocaleString("id-ID")} (~${area.km} km)</p>
+                        </div>
+                        <span class="w-5 h-5 rounded-full ${isSelected ? 'bg-amber-600 text-white' : 'bg-neutral-200 text-transparent'} flex items-center justify-center text-xs font-bold check-icon">✓</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectArea(fee, km, name, element) {
+            currentDeliveryFee = fee;
+            calculatedDeliveryKm = km;
+            selectedAreaName = name;
+
+            document.querySelectorAll('.area-card').forEach(card => {
+                card.classList.remove('border-amber-600', 'bg-amber-50');
+                card.classList.add('border-neutral-200', 'bg-white');
+                const badge = card.querySelector('.check-icon');
+                badge.classList.remove('bg-amber-600', 'text-white');
+                badge.classList.add('bg-neutral-200', 'text-transparent');
+                card.querySelector('p').classList.remove('text-amber-950');
+                card.querySelector('p').classList.add('text-neutral-800');
+            });
+
+            element.classList.remove('border-neutral-200', 'bg-white');
+            element.classList.add('border-amber-600', 'bg-amber-50');
+            element.querySelector('p').classList.remove('text-neutral-800');
+            element.querySelector('p').classList.add('text-amber-950');
+            const activeBadge = element.querySelector('.check-icon');
+            activeBadge.classList.remove('bg-neutral-200', 'text-transparent');
+            activeBadge.classList.add('bg-amber-600', 'text-white');
+
+            document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + " km";
+            document.getElementById('calc-ongkir').innerText = "Rp " + currentDeliveryFee.toLocaleString("id-ID");
+
+            updateUI();
+        }
 
         function formatRupiah(num) {
             return "Rp " + num.toLocaleString("id-ID");
@@ -539,25 +632,28 @@
 
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
-            status.innerText = "🎯 Keju dijatuhkan... Jatuh alami melewati pinball (10 detik)...";
-            
+            status.innerText = "🎯 Keju dilempar! Memantul melewati pinball...";
+
+            const rand = Math.random() * 1000;
+            let wonPercent = 4;
+            let landXCoord = "-130px";
+
+            if (rand < 800) { wonPercent = 4; landXCoord = "-130px"; }
+            else if (rand < 900) { wonPercent = 5; landXCoord = "-65px"; }
+            else if (rand < 950) { wonPercent = 6; landXCoord = "0px"; }
+            else if (rand < 999) { wonPercent = 7; landXCoord = "65px"; }
+            else { wonPercent = 8; landXCoord = "130px"; }
+
+            cheese.style.setProperty('--land-x', landXCoord);
             cheese.classList.remove('hidden');
-            cheese.classList.add('natural-puggle-anim');
+            cheese.classList.add('bouncing-drop-anim');
 
             setTimeout(() => {
-                const rand = Math.random() * 1000;
-                let wonPercent = 4;
-                if (rand < 800) wonPercent = 4;
-                else if (rand < 900) wonPercent = 5;
-                else if (rand < 950) wonPercent = 6;
-                else if (rand < 999) wonPercent = 7;
-                else wonPercent = 8;
-
                 const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
                 savedPuggleReward = `${wonPercent}% OFF (${rewardCode})`;
                 localStorage.setItem('ric_puggle_reward', savedPuggleReward);
 
-                cheese.classList.remove('natural-puggle-anim');
+                cheese.classList.remove('bouncing-drop-anim');
                 cheese.classList.add('hidden');
 
                 const slots = document.querySelectorAll('#puggle-slots > div');
@@ -567,7 +663,7 @@
                     }
                 });
 
-                status.innerHTML = `🎉 Selamat! Keju pas masuk slot <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span>!`;
+                status.innerHTML = `🎉 Selamat! Keju memantul pas ke slot <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span>!`;
                 btn.innerText = "✅ Kupon Tersimpan!";
                 
                 renderBoomerPromos();
@@ -576,7 +672,7 @@
                 setTimeout(() => {
                     closePuggleModal();
                 }, 2500);
-            }, 10000);
+            }, 8000);
         }
 
         function renderBoomerPromos() {
@@ -585,26 +681,26 @@
 
             if (!savedPuggleReward) {
                 container.innerHTML = `
-                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-center space-y-2">
-                        <p class="text-2xl">🔒</p>
-                        <p class="text-xs font-bold text-amber-900">Belum ada kupon aktif.</p>
-                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan pembayaran transfer BCA min. Rp 300.000 via WhatsApp untuk membuka game Puggle dan memenangkan kupon diskon pesanan berikutnya!</p>
+                    <div class="bg-amber-50 border border-amber-900/10 p-5 rounded-2xl text-center space-y-2">
+                        <p class="text-3xl">🔒</p>
+                        <p class="text-xs font-bold text-amber-950">Belum ada kupon aktif.</p>
+                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan pesanan min. Rp 300.000 via WhatsApp untuk membuka game Puggle dan memenangkan kupon diskon pesanan berikutnya!</p>
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = `
-                <div class="bg-gradient-to-r from-amber-500 to-amber-700 text-white p-4 rounded-2xl shadow-md space-y-3">
+                <div class="bg-gradient-to-r from-amber-600 to-amber-800 text-white p-5 rounded-2xl shadow-md space-y-3">
                     <div class="flex justify-between items-center">
-                        <span class="bg-amber-900 text-amber-200 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">🎁 Kupon Aktif Anda</span>
+                        <span class="bg-black/30 text-amber-200 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">🎁 Kupon Aktif Anda</span>
                         <span class="text-xs font-bold text-amber-100">Siap Pakai</span>
                     </div>
                     <div>
                         <p class="text-lg font-mono font-extrabold tracking-wide" id="boomer-code-display">${savedPuggleReward}</p>
                         <p class="text-[11px] text-amber-100 mt-0.5">Gunakan kode ini di keranjang belanja berikutnya.</p>
                     </div>
-                    <button onclick="copyBoomerCode()" class="w-full bg-white hover:bg-amber-50 text-amber-900 font-extrabold py-2.5 rounded-xl text-xs shadow transition">
+                    <button onclick="copyBoomerCode()" class="w-full bg-white hover:bg-amber-50 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow transition">
                         📋 Salin Kode Kupon
                     </button>
                 </div>
@@ -649,20 +745,20 @@
         function renderProducts() {
             const listEl = document.getElementById('product-list');
             listEl.innerHTML = PRODUCTS.map(p => `
-                <div class="bg-white p-4 rounded-3xl border border-amber-100 shadow-2xs space-y-3">
-                    <div class="h-40 w-full bg-amber-100/50 rounded-2xl overflow-hidden relative border border-amber-200/50 flex items-center justify-center text-6xl">
+                <div class="glass-card p-4 rounded-3xl space-y-3">
+                    <div class="h-44 w-full bg-gradient-to-br from-amber-50 to-amber-100/60 rounded-2xl overflow-hidden relative border border-amber-900/10 flex items-center justify-center text-7xl shadow-inner">
                         <span>${p.emoji}</span>
-                        ${p.badge ? `<span class="absolute top-2 left-2 bg-amber-950/80 text-amber-100 text-[10px] font-extrabold px-2.5 py-1 rounded-full">${p.badge}</span>` : ''}
+                        ${p.badge ? `<span class="absolute top-3 left-3 bg-[#1C1616] text-amber-200 text-[10px] font-extrabold px-3 py-1 rounded-full shadow">${p.badge}</span>` : ''}
                     </div>
                     <div>
-                        <h3 class="font-bold text-sm text-[#2D2424]">${p.name}</h3>
-                        <p class="text-xs text-neutral-500 mt-0.5 leading-relaxed">${p.description}</p>
-                        <p class="text-sm font-extrabold text-amber-900 mt-2">${formatRupiah(p.price)}</p>
+                        <h3 class="font-extrabold text-base text-[#1C1616]">${p.name}</h3>
+                        <p class="text-xs text-neutral-500 mt-1 leading-relaxed">${p.description}</p>
+                        <p class="text-sm font-extrabold text-amber-900 mt-2.5">${formatRupiah(p.price)}</p>
                     </div>
-                    <div class="flex items-center justify-end space-x-2 pt-1">
-                        <button onclick="updateCart(${p.id}, -1)" class="w-9 h-9 rounded-xl bg-neutral-100 text-neutral-700 font-bold flex items-center justify-center active:scale-95">-</button>
-                        <span class="w-6 text-center font-bold text-sm" id="qty-${p.id}">${cart[p.id] || 0}</span>
-                        <button onclick="updateCart(${p.id}, 1)" class="w-9 h-9 rounded-xl bg-[#2D2424] text-white font-bold flex items-center justify-center active:scale-95">+</button>
+                    <div class="flex items-center justify-end space-x-2 pt-2 border-t border-neutral-100">
+                        <button onclick="updateCart(${p.id}, -1)" class="w-10 h-10 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-extrabold flex items-center justify-center active:scale-95 transition">-</button>
+                        <span class="w-8 text-center font-extrabold text-sm" id="qty-${p.id}">${cart[p.id] || 0}</span>
+                        <button onclick="updateCart(${p.id}, 1)" class="w-10 h-10 rounded-xl bg-[#1C1616] hover:bg-neutral-800 text-white font-extrabold flex items-center justify-center active:scale-95 transition">+</button>
                     </div>
                 </div>
             `).join('');
@@ -716,8 +812,10 @@
                 if (qEl) qEl.innerText = cart[p.id] || 0;
             });
 
+            const isOrderDone = localStorage.getItem('ric_order_completed') === 'true';
             const puggleTrigger = document.getElementById('floating-puggle-trigger');
-            if (orderCompleted && productsTotal >= PUGGLE_MIN_ORDER && !savedPuggleReward) {
+            
+            if (isOrderDone && productsTotal >= PUGGLE_MIN_ORDER && !savedPuggleReward) {
                 puggleTrigger.classList.remove('hidden');
             } else {
                 puggleTrigger.classList.add('hidden');
@@ -743,7 +841,7 @@
                 discountAmount = Math.round(productsTotal * DISCOUNT_PERCENTAGE);
                 floatingBar.style.width = "100%";
                 floatingBadge.innerText = "100% UNLOCKED";
-                floatingBadge.className = "bg-emerald-500 text-white text-[10px] px-2.5 py-1 rounded-full font-extrabold";
+                floatingBadge.className = "bg-emerald-600 text-white text-[10px] px-2.5 py-1 rounded-full font-extrabold";
                 floatingText.innerHTML = "🎉 <strong class='text-emerald-700'>Selamat! Diskon 5% Aktif</strong> (-" + formatRupiah(discountAmount) + ")";
                 
                 discountRow.classList.remove('hidden');
@@ -752,7 +850,7 @@
                 const remaining = DISCOUNT_MIN_ORDER - productsTotal;
                 floatingBar.style.width = progressPercent + "%";
                 floatingBadge.innerText = progressPercent + "%";
-                floatingBadge.className = "bg-amber-200 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold";
+                floatingBadge.className = "bg-amber-100 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold";
                 floatingText.innerText = "Tambah " + formatRupiah(remaining) + " lagi untuk dapet Diskon 5%!";
                 discountRow.classList.add('hidden');
             }
@@ -772,16 +870,16 @@
                 let html = '';
                 if (cart['bundle']) {
                     html += `
-                        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-amber-100 text-sm">
+                        <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-amber-900/10 text-sm shadow-2xs">
                             <div>
-                                <span class="font-bold text-[#2D2424]">🎁 The Ultimate Trio Bundle</span>
-                                <div class="text-xs text-neutral-500">Rp 189.000 x ${cart['bundle']}</div>
+                                <span class="font-extrabold text-[#1C1616]">🎁 The Ultimate Trio Bundle</span>
+                                <div class="text-xs text-neutral-500 mt-0.5">Rp 189.000 x ${cart['bundle']}</div>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <span class="font-extrabold text-amber-900">${formatRupiah(189000 * cart['bundle'])}</span>
-                                <button onclick="updateCartBundle(-1)" class="w-6 h-6 bg-neutral-100 rounded text-xs font-bold">-</button>
+                                <button onclick="updateCartBundle(-1)" class="w-7 h-7 bg-neutral-100 rounded-lg text-xs font-bold">-</button>
                                 <span class="text-xs font-bold">${cart['bundle']}</span>
-                                <button onclick="updateCartBundle(1)" class="w-6 h-6 bg-neutral-100 rounded text-xs font-bold">+</button>
+                                <button onclick="updateCartBundle(1)" class="w-7 h-7 bg-neutral-100 rounded-lg text-xs font-bold">+</button>
                             </div>
                         </div>
                     `;
@@ -792,10 +890,10 @@
                         const p = PRODUCTS.find(item => item.id == id);
                         const qty = cart[id];
                         html += `
-                            <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-amber-100 text-sm">
+                            <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-amber-900/10 text-sm shadow-2xs">
                                 <div>
-                                    <span class="font-bold text-[#2D2424]">${p.name}</span>
-                                    <div class="text-xs text-neutral-500">${formatRupiah(p.price)} x ${qty}</div>
+                                    <span class="font-extrabold text-[#1C1616]">${p.name}</span>
+                                    <div class="text-xs text-neutral-500 mt-0.5">${formatRupiah(p.price)} x ${qty}</div>
                                 </div>
                                 <span class="font-extrabold text-amber-900">${formatRupiah(p.price * qty)}</span>
                             </div>
@@ -803,16 +901,11 @@
                     }
                 }
                 cartItemsEl.innerHTML = html;
-
-                setTimeout(() => {
-                    if (!map) initMap();
-                    else map.invalidateSize();
-                }, 150);
             }
 
-            const grandTotal = Math.max(0, productsTotal - discountAmount) + deliveryFee;
-            document.getElementById('summary-delivery-fee').innerText = formatRupiah(deliveryFee);
-            document.getElementById('summary-grand-total').innerText = formatRupiah(grandTotal);
+            calculatedGrandTotalNum = Math.max(0, productsTotal - discountAmount) + currentDeliveryFee;
+            document.getElementById('summary-delivery-fee').innerText = formatRupiah(currentDeliveryFee);
+            document.getElementById('summary-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
         }
 
         function toggleCart() {
@@ -828,145 +921,28 @@
             }
         }
 
-        function initMap() {
-            if (map) return;
-
-            map = L.map('map').setView([KITCHEN_LAT, KITCHEN_LNG], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-
-            marker = L.marker([KITCHEN_LAT, KITCHEN_LNG], { draggable: true }).addTo(map);
-
-            marker.on('dragend', function(e) {
-                const pos = marker.getLatLng();
-                calculateDeliveryFromCoords(pos.lat, pos.lng);
-            });
-
-            map.on('click', function(e) {
-                marker.setLatLng(e.latlng);
-                calculateDeliveryFromCoords(e.latlng.lat, e.latlng.lng);
-            });
-
-            calculateDeliveryFromCoords(KITCHEN_LAT, KITCHEN_LNG);
-        }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function(...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
-
-        const debouncedSearchLocation = debounce(function(query) {
-            const suggestionsEl = document.getElementById('suggestions');
-            if (!query || query.length < 2) {
-                suggestionsEl.classList.add('hidden');
-                return;
-            }
-
-            const q = query.toLowerCase();
-            const locationsDB = [
-                { name: "Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara", lat: -6.1105, lon: 106.7402 },
-                { name: "Pantai Indah Kapuk (PIK), Jakarta Utara", lat: -6.1120, lon: 106.7450 },
-                { name: "Pluit, Penjaringan, Jakarta Utara", lat: -6.1250, lon: 106.7900 },
-                { name: "Muara Karang, Penjaringan, Jakarta Utara", lat: -6.1150, lon: 106.7800 },
-                { name: "Grogol, Jakarta Barat", lat: -6.1680, lon: 106.7880 },
-                { name: "Mall Taman Anggrek, Grogol, Jakarta Barat", lat: -6.1785, lon: 106.7922 },
-                { name: "Central Park Mall, Grogol, Jakarta Barat", lat: -6.1772, lon: 106.7907 },
-                { name: "Trisakti / Untar, Grogol, Jakarta Barat", lat: -6.1672, lon: 106.7895 },
-                { name: "Gading Serpong, Tangerang", lat: -6.2410, lon: 106.6280 },
-                { name: "Summarecon Mall Serpong (SMS), Gading Serpong", lat: -6.2405, lon: 106.6285 },
-                { name: "Scientia Square Park, Gading Serpong", lat: -6.2570, lon: 106.6185 },
-                { name: "BSD City, Serpong, Tangerang", lat: -6.3000, lon: 106.6500 },
-                { name: "AEON Mall BSD City, Tangerang", lat: -6.3045, lon: 106.6435 },
-                { name: "Alam Sutera, Tangerang", lat: -6.2230, lon: 106.6530 },
-                { name: "Living World Alam Sutera, Tangerang", lat: -6.2245, lon: 106.6528 },
-                { name: "Lippo Karawaci, Tangerang", lat: -6.2250, lon: 106.6080 },
-                { name: "Puri Beta, Ciledug, Tangerang", lat: -6.2300, lon: 106.7310 },
-                { name: "Green Lake City, Cipondoh, Tangerang", lat: -6.1850, lon: 106.7050 },
-                { name: "Kelapa Gading, Jakarta Utara", lat: -6.1600, lon: 106.9050 }
-            ];
-
-            let matches = locationsDB.filter(loc => loc.name.toLowerCase().includes(q));
-
-            if (matches.length === 0) {
-                matches = [
-                    { name: query + ", Jakarta Utara", lat: -6.1150, lon: 106.7420 },
-                    { name: query + ", Jakarta Barat", lat: -6.1680, lon: 106.7880 },
-                    { name: query + ", Tangerang", lat: -6.2250, lon: 106.6300 }
-                ];
-            }
-
-            suggestionsEl.innerHTML = matches.slice(0, 5).map(item => `
-                <div onclick="selectLocation(${item.lat}, ${item.lon}, '${item.name.replace(/'/g, "")}')" class="p-2.5 hover:bg-amber-50 cursor-pointer text-xs border-b border-neutral-100 truncate">
-                    📍 ${item.name}
-                </div>
-            `).join('');
-            suggestionsEl.classList.remove('hidden');
-        }, 300);
-
-        function selectLocation(lat, lon, displayName) {
-            document.getElementById('search-address').value = displayName;
-            selectedAddressText = displayName;
-            document.getElementById('suggestions').classList.add('hidden');
-
-            const latLng = [lat, lon];
-            if(map) {
-                map.setView(latLng, 14);
-                marker.setLatLng(latLng);
-            }
-            calculateDeliveryFromCoords(lat, lon);
-        }
-
-        function calculateDeliveryFromCoords(lat, lng) {
-            const R = 6371;
-            const dLat = (lat - KITCHEN_LAT) * Math.PI / 180;
-            const dLon = (lng - KITCHEN_LNG) * Math.PI / 180;
-            const a = 
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(KITCHEN_LAT * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * 
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            deliveryDistanceKm = R * c;
-
-            if (deliveryDistanceKm <= 4) {
-                deliveryFee = 10200;
-            } else {
-                deliveryFee = Math.round(10200 + ((deliveryDistanceKm - 4) * 2550));
-            }
-
-            estimatedMinutes = Math.round(15 + (deliveryDistanceKm * 3));
-
-            document.getElementById('distance-info').innerHTML = `
-                <p>📍 Jarak dari Taman Grisenda: ${deliveryDistanceKm.toFixed(1)} km | Estimasi Ongkir: ${formatRupiah(deliveryFee)}</p>
-                <p>⏱️ Est. Pengiriman: ~${estimatedMinutes} mins (GoSend / Grab Instant)</p>
-            `;
-            updateUI();
-        }
-
         function previewWhatsAppOrder() {
             const name = document.getElementById('cust-name').value.trim();
             const phone = document.getElementById('cust-phone').value.trim();
-            const searchAddr = document.getElementById('search-address').value.trim();
-            const notes = document.getElementById('cust-notes').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
             const deliveryDate = document.getElementById('delivery-date').value;
             const deliveryTime = document.getElementById('delivery-time').value;
             const isGift = document.getElementById('gift-option').checked;
             const giftNote = document.getElementById('gift-note').value.trim();
 
-            if (!name || !phone || !searchAddr) {
-                alert("Mohon masukkan nama, nomor WhatsApp, dan lokasi alamat pengiriman.");
+            if (!name || !phone || !address) {
+                alert("Mohon masukkan nama, nomor WhatsApp, dan alamat lengkap.");
                 return;
             }
 
             let orderSummary = "";
             let productsTotal = 0;
+            let totalCogs = 0;
 
             if (cart['bundle']) {
                 orderSummary += `- ${cart['bundle']}x The Ultimate Trio Bundle (${formatRupiah(189000 * cart['bundle'])})\n`;
                 productsTotal += 189000 * cart['bundle'];
+                totalCogs += BUNDLE_COGS * cart['bundle'];
             }
 
             for (let id in cart) {
@@ -975,6 +951,7 @@
                     const qty = cart[id];
                     orderSummary += `- ${qty}x ${p.name} (${formatRupiah(p.price * qty)})\n`;
                     productsTotal += p.price * qty;
+                    totalCogs += COGS_PER_JAR * qty;
                 }
             }
 
@@ -983,15 +960,25 @@
                 discountAmount = Math.round(productsTotal * DISCOUNT_PERCENTAGE);
             }
 
-            const grandTotal = Math.max(0, productsTotal - discountAmount) + deliveryFee;
+            calculatedGrandTotalNum = Math.max(0, productsTotal - discountAmount) + currentDeliveryFee;
 
-            generatedWhatsAppMessage = `*NEW ORDER & PAYMENT CONFIRMATION - REST IN CHEESE* 🧀\n\n` +
+            orderPayloadForSheet = {
+                name: name,
+                phone: phone,
+                datetime: `${deliveryDate} (${deliveryTime})`,
+                address: `${address} [Area: ${selectedAreaName}, ~${calculatedDeliveryKm.toFixed(1)}km]`,
+                items: orderSummary.trim(),
+                totalStr: formatRupiah(calculatedGrandTotalNum),
+                revenueNumber: calculatedGrandTotalNum,
+                cogsNumber: totalCogs
+            };
+
+            generatedWhatsAppMessage = `*NEW ORDER & PAYMENT VERIFICATION - REST IN CHEESE* 🧀\n\n` +
                 `*Customer Name:* ${name}\n` +
                 `*Phone:* ${phone}\n` +
-                `*Selected Location:* ${searchAddr}\n` +
-                `*Driver Notes / Unit:* ${notes || '-'}\n` +
+                `*Delivery Address:* ${address}\n` +
+                `*Estimated Area & Distance:* ${selectedAreaName} (~${calculatedDeliveryKm.toFixed(1)} km from PIK)\n` +
                 `*Delivery Date:* ${deliveryDate} (${deliveryTime})\n` +
-                `*Delivery Distance:* ~${deliveryDistanceKm.toFixed(1)} km (~${estimatedMinutes} mins)\n` +
                 `*Payment Status:* TRANSFER BCA (578 543 3570)\n` +
                 `*Gift Card:* ${isGift ? 'Ya' : 'Tidak'}\n` +
                 (isGift && giftNote ? `*Greeting Note:* "${giftNote}"\n` : '') +
@@ -999,11 +986,11 @@
                 `*Order Items:*\n${orderSummary}\n` +
                 `*Subtotal Produk:* ${formatRupiah(productsTotal)}\n` +
                 (discountAmount > 0 ? `*Diskon (5% Off):* -${formatRupiah(discountAmount)}\n` : '') +
-                `*Estimasi Ongkir (Fix via WA):* ${formatRupiah(deliveryFee)}\n` +
-                `*Total Pembayaran:* ${formatRupiah(grandTotal)}\n\n` +
-                `*Instruksi:* Saya sudah/akan transfer ke BCA 578 543 3570. Mohon cek mutasi & konfirmasi pesanan saya!`;
+                `*Ongkir Presisi (${calculatedDeliveryKm.toFixed(1)} km):* ${formatRupiah(currentDeliveryFee)}\n` +
+                `*Total Tagihan:* ${formatRupiah(calculatedGrandTotalNum)}\n\n` +
+                `*Instruksi:* Saya sudah transfer via BCA. Mohon cek mutasi & konfirmasi!`;
 
-            document.getElementById('wa-preview-text').innerText = generatedWhatsAppMessage;
+            document.getElementById('modal-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
             document.getElementById('wa-preview-modal').classList.remove('hidden');
         }
 
@@ -1011,22 +998,71 @@
             document.getElementById('wa-preview-modal').classList.add('hidden');
         }
 
-        function confirmAndSendWhatsApp() {
-            // MARK ORDER AS PAID/COMPLETED, RESET CART TO 0, UNLOCK PUGGLE GAME
+        function verifyAndSendOrder() {
+            const refNumber = document.getElementById('bca-ref-number').value.trim();
+
+            if (!refNumber) {
+                alert("⚠️ Harap masukkan Nomor Referensi / Journal Transaksi BCA Anda sebelum mengirim pesanan!");
+                return;
+            }
+
+            orderPayloadForSheet.name = orderPayloadForSheet.name + ` (BCA Ref: ${refNumber})`;
+            generatedWhatsAppMessage += `\n*BCA Ref Number:* ${refNumber}`;
+
             localStorage.setItem('ric_order_completed', 'true');
-            orderCompleted = true;
+
+            // Trigger In-App Popup & Sound Notification for Admin
+            triggerInstantNotification(orderPayloadForSheet);
+
+            if (GOOGLE_SHEET_WEB_APP_URL && GOOGLE_SHEET_WEB_APP_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+                fetch(GOOGLE_SHEET_WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderPayloadForSheet)
+                }).catch(err => console.log("Google Sheets sync error:", err));
+            }
 
             cart = {};
             localStorage.removeItem('ric_cart');
 
-            const sellerWhatsApp = "6281380003850";
+            // SEND WHATSAPP MESSAGE DIRECTLY TO 082112002258
+            const sellerWhatsApp = "6282112002258";
             const whatsappUrl = `https://wa.me/${sellerWhatsApp}?text=` + encodeURIComponent(generatedWhatsAppMessage);
             window.open(whatsappUrl, '_blank');
             closeWaPreview();
             
             updateUI();
             toggleCart();
-            alert("✅ Pesanan & konfirmasi transfer BCA terkirim! Keranjang telah dikosongkan. Jika total belanja Anda di atas Rp 300.000, game Puggle sekarang sudah terbuka di beranda.");
+        }
+
+        function triggerInstantNotification(payload) {
+            // Play alert sound using Web Audio API beep
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5 note
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } catch(e) { console.log(e); }
+
+            // Show live modal alert
+            const detailsHtml = `
+                <p><strong>Pemesan:</strong> ${payload.name}</p>
+                <p><strong>Total:</strong> ${payload.totalStr}</p>
+                <p><strong>Jadwal:</strong> ${payload.datetime}</p>
+            `;
+            document.getElementById('live-alert-details').innerHTML = detailsHtml;
+            document.getElementById('live-order-alert-modal').classList.remove('hidden');
+        }
+
+        function closeLiveAlert() {
+            document.getElementById('live-order-alert-modal').classList.add('hidden');
         }
     </script>
 </body>
