@@ -1,415 +1,1033 @@
-‎<!DOCTYPE html>
-‎<html lang="id">
-‎<head>
-‎    <meta charset="UTF-8">
-‎    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-‎    <title>Rest in Cheese | Cheesecake in a Jar</title>
-‎    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-‎    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-‎    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-‎    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-‎    <style>
-‎        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FFFDF9; color: #2D2424; }
-‎        .drawer-slide { transition: transform 0.3s ease-in-out; }
-‎        #map { height: 260px; width: 100%; border-radius: 1.5rem; z-index: 10; }
-‎    </style>
-‎</head>
-‎<body class="bg-[#FFFDF9] text-[#2D2424] antialiased min-h-screen pb-12">
-‎
-‎    <!-- Top Navigation Bar -->
-‎    <header class="bg-white/90 backdrop-blur-md border-b border-amber-100 sticky top-0 z-40 px-4 py-3 flex items-center justify-between shadow-xs">
-‎        <div class="flex items-center space-x-3">
-‎            <button onclick="toggleDrawer()" class="p-2.5 rounded-2xl bg-amber-50 text-amber-800 hover:bg-amber-100 transition active:scale-95 border border-amber-200/60">
-‎                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-‎            </button>
-‎            <div class="flex items-center space-x-2">
-‎                <span class="text-2xl">🧀</span>
-‎                <div>
-‎                    <h1 class="font-black tracking-tight text-base text-amber-950 leading-none">Rest in Cheese</h1>
-‎                    <p class="text-[10px] text-amber-600 font-bold uppercase tracking-wider mt-0.5">Taman Grisenda Hub</p>
-‎                </div>
-‎            </div>
-‎        </div>
-‎        <a href="https://instagram.com/rest_in.cheese" target="_blank" class="p-2 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-400 text-white shadow-md shadow-amber-500/20 active:scale-95 transition flex items-center space-x-1.5 text-xs font-black px-3.5 py-2">
-‎            <span>📸</span><span>@rest_in.cheese</span>
-‎        </a>
-‎    </header>
-‎
-‎    <!-- Slide-out Navigation Drawer -->
-‎    <div id="backdrop" onclick="toggleDrawer()" class="fixed inset-0 bg-stone-900/40 z-50 hidden backdrop-blur-xs"></div>
-‎    <div id="drawer" class="fixed top-0 left-0 bottom-0 w-80 bg-white z-50 shadow-2xl transform -translate-x-full drawer-slide p-6 flex flex-col justify-between">
-‎        <div>
-‎            <div class="flex items-center justify-between pb-5 border-b border-amber-100">
-‎                <div class="flex items-center space-x-3">
-‎                    <span class="text-3xl">🧀✨</span>
-‎                    <div>
-‎                        <h3 class="font-extrabold text-base text-amber-950">Rest in Cheese</h3>
-‎                        <p class="text-xs text-stone-400">Taman Grisenda, PIK Area</p>
-‎                    </div>
-‎                </div>
-‎                <button onclick="toggleDrawer()" class="w-9 h-9 rounded-full bg-stone-100 text-stone-500 flex items-center justify-center font-black text-sm hover:bg-stone-200">✕</button>
-‎            </div>
-‎            
-‎            <nav class="mt-6 space-y-2">
-‎                <a href="#menu" onclick="toggleDrawer()" class="flex items-center space-x-3.5 p-3.5 rounded-2xl bg-amber-50/50 hover:bg-amber-100/60 text-amber-950 font-extrabold text-sm border border-amber-100/50">
-‎                    <span class="text-xl">🍰</span><span>Menu & Catalog</span>
-‎                </a>
-‎                <a href="#shipping" onclick="toggleDrawer()" class="flex items-center space-x-3.5 p-3.5 rounded-2xl hover:bg-amber-50/60 text-stone-700 font-bold text-sm">
-‎                    <span class="text-xl">🗺️</span><span>Cek Ongkir Instant</span>
-‎                </a>
-‎                <a href="https://instagram.com/rest_in.cheese" target="_blank" class="flex items-center space-x-3.5 p-3.5 rounded-2xl hover:bg-amber-50/60 text-stone-700 font-bold text-sm">
-‎                    <span class="text-xl">📸</span><span>Instagram Profile</span>
-‎                </a>
-‎            </nav>
-‎        </div>
-‎        
-‎        <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-4 rounded-3xl border border-amber-200/50 text-center space-y-2">
-‎            <p class="text-xs font-black text-amber-950 leading-snug">"The flavors you know, the cheesecake you don't 👀🧀"</p>
-‎            <p class="text-[11px] text-amber-800/80 font-medium">Handcrafted fresh in Taman Grisenda, North Jakarta</p>
-‎        </div>
-‎    </div>
-‎
-‎    <!-- Main App Container -->
-‎    <main class="max-w-md mx-auto px-4 pt-5 space-y-7">
-‎        
-‎        <!-- Hero Card -->
-‎        <div class="bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 rounded-3xl p-6 text-white shadow-xl shadow-amber-500/15 relative overflow-hidden">
-‎            <div class="absolute -right-6 -bottom-6 text-8xl opacity-15 select-none pointer-events-none">🧀</div>
-‎            <span class="bg-white/20 backdrop-blur-md text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest border border-white/20">🔥 Exclusive Bundle</span>
-‎            <h2 class="text-2xl font-black mt-3">The Ultimate Trio Bundle</h2>
-‎            <p class="text-xs text-amber-50/90 mt-1 font-medium leading-relaxed">Experience all 3 signature flavors in one box. Handcrafted fresh daily in Taman Grisenda.</p>
-‎            <div class="flex items-center justify-between mt-5 pt-4 border-t border-white/20">
-‎                <div>
-‎                    <span class="text-xs text-amber-100 line-through font-bold">Rp 200.000</span>
-‎                    <div class="text-xl font-black text-white">Rp 189.000</div>
-‎                </div>
-‎                <button onclick="addBundle()" class="bg-white text-amber-900 hover:bg-amber-50 font-black text-xs px-5 py-3 rounded-2xl shadow-lg transition active:scale-95">
-‎                    + Add Bundle
-‎                </button>
-‎            </div>
-‎        </div>
-‎
-‎        <!-- Catalog Header -->
-‎        <div id="menu" class="flex items-center justify-between pt-1">
-‎            <div>
-‎                <h3 class="text-lg font-black text-stone-900">Cheesecake Jars</h3>
-‎                <p class="text-xs text-stone-400">Select your favorite jars below</p>
-‎            </div>
-‎            <span class="text-[11px] font-black bg-amber-100/80 text-amber-900 px-3 py-1 rounded-full border border-amber-200/50">Fresh Batch</span>
-‎        </div>
-‎
-‎        <!-- Catalog Cards -->
-‎        <div class="space-y-4">
-‎            <!-- Item 1 -->
-‎            <div class="bg-white border border-amber-100 rounded-3xl p-5 shadow-sm space-y-3">
-‎                <div class="h-44 w-full bg-amber-100/50 rounded-2xl overflow-hidden relative border border-amber-200/50">
-‎                    <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80" alt="Pumpkin & Vanilla Bean" class="w-full h-full object-cover">
-‎                    <span class="absolute top-2 left-2 bg-amber-950/80 backdrop-blur-md text-amber-100 text-[10px] font-extrabold px-2.5 py-1 rounded-full">🎃 Signature</span>
-‎                </div>
-‎                <div class="flex justify-between items-start">
-‎                    <div>
-‎                        <h4 class="font-extrabold text-stone-900 text-sm">Pumpkin & Vanilla Bean</h4>
-‎                        <p class="text-xs text-stone-500 mt-1 leading-relaxed">Roasted sweet pumpkin puree folded into rich cream cheese with Madagascan vanilla flecks.</p>
-‎                    </div>
-‎                </div>
-‎                <div class="flex items-center justify-between pt-3 border-t border-stone-100">
-‎                    <span class="text-sm font-black text-amber-900">Rp 70.000</span>
-‎                    <div class="flex items-center space-x-3 bg-amber-50/80 p-1 rounded-2xl border border-amber-200/60">
-‎                        <button onclick="updateQty('pumpkin', -1)" class="w-8 h-8 rounded-xl bg-white text-amber-900 font-black shadow-xs hover:bg-amber-100 active:scale-90">-</button>
-‎                        <span id="qty-pumpkin" class="font-black text-sm w-4 text-center text-amber-950">0</span>
-‎                        <button onclick="updateQty('pumpkin', 1)" class="w-8 h-8 rounded-xl bg-white text-amber-900 font-black shadow-xs hover:bg-amber-100 active:scale-90">+</button>
-‎                    </div>
-‎                </div>
-‎            </div>
-‎
-‎            <!-- Item 2 -->
-‎            <div class="bg-white border border-amber-100 rounded-3xl p-5 shadow-sm space-y-3">
-‎                <div class="h-44 w-full bg-amber-100/50 rounded-2xl overflow-hidden relative border border-amber-200/50">
-‎                    <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80" alt="Corn & Coconut" class="w-full h-full object-cover">
-‎                    <span class="absolute top-2 left-2 bg-amber-950/80 backdrop-blur-md text-amber-100 text-[10px] font-extrabold px-2.5 py-1 rounded-full">🥥 Popular</span>
-‎                </div>
-‎                <div class="flex justify-between items-start">
-‎                    <div>
-‎                        <h4 class="font-extrabold text-stone-900 text-sm">Corn & Coconut</h4>
-‎                        <p class="text-xs text-stone-500 mt-1 leading-relaxed">Sweet corn custard paired with aromatic coconut cream and a buttery crust base.</p>
-‎                    </div>
-‎                </div>
-‎                <div class="flex items-center justify-between pt-3 border-t border-stone-100">
-‎                    <span class="text-sm font-black text-amber-900">Rp 65.000</span>
-‎                    <div class="flex items-center space-x-3 bg-amber-50/80 p-1 rounded-2xl border border-amber-200/60">
-‎                        <button onclick="updateQty('corn', -1)" class="w-8 h-8 rounded-xl bg-white text-amber-900 font-black shadow-xs hover:bg-amber-100 active:scale-90">-</button>
-‎                        <span id="qty-corn" class="font-black text-sm w-4 text-center text-amber-950">0</span>
-‎                        <button onclick="updateQty('corn', 1)" class="w-8 h-8 rounded-xl bg-white text-amber-900 font-black shadow-xs hover:bg-amber-100 active:scale-90">+</button>
-‎                    </div>
-‎                </div>
-‎            </div>
-‎
-‎            <!-- Item 3 -->
-‎            <div class="bg-white border border-amber-100 rounded-3xl p-5 shadow-sm space-y-3">
-‎                <div class="h-44 w-full bg-amber-100/50 rounded-2xl overflow-hidden relative border border-amber-200/50">
-‎                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80" alt="Roasted Banana & Honey" class="w-full h-full object-cover">
-‎                    <span class="absolute top-2 left-2 bg-amber-950/80 backdrop-blur-md text-amber-100 text-[10px] font-extrabold px-2.5 py-1 rounded-full">🍌 Chef's Choice</span>
-‎                </div>
-‎                <div class="flex justify-between items-start">
-‎                    <div>
-‎                        <h4 class="font-extrabold text-stone-900 text-sm">Roasted Banana & Honey</h4>
-‎                        <p class="text-xs text-stone-500 mt-1 leading-relaxed">Caramelized bananas blended with wild honey and velvety cheesecake layer.</p>
-‎                    </div>
-‎                </div>
-‎                <div class="flex items-center justify-between pt-3 border-t border-stone-100">
-‎                    <span class="text-sm font-black text-amber-900">Rp 65.000</span>
-‎                    <div class="flex items-center space-x-3 bg-amber-50/80 p-1 rounded-2xl border border-amber-200/60">
-‎                        <button onclick="updateQty('banana', -1)" class="w-8 h-8 rounded-xl bg-white text-amber-900 font-black shadow-xs hover:bg-amber-100 active:scale-90">-</button>
-‎                        <span id="qty-banana" class="font-black text-sm w-4 text-center text-amber-950">0</span>
-‎                        <button onclick="updateQty('banana', 1)" class="w-8 h-8 rounded-xl bg-white text-amber-900 font-black shadow-xs hover:bg-amber-100 active:scale-90">+</button>
-‎                    </div>
-‎                </div>
-‎            </div>
-‎        </div>
-‎
-‎        <!-- Interactive Map & Delivery Calculator -->
-‎        <div id="shipping" class="bg-white border border-amber-100 rounded-3xl p-5 space-y-4 shadow-sm">
-‎            <div>
-‎                <div class="flex items-center space-x-2">
-‎                    <span class="text-2xl">🗺️</span>
-‎                    <h3 class="font-black text-stone-900 text-base">Hitung Ongkir Instant</h3>
-‎                </div>
-‎                <p class="text-xs text-stone-500 mt-1">Cari alamat/patokan di seluruh Jabodetabek dari Hub Taman Grisenda:</p>
-‎            </div>
-‎
-‎            <div class="flex space-x-2">
-‎                <input id="address-input" type="text" placeholder="Ketik alamat (misal: Puri Beta 2, Grand Indonesia)" class="flex-1 bg-amber-50/50 border border-amber-200 rounded-2xl px-4 py-3 text-xs font-bold text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-400">
-‎                <button onclick="searchAddress()" class="bg-amber-500 hover:bg-amber-600 text-white font-black text-xs px-4 py-3 rounded-2xl shadow-xs active:scale-95 transition">Cari</button>
-‎            </div>
-‎
-‎            <!-- Leaflet Map Container -->
-‎            <div id="map"></div>
-‎
-‎            <div id="shipping-info" class="grid grid-cols-3 gap-2 pt-1 text-center">
-‎                <div class="bg-amber-50/80 border border-amber-100 p-3 rounded-2xl">
-‎                    <span class="text-[10px] font-black uppercase text-stone-400 block">Jarak</span>
-‎                    <span id="dist-val" class="text-sm font-black text-amber-950">0.0 km</span>
-‎                </div>
-‎                <div class="bg-amber-50/80 border border-amber-100 p-3 rounded-2xl">
-‎                    <span class="text-[10px] font-black uppercase text-stone-400 block">Est. Ongkir</span>
-‎                    <span id="cost-val" class="text-sm font-black text-amber-950">Rp 0</span>
-‎                </div>
-‎                <div class="bg-amber-50/80 border border-amber-100 p-3 rounded-2xl">
-‎                    <span class="text-[10px] font-black uppercase text-stone-400 block">Waktu</span>
-‎                    <span id="time-val" class="text-sm font-black text-amber-950">~0 Min</span>
-‎                </div>
-‎            </div>
-‎        </div>
-‎
-‎        <!-- Checkout Summary Card -->
-‎        <div class="bg-white border-2 border-amber-300 rounded-3xl p-5 space-y-4 shadow-md">
-‎            <div class="flex justify-between items-center border-b border-stone-100 pb-3">
-‎                <h3 class="font-black text-stone-900 text-sm">Rincian Pesanan</h3>
-‎                <span id="item-count-badge" class="text-xs font-extrabold bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full">0 Item</span>
-‎            </div>
-‎
-‎            <div id="cart-summary-list" class="text-xs space-y-2 text-stone-600 font-medium">
-‎                <p class="text-stone-400 italic">Belum ada item dipilih. Silakan tambah jar di atas!</p>
-‎            </div>
-‎
-‎            <div class="pt-2 border-t border-stone-100 space-y-3">
-‎                <label class="flex items-center space-x-2 cursor-pointer">
-‎                    <input type="checkbox" id="gift-toggle" onchange="toggleGiftField()" class="w-4 h-4 rounded text-amber-500 focus:ring-amber-400">
-‎                    <span class="text-xs font-bold text-stone-800">🎁 Kirim sebagai hadiah? (+ Kartu Ucapan)</span>
-‎                </label>
-‎                <textarea id="gift-note" placeholder="Tulis ucapan ulang tahun / note ucapan di sini..." class="hidden w-full bg-amber-50/50 border border-amber-200 rounded-2xl p-3 text-xs font-bold text-stone-900 focus:outline-none" rows="2"></textarea>
-‎            </div>
-‎
-‎            <div class="pt-3 border-t border-stone-100 space-y-1.5">
-‎                <div class="flex justify-between text-xs font-medium text-stone-500">
-‎                    <span>Subtotal Produk</span>
-‎                    <span id="subtotal-val" class="font-bold text-stone-800">Rp 0</span>
-‎                </div>
-‎                <div class="flex justify-between text-xs font-medium text-stone-500">
-‎                    <span>Ongkir GoSend/Grab</span>
-‎                    <span id="shipping-fee-val" class="font-bold text-stone-800">Rp 0</span>
-‎                </div>
-‎                <div class="flex justify-between text-base font-black text-amber-950 pt-2 border-t border-dashed border-stone-200">
-‎                    <span>Total Pembayaran</span>
-‎                    <span id="grand-total-val" class="text-amber-600">Rp 0</span>
-‎                </div>
-‎            </div>
-‎
-‎            <div class="grid grid-cols-1 gap-2 pt-2">
-‎                <button onclick="checkoutWA()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs py-3.5 rounded-2xl shadow-md transition active:scale-95 flex items-center justify-center space-x-2">
-‎                    <span>💬 Pesan via WhatsApp</span>
-‎                </button>
-‎                <a href="https://instagram.com/rest_in.cheese" target="_blank" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black text-xs py-3.5 rounded-2xl shadow-md transition active:scale-95 flex items-center justify-center space-x-2">
-‎                    <span>📸 @rest_in.cheese di Instagram</span>
-‎                </a>
-‎            </div>
-‎        </div>
-‎
-‎    </main>
-‎
-‎    <script>
-‎        const HUB_LAT = -6.115;
-‎        const HUB_LNG = 106.772;
-‎        let map, hubMarker, destMarker, routeLine;
-‎        let selectedDist = 0;
-‎        let selectedCost = 0;
-‎        let destName = "Belum Diatur";
-‎
-‎        let cart = { bundle: 0, pumpkin: 0, corn: 0, banana: 0 };
-‎        const prices = { bundle: 189000, pumpkin: 70000, corn: 65000, banana: 65000 };
-‎
-‎        window.onload = function() {
-‎            initMap();
-‎        };
-‎
-‎        function initMap() {
-‎            map = L.map('map', { zoomControl: false }).setView([HUB_LAT, HUB_LNG], 12);
-‎            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-‎                attribution: '© OpenStreetMap'
-‎            }).addTo(map);
-‎
-‎            let hubIcon = L.divIcon({
-‎                html: '🧀',
-‎                className: 'text-3xl flex items-center justify-center',
-‎                iconSize: [30, 30]
-‎            });
-‎
-‎            hubMarker = L.marker([HUB_LAT, HUB_LNG], { icon: hubIcon }).addTo(map)
-‎                .bindPopup('<b>Rest in Cheese Hub</b><br>Taman Grisenda').openPopup();
-‎        }
-‎
-‎        function toggleDrawer() {
-‎            let drawer = document.getElementById('drawer');
-‎            let backdrop = document.getElementById('backdrop');
-‎            drawer.classList.toggle('-translate-x-full');
-‎            backdrop.classList.toggle('hidden');
-‎        }
-‎
-‎        function toggleGiftField() {
-‎            let isGift = document.getElementById('gift-toggle').checked;
-‎            document.getElementById('gift-note').classList.toggle('hidden', !isGift);
-‎        }
-‎
-‎        function addBundle() {
-‎            cart.bundle += 1;
-‎            updateCart();
-‎        }
-‎
-‎        function updateQty(item, change) {
-‎            cart[item] = Math.max(0, cart[item] + change);
-‎            updateCart();
-‎        }
-‎
-‎        function updateCart() {
-‎            document.getElementById('qty-pumpkin').innerText = cart.pumpkin;
-‎            document.getElementById('qty-corn').innerText = cart.corn;
-‎            document.getElementById('qty-banana').innerText = cart.banana;
-‎
-‎            let totalItems = cart.bundle + cart.pumpkin + cart.corn + cart.banana;
-‎            document.getElementById('item-count-badge').innerText = totalItems + " Item";
-‎
-‎            let subtotal = (cart.bundle * prices.bundle) +
-‎                           (cart.pumpkin * prices.pumpkin) +
-‎                           (cart.corn * prices.corn) +
-‎                           (cart.banana * prices.banana);
-‎
-‎            let listHtml = '';
-‎            if (cart.bundle > 0) listHtml += `<div class="flex justify-between"><span>The Ultimate Trio Bundle x${cart.bundle}</span><span class="font-bold">Rp ${(cart.bundle * prices.bundle).toLocaleString('id-ID')}</span></div>`;
-‎            if (cart.pumpkin > 0) listHtml += `<div class="flex justify-between"><span>Pumpkin & Vanilla Bean x${cart.pumpkin}</span><span class="font-bold">Rp ${(cart.pumpkin * prices.pumpkin).toLocaleString('id-ID')}</span></div>`;
-‎            if (cart.corn > 0) listHtml += `<div class="flex justify-between"><span>Corn & Coconut x${cart.corn}</span><span class="font-bold">Rp ${(cart.corn * prices.corn).toLocaleString('id-ID')}</span></div>`;
-‎            if (cart.banana > 0) listHtml += `<div class="flex justify-between"><span>Roasted Banana & Honey x${cart.banana}</span><span class="font-bold">Rp ${(cart.banana * prices.banana).toLocaleString('id-ID')}</span></div>`;
-‎
-‎            if (totalItems === 0) listHtml = '<p class="text-stone-400 italic">Belum ada item dipilih.</p>';
-‎            document.getElementById('cart-summary-list').innerHTML = listHtml;
-‎
-‎            document.getElementById('subtotal-val').innerText = 'Rp ' + subtotal.toLocaleString('id-ID');
-‎            document.getElementById('shipping-fee-val').innerText = 'Rp ' + selectedCost.toLocaleString('id-ID');
-‎            document.getElementById('grand-total-val').innerText = 'Rp ' + (subtotal + selectedCost).toLocaleString('id-ID');
-‎        }
-‎
-‎        function calculateHaversine(lat1, lon1, lat2, lon2) {
-‎            const R = 6371;
-‎            const dLat = (lat2 - lat1) * Math.PI / 180;
-‎            const dLon = (lon2 - lon1) * Math.PI / 180;
-‎            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-‎                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-‎                      Math.sin(dLon/2) * Math.sin(dLon/2);
-‎            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-‎            return R * c * 1.25;
-‎        }
-‎
-‎        async function searchAddress() {
-‎            let query = document.getElementById('address-input').value;
-‎            if (!query) return;
-‎
-‎            let url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query + ', Jakarta, Indonesia')}`;
-‎            
-‎            try {
-‎                let res = await fetch(url);
-‎                let data = await res.json();
-‎                if (data && data.length > 0) {
-‎                    let destLat = parseFloat(data[0].lat);
-‎                    let destLng = parseFloat(data[0].lon);
-‎                    destName = data[0].display_name.split(',')[0];
-‎                    updateRoute(destLat, destLng, destName);
-‎                } else {
-‎                    alert("Alamat tidak ditemukan. Coba ketik nama jalan, mall, atau area utama.");
-‎                }
-‎            } catch (e) {
-‎                alert("Gagal koneksi server peta. Coba beberapa saat lagi.");
-‎            }
-‎        }
-‎
-‎        function updateRoute(lat, lng, name) {
-‎            if (destMarker) map.removeLayer(destMarker);
-‎            if (routeLine) map.removeLayer(routeLine);
-‎
-‎            destMarker = L.marker([lat, lng]).addTo(map).bindPopup(`<b>${name}</b>`).openPopup();
-‎            routeLine = L.polyline([[HUB_LAT, HUB_LNG], [lat, lng]], { color: '#f59e0b', weight: 4, dashArray: '6, 8' }).addTo(map);
-‎
-‎            let group = L.featureGroup([hubMarker, destMarker]);
-‎            map.fitBounds(group.getBounds().pad(0.2));
-‎
-‎            let km = calculateHaversine(HUB_LAT, HUB_LNG, lat, lng);
-‎            selectedDist = km;
-‎            selectedCost = km <= 4 ? 10000 : Math.round(10000 + ((km - 4) * 2500));
-‎
-‎            document.getElementById('dist-val').innerText = km.toFixed(1) + " km";
-‎            document.getElementById('cost-val').innerText = "Rp " + selectedCost.toLocaleString('id-ID');
-‎            document.getElementById('time-val').innerText = "~" + Math.round(km * 3) + " Min";
-‎
-‎            updateCart();
-‎        }
-‎
-‎        function checkoutWA() {
-‎            let totalItems = cart.bundle + cart.pumpkin + cart.corn + cart.banana;
-‎            if (totalItems === 0) {
-‎                alert("Pilih minimal 1 jar cheesecake terlebih dahulu! 🧀");
-‎                return;
-‎            }
-‎
-‎            let text = `Halo Rest in Cheese! Saya mau pesan cheesecake via web katalog:\n\n`;
-‎            if (cart.bundle > 0) text += `- The Ultimate Trio Bundle (Rp 189k) x${cart.bundle}\n`;
-‎            if (cart.pumpkin > 0) text += `- Pumpkin & Vanilla Bean (Rp 70k) x${cart.pumpkin}\n`;
-‎            if (cart.corn > 0) text += `- Corn & Coconut (Rp 65k) x${cart.corn}\n`;
-‎            if (cart.banana > 0) text += `- Roasted Banana & Honey (Rp 65k) x${cart.banana}\n`;
-‎
-‎            if (document.getElementById('gift-toggle').checked) {
-‎                let note = document.getElementById('gift-note').value;
-‎                text += `\n🎁 Note Kartu Ucapan: "${note || 'Happy Birthday!'}"\n`;
-‎            }
-‎
-‎            let subtotal = (cart.bundle * prices.bundle) + (cart.pumpkin * prices.pumpkin) + (cart.corn * prices.corn) + (cart.banana * prices.banana);
-‎            text += `\nAlamat Tujuan: ${destName}\n`;
-‎            text += `Est. Jarak: ${selectedDist.toFixed(1)} km\n`;
-‎            text += `Est. Ongkir: Rp ${selectedCost.toLocaleString('id-ID')}\n`;
-‎            text += `*Total Pembayaran: Rp ${(subtotal + selectedCost).toLocaleString('id-ID')}*\n\n`;
-‎            text += `Mohon info rekening pembayaran. Terima kasih! 🧀✨`;
-‎
-‎            let waUrl = `https://wa.me/6282112002258?text=${encodeURIComponent(text)}`;
-‎            window.location.href = waUrl;
-‎        }
-‎    </script>
-‎</body>
-‎</html>
-‎
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rest in Cheese | Artisanal Cheesecake in a Jar</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for Interactive Pinpoint Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#d97706">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .drawer-slide { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        #map { height: 220px; width: 100%; border-radius: 0.75rem; z-index: 10; }
+        .suggestions-list { max-height: 160px; overflow-y: auto; }
+        .progress-bar-fill { transition: width 0.4s ease-in-out; }
+
+        @keyframes naturalGravityDrop {
+            0%   { transform: translateY(0px) rotate(0deg); }
+            15%  { transform: translateY(70px) rotate(45deg); }
+            30%  { transform: translateY(150px) rotate(110deg); }
+            45%  { transform: translateY(230px) rotate(180deg); }
+            60%  { transform: translateY(310px) rotate(250deg); }
+            75%  { transform: translateY(380px) rotate(310deg); }
+            90%  { transform: translateY(430px) rotate(350deg); }
+            100% { transform: translateY(465px) rotate(360deg); }
+        }
+        .natural-puggle-anim { animation: naturalGravityDrop 10s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+
+        @keyframes floatBtn {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .floating-cheese-trigger { animation: floatBtn 2.5s ease-in-out infinite; }
+    </style>
+</head>
+<body class="bg-[#FFFDF9] text-[#2D2424] antialiased pb-32">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-100 shadow-xs">
+        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleMenu()" class="text-neutral-700 hover:text-amber-900 p-1 text-2xl focus:outline-none transition">
+                    ☰
+                </button>
+                <div class="flex items-center space-x-1.5 cursor-pointer" onclick="switchPage('home')">
+                    <span class="text-2xl">🧀</span>
+                    <span class="font-extrabold text-lg tracking-tight text-[#2D2424]">Rest in Cheese</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleCart()" class="bg-[#2D2424] text-white px-3.5 py-2 rounded-full font-semibold text-xs flex items-center space-x-1.5 shadow-sm active:scale-95 transition">
+                    <span>🛒 Cart</span>
+                    <span id="cart-count" class="bg-amber-400 text-[#2D2424] px-1.5 py-0.2 rounded-full text-[11px] font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Clean Navigation Drawer -->
+    <div id="menu-drawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex justify-start">
+        <div class="w-72 bg-white h-full flex flex-col shadow-2xl drawer-slide transform -translate-x-full" id="menu-panel">
+            <div class="p-5 border-b border-amber-100 flex items-center justify-between bg-amber-50/50">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">🧀</span>
+                    <span class="font-extrabold text-base text-[#2D2424]">Rest in Cheese</span>
+                </div>
+                <button onclick="toggleMenu()" class="text-neutral-400 hover:text-neutral-700 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="flex-1 p-6 space-y-6 overflow-y-auto text-sm">
+                <div class="space-y-4">
+                    <p class="text-[11px] font-extrabold uppercase tracking-widest text-amber-800">Navigation</p>
+                    <button onclick="switchPage('home'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-700 hover:text-amber-900 py-2 border-b border-neutral-100">
+                        <span class="text-lg">🏠</span> <span>Home</span>
+                    </button>
+                    <button onclick="switchPage('products'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-700 hover:text-amber-900 py-2 border-b border-neutral-100">
+                        <span class="text-lg">✨</span> <span>Products</span>
+                    </button>
+                    <button onclick="switchPage('promos'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-amber-900 hover:text-amber-950 py-2 border-b border-amber-100 bg-amber-50/60 px-3 rounded-xl">
+                        <span class="text-lg">🎟️</span> <span>Cek Promo & Kupon Saya</span>
+                    </button>
+                    <button onclick="switchPage('about'); toggleMenu();" class="w-full text-left flex items-center space-x-3 font-bold text-neutral-700 hover:text-amber-900 py-2 border-b border-neutral-100">
+                        <span class="text-lg">📖</span> <span>About</span>
+                    </button>
+                </div>
+                <div class="pt-2 space-y-2">
+                    <p class="text-[11px] font-extrabold uppercase tracking-widest text-amber-800">Kitchen Base</p>
+                    <p class="text-xs text-neutral-600 leading-relaxed">Taman Grisenda, PIK, North Jakarta. Freshly baked daily.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-md mx-auto px-4 pt-5 space-y-6">
+
+        <!-- PAGE 1: HOME -->
+        <div id="page-home" class="space-y-6">
+            <div class="bg-gradient-to-br from-amber-500 via-amber-600 to-amber-800 rounded-3xl p-7 text-white shadow-lg relative overflow-hidden text-center">
+                <div class="absolute -right-8 -bottom-8 text-9xl opacity-10 select-none">🧀</div>
+                <h1 class="text-2xl font-extrabold tracking-tight mb-2 leading-snug">
+                    Artisanal Cheesecake in a Jar
+                </h1>
+                <p class="text-xs text-amber-100 mb-6 leading-relaxed max-w-xs mx-auto">
+                    Velvety, rich, and meticulously crafted fresh daily in Taman Grisenda, PIK.
+                </p>
+                <div class="flex items-center justify-center">
+                    <button onclick="switchPage('products')" class="bg-white text-amber-900 hover:bg-amber-50 font-extrabold text-xs px-6 py-3.5 rounded-2xl shadow-md active:scale-95 transition">
+                        Order Jars Now 🛒
+                    </button>
+                </div>
+            </div>
+
+            <!-- FEATURE CARDS -->
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-white p-2.5 rounded-2xl border border-amber-100 shadow-2xs flex flex-col items-center justify-center space-y-0.5 min-w-0">
+                    <span class="text-lg">🌟</span>
+                    <p class="text-[11px] font-extrabold text-[#2D2424] leading-tight truncate w-full">Hotel Grade</p>
+                    <p class="text-[9px] text-neutral-500 leading-tight truncate w-full">Master Recipe</p>
+                </div>
+                <div class="bg-white p-2.5 rounded-2xl border border-amber-100 shadow-2xs flex flex-col items-center justify-center space-y-0.5 min-w-0">
+                    <span class="text-lg">🌿</span>
+                    <p class="text-[11px] font-extrabold text-[#2D2424] leading-tight truncate w-full">100% Pure</p>
+                    <p class="text-[9px] text-neutral-500 leading-tight truncate w-full">Natural Ingredients</p>
+                </div>
+                <div class="bg-white p-2.5 rounded-2xl border border-amber-100 shadow-2xs flex flex-col items-center justify-center space-y-0.5 min-w-0">
+                    <span class="text-lg">🛵</span>
+                    <p class="text-[11px] font-extrabold text-[#2D2424] leading-tight truncate w-full">Instant</p>
+                    <p class="text-[9px] text-neutral-500 leading-tight truncate w-full">GoSend / Grab</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-amber-600 to-amber-700 rounded-3xl p-5 text-white shadow-md relative overflow-hidden">
+                <div class="absolute right-[-10px] bottom-[-10px] text-7xl opacity-20">🎁</div>
+                <span class="bg-amber-900/60 text-amber-200 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    🔥 Special Bundle Offer
+                </span>
+                <h3 class="font-extrabold text-lg mt-2">The Ultimate Trio Bundle</h3>
+                <p class="text-xs text-amber-100 mt-1 leading-relaxed">
+                    Experience all 3 signature flavors in one box. Save more and taste perfection.
+                </p>
+                <div class="flex items-center justify-between mt-4 pt-3 border-t border-amber-500/40">
+                    <div>
+                        <span class="text-[11px] line-through text-amber-200">Rp 200.000</span>
+                        <p class="text-base font-extrabold text-white">Rp 189.000</p>
+                    </div>
+                    <button onclick="addBundleToCart()" class="bg-white text-amber-900 hover:bg-amber-50 px-4 py-2 rounded-xl font-bold text-xs shadow-sm active:scale-95 transition">
+                        + Add Bundle
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: PRODUCTS -->
+        <div id="page-products" class="space-y-4 hidden">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg font-bold text-[#2D2424]">Our Signature Jars</h2>
+                <span class="text-xs font-semibold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full">Fresh Batch</span>
+            </div>
+            <div id="product-list" class="space-y-4"></div>
+        </div>
+
+        <!-- PAGE 3: BOOMER-FRIENDLY PROMOS PAGE -->
+        <div id="page-promos" class="space-y-4 hidden">
+            <div class="bg-white p-6 rounded-3xl border border-amber-100 shadow-xs space-y-4">
+                <div class="flex items-center space-x-3">
+                    <span class="text-3xl">🎟️</span>
+                    <div>
+                        <h2 class="font-extrabold text-base text-[#2D2424]">Kupon & Diskon Saya</h2>
+                        <p class="text-xs text-neutral-500">Semua voucher hadiah game Anda tersimpan otomatis di sini.</p>
+                    </div>
+                </div>
+
+                <div id="boomer-promo-list" class="space-y-3 pt-2"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 4: ABOUT -->
+        <div id="page-about" class="space-y-4 hidden">
+            <div class="bg-white p-6 rounded-3xl border border-amber-100 shadow-xs space-y-4">
+                <div class="text-3xl">🧑‍🍳</div>
+                <h3 class="font-extrabold text-lg text-[#2D2424]">The Passion Behind Rest in Cheese</h3>
+                <p class="text-xs text-neutral-600 leading-relaxed">
+                    This is my absolute passion. Trained as an ex-intern from The Landmark Mandarin Oriental, I learned early on that high-end pastry isn't just about expensive labels—it's about respect for technique, flavor, and turning ordinary components into extraordinary.
+                </p>
+                <div class="pt-2 border-t border-amber-100 space-y-2">
+                    <p class="text-xs font-bold text-amber-900">📍 Kitchen Base</p>
+                    <p class="text-xs text-neutral-600">Taman Grisenda, Pantai Indah Kapuk, North Jakarta.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FLOATING HOME PUGLLE TRIGGER (ONLY APPEARS AFTER BCA PAYMENT & > Rp 300k) -->
+    <div id="floating-puggle-trigger" class="fixed bottom-20 right-4 z-40 hidden">
+        <button onclick="openPuggleModal()" class="bg-gradient-to-r from-amber-500 to-amber-700 text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 font-extrabold text-xs border-2 border-amber-200 floating-cheese-trigger active:scale-95 transition">
+            <span class="text-xl">🧀</span>
+            <span>Mainkan Puggle Diskon!</span>
+        </button>
+    </div>
+
+    <!-- FLOATING BOTTOM LIVE BAR -->
+    <div class="fixed bottom-0 left-0 right-0 z-35 bg-white/95 backdrop-blur-md border-t border-amber-200/80 p-3 shadow-lg">
+        <div class="max-w-md mx-auto space-y-1.5">
+            <div class="flex justify-between items-center text-xs">
+                <div>
+                    <span class="text-[10px] uppercase font-bold text-neutral-400 block -mb-0.5">Total Spending</span>
+                    <span id="floating-spending-amount" class="font-extrabold text-amber-950 text-sm">Rp 0</span>
+                </div>
+                <span id="floating-progress-badge" class="bg-amber-200 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold">0%</span>
+            </div>
+            <div class="w-full bg-amber-200/60 rounded-full h-2 overflow-hidden">
+                <div id="floating-progress-bar" class="bg-gradient-to-r from-amber-500 to-amber-700 h-2 rounded-full progress-bar-fill" style="width: 0%"></div>
+            </div>
+            <p id="floating-progress-text" class="text-[10px] text-amber-800 font-semibold leading-tight truncate">
+                Diskon 5% min. belanja Rp 250.000!
+            </p>
+        </div>
+    </div>
+
+    <!-- TALL VERTICAL PUGGLE ARCADE GAME MODAL -->
+    <div id="puggle-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-neutral-900 via-amber-950 to-neutral-900 w-full max-w-sm rounded-3xl border-4 border-amber-500/80 shadow-2xl overflow-hidden flex flex-col text-white">
+            
+            <div class="bg-amber-950 p-3.5 border-b border-amber-700/60 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="text-lg">🕹️</span>
+                    <h3 class="font-extrabold text-sm tracking-wide text-amber-300">PUGGLE CHEESE DROP (10s)</h3>
+                </div>
+                <button onclick="closePuggleModal()" class="text-neutral-400 hover:text-white text-xl font-bold px-2">&times;</button>
+            </div>
+
+            <div class="p-4 flex flex-col items-center space-y-3">
+                <p class="text-[11px] text-amber-200 text-center">Tinggi & panjang! Keju jatuh alami menuruni pinball.</p>
+                
+                <div id="puggle-board" class="w-full h-[480px] bg-neutral-950 border-2 border-amber-600/50 rounded-2xl relative overflow-hidden shadow-inner flex flex-col justify-between p-3">
+                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span><span>📍</span></div>
+                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span></div>
+                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span><span>📍</span></div>
+                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span></div>
+                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span><span>📍</span></div>
+                    <div class="flex justify-around opacity-60 text-xs"><span>📍</span><span>📍</span><span>📍</span></div>
+
+                    <div id="puggle-cheese" class="absolute left-1/2 top-2 -translate-x-1/2 text-3xl hidden z-20">🧀</div>
+
+                    <div id="puggle-slots" class="grid grid-cols-5 gap-1 pt-2 border-t border-amber-700/60 text-[10px] font-extrabold text-center text-amber-200 bg-amber-900/60 rounded-xl p-1.5">
+                        <div data-slot="4" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">4%</div>
+                        <div data-slot="5" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">5%</div>
+                        <div data-slot="6" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">6%</div>
+                        <div data-slot="7" class="bg-amber-800/80 rounded py-1.5 border border-amber-600">7%</div>
+                        <div data-slot="8" class="bg-amber-800/80 rounded py-1.5 border border-amber-600 text-amber-300">8%</div>
+                    </div>
+                </div>
+
+                <div id="puggle-status" class="text-xs font-bold text-amber-300 text-center h-5">Tekan tombol untuk mulai menjatuhkan keju!</div>
+
+                <button id="puggle-drop-btn" onclick="startPuggleDrop()" class="w-full bg-amber-400 hover:bg-amber-300 text-amber-950 font-extrabold py-3 rounded-xl text-xs shadow-lg transition active:scale-95">
+                    🚀 Lepas Keju (10 Detik)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer Modal -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex justify-end">
+        <div class="w-full max-w-md bg-[#FFFDF9] h-full flex flex-col shadow-2xl drawer-slide transform translate-x-full" id="drawer-panel">
+            
+            <div class="p-4 border-b border-amber-100 flex items-center justify-between bg-white">
+                <h2 class="font-bold text-lg text-[#2D2424]">Your Order Summary</h2>
+                <button onclick="toggleCart()" class="text-neutral-400 hover:text-neutral-700 p-2 text-xl font-bold">&times;</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 space-y-5">
+                
+                <div id="active-reward-banner" class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-2xl flex items-center justify-between text-xs hidden shadow-xs">
+                    <div>
+                        <p class="font-bold text-emerald-900">🎟️ Puggle Reward Secured:</p>
+                        <p id="reward-code-text" class="text-emerald-700 font-mono font-extrabold text-sm mt-0.5"></p>
+                    </div>
+                    <span class="bg-emerald-200 text-emerald-900 text-[10px] font-extrabold px-2 py-1 rounded-full">Locked 🔒</span>
+                </div>
+
+                <!-- Referral / Promo Code Input Box -->
+                <div class="bg-white border border-amber-200 p-3.5 rounded-2xl space-y-2 shadow-2xs">
+                    <label class="block text-xs font-bold text-amber-900">🎟️ Punya Kode Referral / Diskon?</label>
+                    <div class="flex space-x-2">
+                        <input type="text" id="promo-code-input" placeholder="Contoh: RIC-6%..." class="flex-1 px-3 py-2 bg-amber-50/50 border border-amber-200 rounded-xl text-xs uppercase font-mono focus:outline-none focus:ring-2 focus:ring-amber-400">
+                        <button onclick="applyPromoCode()" class="bg-[#2D2424] hover:bg-amber-900 text-white font-bold px-4 py-2 rounded-xl text-xs transition">Pakai</button>
+                    </div>
+                    <p id="promo-feedback" class="text-[11px] font-semibold hidden"></p>
+                </div>
+
+                <!-- Gift Note Option -->
+                <div class="bg-amber-50 border border-amber-200/60 p-3.5 rounded-2xl space-y-3">
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" id="gift-option" onchange="toggleGiftBox()" class="w-4 h-4 text-amber-600 rounded border-amber-300 focus:ring-amber-400">
+                        <label for="gift-option" class="text-xs font-bold text-amber-900 cursor-pointer">
+                            🎁 Kirim sebagai hadiah? (+ Kartu Ucapan)
+                        </label>
+                    </div>
+                    <div id="gift-note-container" class="hidden pt-2 border-t border-amber-200/60">
+                        <label class="block text-[11px] font-bold text-amber-900 mb-1">Greeting Card Message / Note</label>
+                        <textarea id="gift-note" rows="2" placeholder="e.g. Happy Birthday Sarah! — from Alex" oninput="saveGiftNote(this.value)" class="w-full px-3 py-2 bg-white border border-amber-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+                    </div>
+                </div>
+
+                <div id="cart-items" class="space-y-3"></div>
+
+                <div id="empty-cart" class="text-center py-10 text-neutral-400">
+                    <p class="text-4xl mb-2">🛒</p>
+                    <p class="text-sm font-medium">Belum ada item dipilih. Silahkan tambah jar di menu!</p>
+                </div>
+
+                <div id="checkout-form-section" class="space-y-4 pt-4 border-t border-amber-100 hidden">
+                    <h3 class="font-bold text-sm text-[#2D2424]">Delivery Details</h3>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-neutral-600 mb-1">Customer Name</label>
+                        <input type="text" id="cust-name" placeholder="e.g. Sarah Jenkins" class="w-full px-3 py-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-neutral-600 mb-1">WhatsApp Phone Number</label>
+                        <input type="tel" id="cust-phone" placeholder="e.g. 081380003850" class="w-full px-3 py-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 bg-amber-50/50 p-3.5 rounded-2xl border border-amber-200/60">
+                        <div>
+                            <label class="block text-[11px] font-bold text-amber-900 mb-1">📅 Delivery Date</label>
+                            <input type="date" id="delivery-date" class="w-full px-2.5 py-2 bg-white border border-amber-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-400">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-amber-900 mb-1">⏰ Time Slot</label>
+                            <select id="delivery-time" class="w-full px-2.5 py-2 bg-white border border-amber-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-amber-400">
+                                <option value="Morning (10:00 - 13:00)">Morning (10 - 13)</option>
+                                <option value="Afternoon (13:00 - 16:00)" selected>Afternoon (13 - 16)</option>
+                                <option value="Evening (16:00 - 19:00)">Evening (16 - 19)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Debounced Location Search -->
+                    <div class="relative">
+                        <label class="block text-xs font-bold text-neutral-600 mb-1">Search Location / Address (Debounced)</label>
+                        <input type="text" id="search-address" placeholder="Type area (e.g., Taman Grisenda, Grogol, Gading Serpong, BSD)..." oninput="debouncedSearchLocation(this.value)" class="w-full px-3 py-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400" autocomplete="off">
+                        <div id="suggestions" class="absolute left-0 right-0 bg-white border border-amber-200 rounded-xl mt-1 shadow-lg z-30 suggestions-list hidden"></div>
+                    </div>
+
+                    <!-- Interactive Pinpoint Map -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <p class="text-[11px] text-neutral-500 font-semibold">📍 Drag or Click Marker to Set Pin Point</p>
+                        </div>
+                        <div id="map"></div>
+                        <div id="distance-info" class="text-xs font-semibold text-amber-900 mt-2 bg-amber-50 p-2.5 rounded-lg border border-amber-200 space-y-1">
+                            <p>📍 Jarak dari Taman Grisenda: 0.0 km | Estimasi Ongkir: Rp 10.200</p>
+                            <p>⏱️ Est. Pengiriman: ~15 mins (GoSend / Grab Instant)</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-neutral-600 mb-1">Apartment Unit, Tower, or Gate Notes</label>
+                        <textarea id="cust-notes" rows="2" placeholder="e.g. Tower B, Unit 12-A..." class="w-full px-3 py-2.5 bg-white border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Cart Footer -->
+            <div class="p-4 bg-white border-t border-amber-100 space-y-3">
+                <div class="space-y-1 text-sm">
+                    <div class="flex justify-between text-neutral-600">
+                        <span>Subtotal Produk</span>
+                        <span id="summary-products-total" class="font-semibold">Rp 0</span>
+                    </div>
+                    <div id="discount-row" class="flex justify-between text-emerald-600 font-bold hidden">
+                        <span>Diskon (5% Off)</span>
+                        <span id="summary-discount">-Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-neutral-600">
+                        <span>Estimasi Ongkir (Fix via WA)</span>
+                        <span id="summary-delivery-fee" class="font-semibold">Rp 10.200</span>
+                    </div>
+                    <div class="flex justify-between text-base font-extrabold text-[#2D2424] pt-2 border-t border-dashed border-amber-200">
+                        <span>Total Pembayaran</span>
+                        <span id="summary-grand-total">Rp 10.200</span>
+                    </div>
+                </div>
+
+                <button onclick="previewWhatsAppOrder()" id="whatsapp-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                    <span>💬 Pesan & Konfirmasi Transfer via WA</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- WhatsApp Chat Preview Modal -->
+    <div id="wa-preview-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-[#ECE5DD] w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="bg-[#075E54] text-white px-4 py-3 flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-amber-200 flex items-center justify-center text-xl">🧀</div>
+                <div>
+                    <h3 class="font-bold text-sm">Rest in Cheese (Order Bot)</h3>
+                    <p class="text-[10px] text-emerald-200">Online</p>
+                </div>
+            </div>
+            <div class="p-4 overflow-y-auto flex-1 space-y-3">
+                <div class="bg-white rounded-2xl rounded-tl-xs p-3.5 shadow-sm max-w-[90%] text-xs text-[#2D2424] leading-relaxed whitespace-pre-line font-mono" id="wa-preview-text"></div>
+            </div>
+            <div class="bg-white p-3 border-t border-neutral-200 flex space-x-2">
+                <button onclick="closeWaPreview()" class="flex-1 bg-neutral-200 hover:bg-neutral-300 text-neutral-700 font-bold py-2.5 px-3 rounded-xl text-xs transition">Batal</button>
+                <button onclick="confirmAndSendWhatsApp()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs shadow-md transition flex items-center justify-center space-x-1"><span>Kirim ke WA & Bayar ➔</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS for Pinpoint Map -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        console.log(
+            "%c 🧀 Rest in Cheese %c BCA Transfer Gateway & Cart Reset Loaded! ",
+            "background: #d97706; color: #fff; font-weight: bold; padding: 4px 8px; border-radius: 4px 0 0 4px;",
+            "background: #2d2424; color: #fff; padding: 4px 8px; border-radius: 0 4px 4px 0;"
+        );
+
+        const PRODUCTS = [
+            { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
+            { id: 2, name: "Roasted Banana & Honey", description: "Caramelized roasted banana puree paired with wild artisanal honey and cream cheese richness.", price: 65000, emoji: "🍌", badge: "" },
+            { id: 3, name: "Corn & Coconut", description: "Sweet sweetcorn cream layered with rich, aromatic coconut glaze and a buttery crumb base.", price: 65000, emoji: "🌽", badge: "" }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
+        let savedPuggleReward = localStorage.getItem('ric_puggle_reward') || null;
+        let orderCompleted = localStorage.getItem('ric_order_completed') === 'true';
+        let appliedPromoDiscount = 0;
+        let map = null;
+        let marker = null;
+        let deliveryDistanceKm = 0;
+        let deliveryFee = 10200;
+        let estimatedMinutes = 15;
+        let selectedAddressText = "";
+        let generatedWhatsAppMessage = "";
+
+        const DISCOUNT_MIN_ORDER = 250000;
+        const PUGGLE_MIN_ORDER = 300000;
+        const DISCOUNT_PERCENTAGE = 0.05;
+
+        const KITCHEN_LAT = -6.1105;
+        const KITCHEN_LNG = 106.7402;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const yyyy = tomorrow.getFullYear();
+            const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+            const dd = String(tomorrow.getDate()).padStart(2, '0');
+            const dateInput = document.getElementById('delivery-date');
+            if(dateInput) {
+                dateInput.value = `${yyyy}-${mm}-${dd}`;
+                dateInput.min = `${yyyy}-${mm}-${dd}`;
+            }
+
+            const savedGiftNote = localStorage.getItem('ric_gift_note');
+            if(savedGiftNote) {
+                document.getElementById('gift-option').checked = true;
+                document.getElementById('gift-note-container').classList.remove('hidden');
+                document.getElementById('gift-note').value = savedGiftNote;
+            }
+
+            renderProducts();
+            renderBoomerPromos();
+            updateUI();
+        });
+
+        function formatRupiah(num) {
+            return "Rp " + num.toLocaleString("id-ID");
+        }
+
+        function switchPage(pageId) {
+            document.getElementById('page-home').classList.add('hidden');
+            document.getElementById('page-products').classList.add('hidden');
+            document.getElementById('page-promos').classList.add('hidden');
+            document.getElementById('page-about').classList.add('hidden');
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+            if(pageId === 'promos') renderBoomerPromos();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMenu() {
+            const drawer = document.getElementById('menu-drawer');
+            const panel = document.getElementById('menu-panel');
+            if (drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden');
+                setTimeout(() => panel.classList.remove('-translate-x-full'), 10);
+            } else {
+                panel.classList.add('-translate-x-full');
+                setTimeout(() => drawer.classList.add('hidden'), 300);
+            }
+        }
+
+        function toggleGiftBox() {
+            const isChecked = document.getElementById('gift-option').checked;
+            const container = document.getElementById('gift-note-container');
+            if (isChecked) container.classList.remove('hidden');
+            else {
+                container.classList.add('hidden');
+                localStorage.removeItem('ric_gift_note');
+                document.getElementById('gift-note').value = '';
+            }
+        }
+
+        function saveGiftNote(val) {
+            localStorage.setItem('ric_gift_note', val);
+        }
+
+        function openPuggleModal() {
+            document.getElementById('puggle-modal').classList.remove('hidden');
+        }
+
+        function closePuggleModal() {
+            document.getElementById('puggle-modal').classList.add('hidden');
+        }
+
+        function startPuggleDrop() {
+            if (savedPuggleReward) return;
+
+            const btn = document.getElementById('puggle-drop-btn');
+            const cheese = document.getElementById('puggle-cheese');
+            const status = document.getElementById('puggle-status');
+
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            status.innerText = "🎯 Keju dijatuhkan... Jatuh alami melewati pinball (10 detik)...";
+            
+            cheese.classList.remove('hidden');
+            cheese.classList.add('natural-puggle-anim');
+
+            setTimeout(() => {
+                const rand = Math.random() * 1000;
+                let wonPercent = 4;
+                if (rand < 800) wonPercent = 4;
+                else if (rand < 900) wonPercent = 5;
+                else if (rand < 950) wonPercent = 6;
+                else if (rand < 999) wonPercent = 7;
+                else wonPercent = 8;
+
+                const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
+                savedPuggleReward = `${wonPercent}% OFF (${rewardCode})`;
+                localStorage.setItem('ric_puggle_reward', savedPuggleReward);
+
+                cheese.classList.remove('natural-puggle-anim');
+                cheese.classList.add('hidden');
+
+                const slots = document.querySelectorAll('#puggle-slots > div');
+                slots.forEach(s => {
+                    if (s.getAttribute('data-slot') == wonPercent) {
+                        s.classList.add('bg-amber-400', 'text-amber-950', 'scale-105', 'font-extrabold', 'ring-2', 'ring-white');
+                    }
+                });
+
+                status.innerHTML = `🎉 Selamat! Keju pas masuk slot <span class="text-amber-300 font-extrabold">${wonPercent}% Diskon</span>!`;
+                btn.innerText = "✅ Kupon Tersimpan!";
+                
+                renderBoomerPromos();
+                updateUI();
+                
+                setTimeout(() => {
+                    closePuggleModal();
+                }, 2500);
+            }, 10000);
+        }
+
+        function renderBoomerPromos() {
+            const container = document.getElementById('boomer-promo-list');
+            if (!container) return;
+
+            if (!savedPuggleReward) {
+                container.innerHTML = `
+                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-center space-y-2">
+                        <p class="text-2xl">🔒</p>
+                        <p class="text-xs font-bold text-amber-900">Belum ada kupon aktif.</p>
+                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan pembayaran transfer BCA min. Rp 300.000 via WhatsApp untuk membuka game Puggle dan memenangkan kupon diskon pesanan berikutnya!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="bg-gradient-to-r from-amber-500 to-amber-700 text-white p-4 rounded-2xl shadow-md space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="bg-amber-900 text-amber-200 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">🎁 Kupon Aktif Anda</span>
+                        <span class="text-xs font-bold text-amber-100">Siap Pakai</span>
+                    </div>
+                    <div>
+                        <p class="text-lg font-mono font-extrabold tracking-wide" id="boomer-code-display">${savedPuggleReward}</p>
+                        <p class="text-[11px] text-amber-100 mt-0.5">Gunakan kode ini di keranjang belanja berikutnya.</p>
+                    </div>
+                    <button onclick="copyBoomerCode()" class="w-full bg-white hover:bg-amber-50 text-amber-900 font-extrabold py-2.5 rounded-xl text-xs shadow transition">
+                        📋 Salin Kode Kupon
+                    </button>
+                </div>
+            `;
+        }
+
+        function copyBoomerCode() {
+            if (!savedPuggleReward) return;
+            const codeOnly = savedPuggleReward.split(' ')[2].replace(/[()]/g, '');
+            navigator.clipboard.writeText(codeOnly);
+            alert("✅ Kode kupon " + codeOnly + " berhasil disalin! Tempel di kotak kupon saat checkout.");
+        }
+
+        function applyPromoCode() {
+            const codeInput = document.getElementById('promo-code-input').value.trim().toUpperCase();
+            const feedback = document.getElementById('promo-feedback');
+
+            if (!codeInput) {
+                feedback.innerText = "Masukkan kode kupon terlebih dahulu.";
+                feedback.className = "text-[11px] font-semibold text-red-600 block mt-1";
+                return;
+            }
+
+            if (codeInput.startsWith("RIC-") && codeInput.includes("%")) {
+                const parts = codeInput.split("-");
+                const pctStr = parts[1].replace("%", "");
+                const pct = parseInt(pctStr);
+
+                if (pct >= 4 && pct <= 8) {
+                    appliedPromoDiscount = pct / 100;
+                    feedback.innerText = `✅ Berhasil! Kupon ${codeInput} memberikan Diskon ${pct}%!`;
+                    feedback.className = "text-[11px] font-semibold text-emerald-600 block mt-1";
+                    updateUI();
+                    return;
+                }
+            }
+
+            feedback.innerText = "❌ Kode kupon tidak valid.";
+            feedback.className = "text-[11px] font-semibold text-red-600 block mt-1";
+        }
+
+        function renderProducts() {
+            const listEl = document.getElementById('product-list');
+            listEl.innerHTML = PRODUCTS.map(p => `
+                <div class="bg-white p-4 rounded-3xl border border-amber-100 shadow-2xs space-y-3">
+                    <div class="h-40 w-full bg-amber-100/50 rounded-2xl overflow-hidden relative border border-amber-200/50 flex items-center justify-center text-6xl">
+                        <span>${p.emoji}</span>
+                        ${p.badge ? `<span class="absolute top-2 left-2 bg-amber-950/80 text-amber-100 text-[10px] font-extrabold px-2.5 py-1 rounded-full">${p.badge}</span>` : ''}
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-[#2D2424]">${p.name}</h3>
+                        <p class="text-xs text-neutral-500 mt-0.5 leading-relaxed">${p.description}</p>
+                        <p class="text-sm font-extrabold text-amber-900 mt-2">${formatRupiah(p.price)}</p>
+                    </div>
+                    <div class="flex items-center justify-end space-x-2 pt-1">
+                        <button onclick="updateCart(${p.id}, -1)" class="w-9 h-9 rounded-xl bg-neutral-100 text-neutral-700 font-bold flex items-center justify-center active:scale-95">-</button>
+                        <span class="w-6 text-center font-bold text-sm" id="qty-${p.id}">${cart[p.id] || 0}</span>
+                        <button onclick="updateCart(${p.id}, 1)" class="w-9 h-9 rounded-xl bg-[#2D2424] text-white font-bold flex items-center justify-center active:scale-95">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateCart(productId, change) {
+            if (!cart[productId]) cart[productId] = 0;
+            cart[productId] += change;
+            if (cart[productId] <= 0) delete cart[productId];
+            
+            localStorage.setItem('ric_cart', JSON.stringify(cart));
+            updateUI();
+        }
+
+        function addBundleToCart() {
+            if (!cart['bundle']) cart['bundle'] = 0;
+            cart['bundle'] += 1;
+            localStorage.setItem('ric_cart', JSON.stringify(cart));
+            updateUI();
+        }
+
+        function updateCartBundle(change) {
+            if (!cart['bundle']) cart['bundle'] = 0;
+            cart['bundle'] += change;
+            if (cart['bundle'] <= 0) delete cart['bundle'];
+            localStorage.setItem('ric_cart', JSON.stringify(cart));
+            updateUI();
+        }
+
+        function updateUI() {
+            let totalCount = 0;
+            let productsTotal = 0;
+
+            for (let id in cart) {
+                if (id === 'bundle') {
+                    totalCount += cart[id];
+                    productsTotal += 189000 * cart[id];
+                } else {
+                    totalCount += cart[id];
+                    const p = PRODUCTS.find(item => item.id == id);
+                    if (p) productsTotal += p.price * cart[id];
+                }
+            }
+
+            document.getElementById('cart-count').innerText = totalCount;
+            document.getElementById('summary-products-total').innerText = formatRupiah(productsTotal);
+            document.getElementById('floating-spending-amount').innerText = formatRupiah(productsTotal);
+
+            PRODUCTS.forEach(p => {
+                const qEl = document.getElementById(`qty-${p.id}`);
+                if (qEl) qEl.innerText = cart[p.id] || 0;
+            });
+
+            const puggleTrigger = document.getElementById('floating-puggle-trigger');
+            if (orderCompleted && productsTotal >= PUGGLE_MIN_ORDER && !savedPuggleReward) {
+                puggleTrigger.classList.remove('hidden');
+            } else {
+                puggleTrigger.classList.add('hidden');
+            }
+
+            const activeRewardBanner = document.getElementById('active-reward-banner');
+            if (savedPuggleReward) {
+                activeRewardBanner.classList.remove('hidden');
+                document.getElementById('reward-code-text').innerText = savedPuggleReward;
+            } else {
+                activeRewardBanner.classList.add('hidden');
+            }
+
+            const progressPercent = Math.min(100, Math.round((productsTotal / DISCOUNT_MIN_ORDER) * 100));
+            const floatingBar = document.getElementById('floating-progress-bar');
+            const floatingBadge = document.getElementById('floating-progress-badge');
+            const floatingText = document.getElementById('floating-progress-text');
+            const discountRow = document.getElementById('discount-row');
+            
+            let discountAmount = 0;
+
+            if (productsTotal >= DISCOUNT_MIN_ORDER) {
+                discountAmount = Math.round(productsTotal * DISCOUNT_PERCENTAGE);
+                floatingBar.style.width = "100%";
+                floatingBadge.innerText = "100% UNLOCKED";
+                floatingBadge.className = "bg-emerald-500 text-white text-[10px] px-2.5 py-1 rounded-full font-extrabold";
+                floatingText.innerHTML = "🎉 <strong class='text-emerald-700'>Selamat! Diskon 5% Aktif</strong> (-" + formatRupiah(discountAmount) + ")";
+                
+                discountRow.classList.remove('hidden');
+                document.getElementById('summary-discount').innerText = "-" + formatRupiah(discountAmount);
+            } else {
+                const remaining = DISCOUNT_MIN_ORDER - productsTotal;
+                floatingBar.style.width = progressPercent + "%";
+                floatingBadge.innerText = progressPercent + "%";
+                floatingBadge.className = "bg-amber-200 text-amber-900 text-[10px] px-2.5 py-1 rounded-full font-extrabold";
+                floatingText.innerText = "Tambah " + formatRupiah(remaining) + " lagi untuk dapet Diskon 5%!";
+                discountRow.classList.add('hidden');
+            }
+
+            const cartItemsEl = document.getElementById('cart-items');
+            const emptyCartEl = document.getElementById('empty-cart');
+            const checkoutSection = document.getElementById('checkout-form-section');
+
+            if (totalCount === 0) {
+                cartItemsEl.innerHTML = '';
+                emptyCartEl.classList.remove('hidden');
+                checkoutSection.classList.add('hidden');
+            } else {
+                emptyCartEl.classList.add('hidden');
+                checkoutSection.classList.remove('hidden');
+
+                let html = '';
+                if (cart['bundle']) {
+                    html += `
+                        <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-amber-100 text-sm">
+                            <div>
+                                <span class="font-bold text-[#2D2424]">🎁 The Ultimate Trio Bundle</span>
+                                <div class="text-xs text-neutral-500">Rp 189.000 x ${cart['bundle']}</div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-extrabold text-amber-900">${formatRupiah(189000 * cart['bundle'])}</span>
+                                <button onclick="updateCartBundle(-1)" class="w-6 h-6 bg-neutral-100 rounded text-xs font-bold">-</button>
+                                <span class="text-xs font-bold">${cart['bundle']}</span>
+                                <button onclick="updateCartBundle(1)" class="w-6 h-6 bg-neutral-100 rounded text-xs font-bold">+</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                for (let id in cart) {
+                    if (id !== 'bundle') {
+                        const p = PRODUCTS.find(item => item.id == id);
+                        const qty = cart[id];
+                        html += `
+                            <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-amber-100 text-sm">
+                                <div>
+                                    <span class="font-bold text-[#2D2424]">${p.name}</span>
+                                    <div class="text-xs text-neutral-500">${formatRupiah(p.price)} x ${qty}</div>
+                                </div>
+                                <span class="font-extrabold text-amber-900">${formatRupiah(p.price * qty)}</span>
+                            </div>
+                        `;
+                    }
+                }
+                cartItemsEl.innerHTML = html;
+
+                setTimeout(() => {
+                    if (!map) initMap();
+                    else map.invalidateSize();
+                }, 150);
+            }
+
+            const grandTotal = Math.max(0, productsTotal - discountAmount) + deliveryFee;
+            document.getElementById('summary-delivery-fee').innerText = formatRupiah(deliveryFee);
+            document.getElementById('summary-grand-total').innerText = formatRupiah(grandTotal);
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const panel = document.getElementById('drawer-panel');
+            if (drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden');
+                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+                updateUI();
+            } else {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => drawer.classList.add('hidden'), 300);
+            }
+        }
+
+        function initMap() {
+            if (map) return;
+
+            map = L.map('map').setView([KITCHEN_LAT, KITCHEN_LNG], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            marker = L.marker([KITCHEN_LAT, KITCHEN_LNG], { draggable: true }).addTo(map);
+
+            marker.on('dragend', function(e) {
+                const pos = marker.getLatLng();
+                calculateDeliveryFromCoords(pos.lat, pos.lng);
+            });
+
+            map.on('click', function(e) {
+                marker.setLatLng(e.latlng);
+                calculateDeliveryFromCoords(e.latlng.lat, e.latlng.lng);
+            });
+
+            calculateDeliveryFromCoords(KITCHEN_LAT, KITCHEN_LNG);
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        const debouncedSearchLocation = debounce(function(query) {
+            const suggestionsEl = document.getElementById('suggestions');
+            if (!query || query.length < 2) {
+                suggestionsEl.classList.add('hidden');
+                return;
+            }
+
+            const q = query.toLowerCase();
+            const locationsDB = [
+                { name: "Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara", lat: -6.1105, lon: 106.7402 },
+                { name: "Pantai Indah Kapuk (PIK), Jakarta Utara", lat: -6.1120, lon: 106.7450 },
+                { name: "Pluit, Penjaringan, Jakarta Utara", lat: -6.1250, lon: 106.7900 },
+                { name: "Muara Karang, Penjaringan, Jakarta Utara", lat: -6.1150, lon: 106.7800 },
+                { name: "Grogol, Jakarta Barat", lat: -6.1680, lon: 106.7880 },
+                { name: "Mall Taman Anggrek, Grogol, Jakarta Barat", lat: -6.1785, lon: 106.7922 },
+                { name: "Central Park Mall, Grogol, Jakarta Barat", lat: -6.1772, lon: 106.7907 },
+                { name: "Trisakti / Untar, Grogol, Jakarta Barat", lat: -6.1672, lon: 106.7895 },
+                { name: "Gading Serpong, Tangerang", lat: -6.2410, lon: 106.6280 },
+                { name: "Summarecon Mall Serpong (SMS), Gading Serpong", lat: -6.2405, lon: 106.6285 },
+                { name: "Scientia Square Park, Gading Serpong", lat: -6.2570, lon: 106.6185 },
+                { name: "BSD City, Serpong, Tangerang", lat: -6.3000, lon: 106.6500 },
+                { name: "AEON Mall BSD City, Tangerang", lat: -6.3045, lon: 106.6435 },
+                { name: "Alam Sutera, Tangerang", lat: -6.2230, lon: 106.6530 },
+                { name: "Living World Alam Sutera, Tangerang", lat: -6.2245, lon: 106.6528 },
+                { name: "Lippo Karawaci, Tangerang", lat: -6.2250, lon: 106.6080 },
+                { name: "Puri Beta, Ciledug, Tangerang", lat: -6.2300, lon: 106.7310 },
+                { name: "Green Lake City, Cipondoh, Tangerang", lat: -6.1850, lon: 106.7050 },
+                { name: "Kelapa Gading, Jakarta Utara", lat: -6.1600, lon: 106.9050 }
+            ];
+
+            let matches = locationsDB.filter(loc => loc.name.toLowerCase().includes(q));
+
+            if (matches.length === 0) {
+                matches = [
+                    { name: query + ", Jakarta Utara", lat: -6.1150, lon: 106.7420 },
+                    { name: query + ", Jakarta Barat", lat: -6.1680, lon: 106.7880 },
+                    { name: query + ", Tangerang", lat: -6.2250, lon: 106.6300 }
+                ];
+            }
+
+            suggestionsEl.innerHTML = matches.slice(0, 5).map(item => `
+                <div onclick="selectLocation(${item.lat}, ${item.lon}, '${item.name.replace(/'/g, "")}')" class="p-2.5 hover:bg-amber-50 cursor-pointer text-xs border-b border-neutral-100 truncate">
+                    📍 ${item.name}
+                </div>
+            `).join('');
+            suggestionsEl.classList.remove('hidden');
+        }, 300);
+
+        function selectLocation(lat, lon, displayName) {
+            document.getElementById('search-address').value = displayName;
+            selectedAddressText = displayName;
+            document.getElementById('suggestions').classList.add('hidden');
+
+            const latLng = [lat, lon];
+            if(map) {
+                map.setView(latLng, 14);
+                marker.setLatLng(latLng);
+            }
+            calculateDeliveryFromCoords(lat, lon);
+        }
+
+        function calculateDeliveryFromCoords(lat, lng) {
+            const R = 6371;
+            const dLat = (lat - KITCHEN_LAT) * Math.PI / 180;
+            const dLon = (lng - KITCHEN_LNG) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(KITCHEN_LAT * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            deliveryDistanceKm = R * c;
+
+            if (deliveryDistanceKm <= 4) {
+                deliveryFee = 10200;
+            } else {
+                deliveryFee = Math.round(10200 + ((deliveryDistanceKm - 4) * 2550));
+            }
+
+            estimatedMinutes = Math.round(15 + (deliveryDistanceKm * 3));
+
+            document.getElementById('distance-info').innerHTML = `
+                <p>📍 Jarak dari Taman Grisenda: ${deliveryDistanceKm.toFixed(1)} km | Estimasi Ongkir: ${formatRupiah(deliveryFee)}</p>
+                <p>⏱️ Est. Pengiriman: ~${estimatedMinutes} mins (GoSend / Grab Instant)</p>
+            `;
+            updateUI();
+        }
+
+        function previewWhatsAppOrder() {
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const searchAddr = document.getElementById('search-address').value.trim();
+            const notes = document.getElementById('cust-notes').value.trim();
+            const deliveryDate = document.getElementById('delivery-date').value;
+            const deliveryTime = document.getElementById('delivery-time').value;
+            const isGift = document.getElementById('gift-option').checked;
+            const giftNote = document.getElementById('gift-note').value.trim();
+
+            if (!name || !phone || !searchAddr) {
+                alert("Mohon masukkan nama, nomor WhatsApp, dan lokasi alamat pengiriman.");
+                return;
+            }
+
+            let orderSummary = "";
+            let productsTotal = 0;
+
+            if (cart['bundle']) {
+                orderSummary += `- ${cart['bundle']}x The Ultimate Trio Bundle (${formatRupiah(189000 * cart['bundle'])})\n`;
+                productsTotal += 189000 * cart['bundle'];
+            }
+
+            for (let id in cart) {
+                if (id !== 'bundle') {
+                    const p = PRODUCTS.find(item => item.id == id);
+                    const qty = cart[id];
+                    orderSummary += `- ${qty}x ${p.name} (${formatRupiah(p.price * qty)})\n`;
+                    productsTotal += p.price * qty;
+                }
+            }
+
+            let discountAmount = 0;
+            if (productsTotal >= DISCOUNT_MIN_ORDER) {
+                discountAmount = Math.round(productsTotal * DISCOUNT_PERCENTAGE);
+            }
+
+            const grandTotal = Math.max(0, productsTotal - discountAmount) + deliveryFee;
+
+            generatedWhatsAppMessage = `*NEW ORDER & PAYMENT CONFIRMATION - REST IN CHEESE* 🧀\n\n` +
+                `*Customer Name:* ${name}\n` +
+                `*Phone:* ${phone}\n` +
+                `*Selected Location:* ${searchAddr}\n` +
+                `*Driver Notes / Unit:* ${notes || '-'}\n` +
+                `*Delivery Date:* ${deliveryDate} (${deliveryTime})\n` +
+                `*Delivery Distance:* ~${deliveryDistanceKm.toFixed(1)} km (~${estimatedMinutes} mins)\n` +
+                `*Payment Status:* TRANSFER BCA (578 543 3570)\n` +
+                `*Gift Card:* ${isGift ? 'Ya' : 'Tidak'}\n` +
+                (isGift && giftNote ? `*Greeting Note:* "${giftNote}"\n` : '') +
+                (savedPuggleReward ? `*Unlocked Puggle Reward:* ${savedPuggleReward}\n` : '') + `\n` +
+                `*Order Items:*\n${orderSummary}\n` +
+                `*Subtotal Produk:* ${formatRupiah(productsTotal)}\n` +
+                (discountAmount > 0 ? `*Diskon (5% Off):* -${formatRupiah(discountAmount)}\n` : '') +
+                `*Estimasi Ongkir (Fix via WA):* ${formatRupiah(deliveryFee)}\n` +
+                `*Total Pembayaran:* ${formatRupiah(grandTotal)}\n\n` +
+                `*Instruksi:* Saya sudah/akan transfer ke BCA 578 543 3570. Mohon cek mutasi & konfirmasi pesanan saya!`;
+
+            document.getElementById('wa-preview-text').innerText = generatedWhatsAppMessage;
+            document.getElementById('wa-preview-modal').classList.remove('hidden');
+        }
+
+        function closeWaPreview() {
+            document.getElementById('wa-preview-modal').classList.add('hidden');
+        }
+
+        function confirmAndSendWhatsApp() {
+            // MARK ORDER AS PAID/COMPLETED, RESET CART TO 0, UNLOCK PUGGLE GAME
+            localStorage.setItem('ric_order_completed', 'true');
+            orderCompleted = true;
+
+            cart = {};
+            localStorage.removeItem('ric_cart');
+
+            const sellerWhatsApp = "6281380003850";
+            const whatsappUrl = `https://wa.me/${sellerWhatsApp}?text=` + encodeURIComponent(generatedWhatsAppMessage);
+            window.open(whatsappUrl, '_blank');
+            closeWaPreview();
+            
+            updateUI();
+            toggleCart();
+            alert("✅ Pesanan & konfirmasi transfer BCA terkirim! Keranjang telah dikosongkan. Jika total belanja Anda di atas Rp 300.000, game Puggle sekarang sudah terbuka di beranda.");
+        }
+    </script>
+</body>
+</html>
