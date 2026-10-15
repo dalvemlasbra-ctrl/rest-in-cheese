@@ -206,7 +206,7 @@
 
     </main>
 
-    <!-- FLOATING HOME PUGLLE TRIGGER (ONLY VISIBLE IF A 300K+ ORDER HAS BEEN COMPLETED) -->
+    <!-- FLOATING HOME PUGLLE TRIGGER (STRICTLY FOR POST-CHECKOUT TOKENS ONLY) -->
     <div id="floating-puggle-trigger" class="fixed bottom-20 right-4 z-40 hidden">
         <button onclick="openPuggleModal()" class="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-3.5 rounded-full shadow-2xl flex items-center space-x-2 font-extrabold text-xs border-2 border-white floating-cheese-trigger active:scale-95 transition">
             <span class="text-xl">🧀</span>
@@ -453,7 +453,7 @@
     </div>
 
     <script>
-        console.log("%c 🧀 Rest in Cheese %c Game unlocks ONLY after completing an order! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
+        console.log("%c 🧀 Rest in Cheese %c Game unlocked exclusively post-checkout tokens! ", "background: #1C1616; color: #D97706; font-weight: bold; padding: 4px 8px;", "background: #D97706; color: #fff; padding: 4px 8px;");
 
         const PRODUCTS = [
             { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, emoji: "🎃", badge: "Signature" },
@@ -631,7 +631,7 @@
         function openPuggleModal() {
             const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
             if (playTokens <= 0) {
-                alert("🔒 Mini-game terkunci! Selesaikan pesanan minimal Rp 300.000 terlebih dahulu untuk mendapatkan 1x kesempatan main.");
+                alert("🔒 Mini-game terkunci! Selesaikan pesanan minimal Rp 300.000 terlebih dahulu untuk mendapatkan kesempatan main.");
                 return;
             }
             document.getElementById('puggle-modal').classList.remove('hidden');
@@ -681,7 +681,6 @@
                 });
                 localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
 
-                // DEDUCT 1 GAME TOKEN WHEN PLAYED
                 playTokens = Math.max(0, playTokens - 1);
                 localStorage.setItem('ric_game_tokens', playTokens.toString());
 
@@ -718,7 +717,7 @@
                     <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-amber-950 p-4 rounded-2xl shadow-md flex items-center justify-between mb-4">
                         <div>
                             <p class="font-extrabold text-xs uppercase tracking-wide">🕹️ Puggle Pinball Unlocked! (${playTokens}x Token)</p>
-                            <p class="text-[11px] text-amber-950/80 mt-0.5">Terima kasih telah memesan! Mainkan sekarang untuk dapat diskon berikutnya.</p>
+                            <p class="text-[11px] text-amber-950/80 mt-0.5">Anda memiliki token main dari pesanan sebelumnya!</p>
                         </div>
                         <button onclick="openPuggleModal()" class="bg-white hover:bg-amber-50 text-amber-950 px-4 py-2.5 rounded-xl font-extrabold text-xs shadow-sm transition active:scale-95 cursor-pointer">
                             Mainkan 🚀
@@ -729,7 +728,7 @@
                 gameHtml = `
                     <div class="bg-neutral-100 border border-amber-900/10 p-4 rounded-2xl text-center space-y-1.5 mb-4">
                         <p class="text-xs font-extrabold text-neutral-800">🔒 Pinball Puggle Terkunci</p>
-                        <p class="text-[11px] text-neutral-500">Selesaikan pesanan minimal <strong class="text-amber-900">Rp 300.000</strong> terlebih dahulu untuk membuka 1x kesempatan main minigame.</p>
+                        <p class="text-[11px] text-neutral-500">Selesaikan pesanan dengan subtotal minimal <strong class="text-amber-900">Rp 300.000</strong> untuk mendapatkan token minigame.</p>
                     </div>
                 `;
             }
@@ -739,7 +738,7 @@
                     <div class="bg-amber-50 border border-amber-900/10 p-5 rounded-2xl text-center space-y-2">
                         <p class="text-3xl">🎟️</p>
                         <p class="text-xs font-bold text-amber-950">Belum ada kupon di wallet Anda.</p>
-                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan order 300k+ untuk mendapatkan kesempatan main minigame!</p>
+                        <p class="text-[11px] text-neutral-600 leading-relaxed">Selesaikan order 300k+ untuk bermain minigame dan kumpulkan kupon diskon Anda!</p>
                     </div>
                 `;
                 return;
@@ -845,7 +844,7 @@
                 if (qEl) qEl.innerText = cart[p.id] || 0;
             });
 
-            // GAME BUTTON VISIBILITY DEPENDS EXCLUSIVELY ON COMPLETED ORDER TOKENS
+            // STRICTLY CONTROLLED BY PLAY TOKENS ONLY — CART VALUE CAN NEVER TRIGGER IT
             const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
             const puggleTrigger = document.getElementById('floating-puggle-trigger');
 
@@ -855,7 +854,6 @@
                 puggleTrigger.classList.add('hidden');
             }
 
-            // RENDER COUPON WALLET CHOICE IN CART DRAWER
             const walletContainer = document.getElementById('coupon-wallet-container');
             if (couponInventory.length > 0) {
                 let walletHtml = `<p class="text-xs font-extrabold text-amber-950 mb-1">🎁 Pilih Kupon untuk Order Ini (Maks. 1):</p>`;
@@ -1086,7 +1084,7 @@
                 }
             }
 
-            // UNLOCK 1 GAME TOKEN ONLY IF THIS SUBMITTED ORDER IS 300K+
+            // REWARD 1 GAME TOKEN ONLY IF THIS SUBMITTED ORDER IS 300K+
             if (productsTotal >= PUGGLE_MIN_ORDER) {
                 let playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
                 localStorage.setItem('ric_game_tokens', (playTokens + 1).toString());
@@ -1095,7 +1093,6 @@
             orderPayloadForSheet.name = orderPayloadForSheet.name + ` [Bukti Transfer: Uploaded]`;
             generatedWhatsAppMessage += `\n*Bukti Transfer:* Terlampir di web`;
 
-            // PERMANENTLY CONSUME USED COUPON
             if (activeSelectedCouponId) {
                 couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
                 localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
