@@ -179,15 +179,31 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 }
 .qty-num { font-weight: 700; min-width: 22px; text-align: center; }
 
-/* ---------- Promos & History ---------- */
+/* ---------- Promos & History Cards ---------- */
 .promo-list { display: grid; gap: 14px; max-width: 640px; }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
 .voucher-card {
   background: var(--surface); border: 1.5px dashed var(--accent); border-radius: var(--radius);
   padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px;
 }
 .voucher-code { font-family: ui-monospace, monospace; font-weight: 700; color: var(--accent); }
 .btn-small { padding: 10px 16px; min-height: 40px; font-size: 14px; }
+
+/* ---------- Loyalty Stamp Card ---------- */
+.loyalty-card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px;
+  box-shadow: var(--shadow); max-width: 600px; display: grid; gap: 20px;
+}
+.stamp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.stamp-slot {
+  aspect-ratio: 1; border: 2px dashed var(--line); border-radius: 16px; display: flex;
+  flex-direction: column; align-items: center; justify-content: center; background: var(--bg);
+  position: relative; transition: all .3s ease;
+}
+.stamp-slot.filled { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.stamp-icon { font-size: 26px; }
+.stamp-num { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 2px; }
+.stamp-slot.filled .stamp-num { color: var(--accent); }
 
 /* ---------- Collapsible Coupon Accordion ----------  */
 .coupon-accordion-box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
@@ -197,6 +213,17 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
   user-select: none;
 }
 .coupon-accordion-body { padding: 0 16px 14px 16px; display: grid; gap: 8px; border-top: 1px solid var(--line); background: var(--bg); }
+
+/* ---------- Fulfillment Switcher (Delivery vs Pickup) ---------- */
+.fulfillment-tabs {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--bg);
+  border: 1px solid var(--line); padding: 4px; border-radius: 14px; margin-bottom: 12px;
+}
+.fulfillment-tab {
+  padding: 10px; text-align: center; border-radius: 10px; font-size: 14px; font-weight: 600;
+  cursor: pointer; color: var(--muted); background: transparent; transition: all .2s; border: none;
+}
+.fulfillment-tab.active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
 
 /* ---------- About ---------- */
 .about-grid { display: grid; gap: 28px; }
@@ -244,7 +271,6 @@ footer a { color: var(--ink); font-weight: 600; }
 .cart-item-meta { font-size: 13px; color: var(--muted); }
 .cart-item-controls { display: flex; align-items: center; gap: 10px; }
 .cart-item-controls .qty-btn { width: 32px; height: 32px; font-size: 14px; border-radius: 10px; }
-.section-label { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
 .box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
 .check-row { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; cursor: pointer; }
 .check-row input { width: 18px; height: 18px; accent-color: var(--accent); }
@@ -270,7 +296,14 @@ footer a { color: var(--ink); font-weight: 600; }
 .sum-row.total { font-size: 18px; font-weight: 700; color: var(--ink); border-top: 1px solid var(--line); padding-top: 10px; }
 #discount-row, #coupon-discount-row { color: var(--accent); font-weight: 600; }
 .checkout-section { display: grid; gap: 14px; padding-top: 8px; }
-.checkout-section h4 { font-size: 24px; }
+
+.saved-locations-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.location-chip {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px; transition: all .2s;
+}
+.location-chip:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 </style>
 </head>
 <body>
@@ -301,6 +334,7 @@ footer a { color: var(--ink); font-weight: 600; }
     <div class="drawer-links">
       <button onclick="switchPage('home'); toggleMenu();" id="t-nav-home">Home</button>
       <button onclick="switchPage('products'); toggleMenu();" id="t-nav-catalogue">Catalogue</button>
+      <button onclick="switchPage('stamps'); toggleMenu();" id="t-nav-stamps">Loyalty Stamp</button>
       <button onclick="switchPage('promos'); toggleMenu();" id="t-nav-promos">Coupons &amp; Discounts</button>
       <button onclick="switchPage('history'); toggleMenu();" id="t-nav-history">Order History</button>
       <button onclick="switchPage('about'); toggleMenu();" id="t-nav-about">About</button>
@@ -325,7 +359,7 @@ footer a { color: var(--ink); font-weight: 600; }
         <div class="pillars" style="margin-top:28px">
           <div class="pillar"><span class="pillar-num">01</span><span class="pillar-text" id="t-pillar-1">Selected local ingredients</span></div>
           <div class="pillar"><span class="pillar-num">02</span><span class="pillar-text" id="t-pillar-2">No artificial flavorings</span></div>
-          <div class="pillar"><span class="pillar-num">03</span><span class="pillar-text" id="t-pillar-3">Instant delivery across Jakarta</span></div>
+          <div class="pillar"><span class="pillar-num">03</span><span class="pillar-text" id="t-pillar-3">Instant delivery or pickup</span></div>
         </div>
 
         <div class="bundle">
@@ -358,6 +392,42 @@ footer a { color: var(--ink); font-weight: 600; }
     <div id="product-list" class="product-grid"></div>
   </div>
 
+  <!-- LOYALTY STAMP -->
+  <div id="page-stamps" class="hidden section">
+    <span class="eyebrow">Rewards Program</span>
+    <h2 class="section-title serif">Loyalty Stamp Card</h2>
+    <p class="lead" style="margin-bottom:28px">Collect 12 stamps to get 1 FREE cheesecake jar of your choice!</p>
+    
+    <div class="loyalty-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px">
+        <div>
+          <strong style="font-size:18px">12-Jar Stamp Card</strong>
+          <div style="font-size:13px;color:var(--muted)">1 jar ordered = 1 stamp earned</div>
+        </div>
+        <span class="badge" id="stamp-count-badge">0 / 12 Jars</span>
+      </div>
+
+      <div class="stamp-grid" id="stamp-slots-container"></div>
+
+      <div id="free-jar-claim-section" class="hidden" style="background:var(--accent-soft);border:1.5px dashed var(--accent);border-radius:16px;padding:20px;display:grid;gap:12px">
+        <strong style="color:var(--accent);font-size:18px">🎉 You've Unlocked 1 Free Jar!</strong>
+        <p style="font-size:14px;color:var(--ink)">Choose your free flavor below and we'll send it directly to your email & admin for processing:</p>
+        
+        <div class="form-group">
+          <label class="form-label">Select Free Jar Flavor</label>
+          <select id="free-jar-flavor" class="form-select">
+            <option value="Pumpkin & Vanilla Bean">Pumpkin & Vanilla Bean</option>
+            <option value="Corn & Coconut">Corn & Coconut</option>
+            <option value="Roasted Banana & Honey">Roasted Banana & Honey</option>
+            <option value="Purple Sweet Potato">Purple Sweet Potato</option>
+          </select>
+        </div>
+
+        <button type="button" onclick="claimFreeJarReward()" id="claim-reward-btn" class="btn btn-primary btn-block">Claim My Free Jar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- PROMOS -->
   <div id="page-promos" class="hidden section">
     <span class="eyebrow">Rewards</span>
@@ -370,7 +440,7 @@ footer a { color: var(--ink); font-weight: 600; }
   <div id="page-history" class="hidden section">
     <span class="eyebrow">Your Purchases</span>
     <h2 class="section-title serif" id="t-history-title">Order History</h2>
-    <p class="lead" id="t-history-desc" style="margin-bottom:28px">Track your previous cheesecakes orders.</p>
+    <p class="lead" id="t-history-desc" style="margin-bottom:28px">Track your previous cheesecakes orders and details.</p>
     <div id="order-history-list" class="promo-list"></div>
   </div>
 
@@ -434,7 +504,13 @@ footer a { color: var(--ink); font-weight: 600; }
       </div>
 
       <div id="checkout-form-section" class="hidden checkout-section">
-        <h4 class="serif" id="t-checkout-title">Delivery Details</h4>
+        <h4 class="serif" id="t-checkout-title">Customer &amp; Delivery Details</h4>
+
+        <!-- Fulfillment Tabs: Delivery vs Self Pickup -->
+        <div class="fulfillment-tabs">
+          <button type="button" class="fulfillment-tab active" id="tab-delivery" onclick="setFulfillmentMethod('delivery')">🛵 Delivery</button>
+          <button type="button" class="fulfillment-tab" id="tab-pickup" onclick="setFulfillmentMethod('pickup')">🏪 Self Pickup</button>
+        </div>
 
         <div class="form-group">
           <label class="form-label" id="t-label-name">Full Name</label>
@@ -451,11 +527,11 @@ footer a { color: var(--ink); font-weight: 600; }
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label" id="t-label-date">Delivery Date</label>
+            <label class="form-label" id="t-label-date">Delivery / Pickup Date</label>
             <input type="date" id="delivery-date" class="form-input" onchange="saveCustomerField('date', this.value)">
           </div>
           <div class="form-group">
-            <label class="form-label" id="t-label-time">Delivery Time</label>
+            <label class="form-label" id="t-label-time">Time Slot</label>
             <select id="delivery-time" class="form-select" onchange="saveCustomerField('time', this.value)">
               <option value="Morning (10:00 - 13:00)">Morning (10 - 13)</option>
               <option value="Afternoon (13:00 - 16:00)" selected>Afternoon (13 - 16)</option>
@@ -464,31 +540,39 @@ footer a { color: var(--ink); font-weight: 600; }
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" id="t-label-area">Delivery Area in Jakarta</label>
-          <div class="area-list-box" id="jakarta-area-cards"></div>
-        </div>
-
-        <div class="fee-box">
-          <div><span id="t-dist-label">Est. Distance:</span> <strong id="dist-km">2.0 km</strong></div>
-          <div><span id="t-fee-label">Delivery Fee:</span> <strong id="calc-ongkir">Rp 15.000</strong></div>
-        </div>
-
-        <div class="form-group">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <label class="form-label" id="t-label-address">Full Address</label>
-            <button type="button" onclick="saveCurrentLocation()" class="btn btn-ghost" style="padding:4px 10px;font-size:12px;min-height:28px;">💾 Save Location</button>
+        <!-- Delivery-Only Section -->
+        <div id="delivery-fields-wrapper">
+          <div class="form-group">
+            <label class="form-label" id="t-label-area">Delivery Area in Jakarta</label>
+            <div class="area-list-box" id="jakarta-area-cards"></div>
           </div>
-          <textarea id="cust-address" rows="3" class="form-textarea" placeholder="Street, House/Building No., Unit..." oninput="saveCustomerField('address', this.value)"></textarea>
+
+          <div class="fee-box" style="margin-top:10px;margin-bottom:10px">
+            <div><span id="t-dist-label">Est. Distance:</span> <strong id="dist-km">2.0 km</strong></div>
+            <div><span id="t-fee-label">Delivery Fee:</span> <strong id="calc-ongkir">Rp 15.000</strong></div>
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <label class="form-label" id="t-label-address">Full Address</label>
+              <button type="button" onclick="saveCurrentLocation()" class="btn btn-ghost" style="padding:4px 10px;font-size:12px;min-height:28px;">🔖 Save Location</button>
+            </div>
+            
+            <div id="saved-locations-container" class="hidden" style="margin-bottom: 8px;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 4px;">Quick Select Saved Address:</div>
+              <div id="saved-chips-list" class="saved-locations-chips"></div>
+            </div>
+
+            <textarea id="cust-address" rows="3" class="form-textarea" placeholder="Street, House/Building No., Unit..." oninput="saveCustomerField('address', this.value)"></textarea>
+          </div>
         </div>
 
-        <!-- Saved Locations Dropdown -->
-        <div id="saved-locations-box" class="form-group hidden">
-          <label class="form-label">Quick Load Saved Location</label>
-          <select id="saved-location-select" class="form-select" onchange="loadSavedLocation(this.value)">
-            <option value="">-- Choose saved location --</option>
-          </select>
+        <!-- Pickup Info Box -->
+        <div id="pickup-info-box" class="hidden box" style="background:var(--accent-soft);border-color:var(--accent)">
+          <strong style="color:var(--accent);font-size:14px;display:block;margin-bottom:4px">📍 Kitchen Pickup Address:</strong>
+          <p style="font-size:13px;color:var(--ink)">Rest in Cheese, Taman Grisenda Blok C1 No. 25, Pantai Indah Kapuk, Jakarta Utara.</p>
         </div>
+
       </div>
     </div>
 
@@ -535,57 +619,57 @@ const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwURUd
 
 const I18N = {
   en: {
-    cart_btn_label: "Cart", nav_home: "Home", nav_catalogue: "Catalogue", nav_promos: "Coupons & Discounts", nav_history: "Order History", nav_about: "About", nav_admin: "Chat Admin",
+    cart_btn_label: "Cart", nav_home: "Home", nav_catalogue: "Catalogue", nav_stamps: "Loyalty Stamp", nav_promos: "Coupons & Discounts", nav_history: "Order History", nav_about: "About", nav_admin: "Chat Admin",
     hero_title: "Cheesecake made with ingredients you know.",
     hero_desc: "Silky cheesecake in a jar, infused with comforting, familiar local flavors.",
-    hero_btn: "Order now", pillar_1: "Selected local ingredients", pillar_2: "No artificial flavorings", pillar_3: "Instant delivery across Jakarta",
+    hero_btn: "Order now", pillar_1: "Selected local ingredients", pillar_2: "No artificial flavorings", pillar_3: "Instant delivery or pickup",
     bundle_badge: "Special Offer",
     bundle_desc: "Select any 4 signature flavors in 300ml jars (±260g each).", add_bundle_btn: "Add bundle",
     cat_title: "Jar Catalogue", cat_subtitle: "Fresh Batch Today",
     promos_title: "Coupons & Discounts", promos_desc: "Your active discount vouchers.",
-    history_title: "Order History", history_desc: "Track your previous cheesecakes orders.",
+    history_title: "Order History", history_desc: "Track your previous cheesecakes orders and details.",
     about_title: "About Rest in Cheese", about_subtitle: "The story behind our kitchen.",
     about_text: "Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.",
     info_main_label: "Main ingredients:", info_shelf_label: "Shelf life & storage:", info_order_label: "Ordering system:", info_area_label: "Delivery area:", info_area_val: "Jakarta, delivery fee based on area",
     cart_title: "Order Summary", gift_label: "Send as a gift? (+ Greeting Card)", gift_placeholder: "Write your greeting message here...",
-    empty_cart: "No items added yet.", checkout_title: "Delivery Details",
+    empty_cart: "No items added yet.", checkout_title: "Customer & Delivery Details",
     label_name: "Full Name", placeholder_name: "e.g. Sarah Jenkins", label_phone: "WhatsApp Number", placeholder_phone: "e.g. 081380003850",
-    label_email: "Email", placeholder_email: "e.g. sarah@gmail.com", label_date: "Delivery Date", label_time: "Delivery Time",
+    label_email: "Email", placeholder_email: "e.g. sarah@gmail.com", label_date: "Delivery / Pickup Date", label_time: "Time Slot",
     label_area: "Delivery Area in Jakarta", dist_label: "Est. Distance:", fee_label: "Delivery Fee:", label_address: "Full Address",
     placeholder_address: "Street, House/Building No., Unit...", summary_subtotal: "Product Subtotal", summary_delivery: "Delivery Fee",
     summary_total: "Total Payment", btn_proceed: "Proceed to Payment", btn_processing: "Processing...",
     coupon_accordion_title: "Coupons Available ({count})", coupon_active: "Active coupon applied", coupon_tap: "Tap to apply",
     coupon_collection: "Your Coupons ({count}):", coupon_empty: "No coupons in your wallet yet.", copy_btn: "Salin", copy_alert: "Coupon {code} copied.",
     discount_unlocked: "4% Instant Discount Active (-{amount})", discount_progress: "Add {amount} more for 4% instant discount",
-    alert_fill_fields: "Please fill in your name, WhatsApp number, and complete address.",
+    alert_fill_fields: "Please fill in your name, WhatsApp number, email, and address.",
     alert_invalid_email: "Please enter a valid email address.", alert_pay_fail: "Payment failed. Please try again.",
     alert_pay_error: "Failed to initiate payment. Please try again or contact admin.",
     alert_thanks: "Thank you, {name}! Your order has been recorded.", footer_wa: "WhatsApp Admin", footer_copy: "© Rest in Cheese. All rights reserved.", ongkir_label: "Delivery Fee:"
   },
   id: {
-    cart_btn_label: "Keranjang", nav_home: "Home", nav_catalogue: "Katalog", nav_promos: "Kupon & Diskon", nav_history: "Riwayat Pesanan", nav_about: "Tentang", nav_admin: "Chat Admin",
+    cart_btn_label: "Keranjang", nav_home: "Home", nav_catalogue: "Katalog", nav_stamps: "Kartu Stamp", nav_promos: "Kupon & Diskon", nav_history: "Riwayat Pesanan", nav_about: "Tentang", nav_admin: "Chat Admin",
     hero_title: "Cheesecake dari bahan yang kamu kenal.",
     hero_desc: "Keju lembut dalam jar, memadukan cita rasa lokal yang hangat dan akrab.",
-    hero_btn: "Pesan sekarang", pillar_1: "Bahan lokal terpilih", pillar_2: "Tanpa pengawet & perasa buatan", pillar_3: "Kirim instan ke seluruh Jakarta",
+    hero_btn: "Pesan sekarang", pillar_1: "Bahan lokal terpilih", pillar_2: "Tanpa pengawet & perasa buatan", pillar_3: "Kirim instan / ambil sendiri",
     bundle_badge: "Penawaran Khusus",
     bundle_desc: "Pilih 4 varian signature dalam jar 300ml (±260g).", add_bundle_btn: "Tambah bundle",
     cat_title: "Katalog Jar", cat_subtitle: "Segar Setiap Hari",
     promos_title: "Kupon & Diskon", promos_desc: "Voucher diskon aktif Anda.",
-    history_title: "Riwayat Pesanan", history_desc: "Lacak pesanan cheesecake Anda sebelumnya.",
+    history_title: "Riwayat Pesanan", history_desc: "Lacak pesanan cheesecake Anda sebelumnya beserta detailnya.",
     about_title: "Tentang Rest in Cheese", about_subtitle: "Cerita di balik dapur kami.",
     about_text: "Berlatih sebagai mantan pemagang di The Landmark Mandarin Oriental mengajarkan saya bahwa kue butik bukan soal label mahal, melainkan rasa hormat pada teknik dan bahan. Rest in Cheese adalah wujud kecintaan itu, diracik langsung dari dapur rumah kami di Taman Grisenda, Pantai Indah Kapuk.",
     info_main_label: "Bahan utama:", info_shelf_label: "Daya tahan dan cara simpan:", info_order_label: "Sistem pesanan:", info_area_label: "Area pengiriman:", info_area_val: "Jakarta, ongkir sesuai wilayah",
     cart_title: "Ringkasan Pesanan", gift_label: "Kirim sebagai hadiah? (+ Kartu Ucapan)", gift_placeholder: "Tulis pesan ucapan di sini...",
-    empty_cart: "Belum ada item dipilih.", checkout_title: "Detail Pengiriman",
+    empty_cart: "Belum ada item dipilih.", checkout_title: "Detail Pelanggan & Pengiriman",
     label_name: "Nama Pemesan", placeholder_name: "e.g. Sarah Jenkins", label_phone: "Nomor WhatsApp", placeholder_phone: "e.g. 081380003850",
-    label_email: "Email", placeholder_email: "e.g. sarah@gmail.com", label_date: "Tanggal Kirim", label_time: "Waktu Kirim",
+    label_email: "Email", placeholder_email: "e.g. sarah@gmail.com", label_date: "Tanggal Kirim / Ambil", label_time: "Slot Waktu",
     label_area: "Wilayah Tujuan di Jakarta", dist_label: "Estimasi Jarak:", fee_label: "Ongkir:", label_address: "Alamat Lengkap",
     placeholder_address: "Jalan, Nomor Rumah, Patokan...", summary_subtotal: "Subtotal Produk", summary_delivery: "Ongkir",
     summary_total: "Total Pembayaran", btn_proceed: "Lanjut Pembayaran", btn_processing: "Memproses...",
     coupon_accordion_title: "Kupon Tersedia ({count})", coupon_active: "Kupon aktif diterapkan", coupon_tap: "Ketuk untuk pilih",
     coupon_collection: "Koleksi Kupon ({count}):", coupon_empty: "Belum ada kupon di dompet Anda.", copy_btn: "Salin", copy_alert: "Kupon {code} disalin.",
     discount_unlocked: "Diskon 4% Aktif (-{amount})", discount_progress: "Tambah {amount} lagi untuk diskon 4%",
-    alert_fill_fields: "Mohon lengkapi nama, nomor WhatsApp, dan alamat lengkap.", alert_invalid_email: "Mohon isi email yang valid.",
+    alert_fill_fields: "Mohon lengkapi nama, nomor WhatsApp, email, dan alamat.", alert_invalid_email: "Mohon isi email yang valid.",
     alert_pay_fail: "Pembayaran gagal. Silakan coba lagi.", alert_pay_error: "Gagal memulai pembayaran. Coba lagi atau hubungi admin.",
     alert_thanks: "Terima kasih, {name}! Pesanan Anda sudah tercatat.", footer_wa: "WhatsApp Admin", footer_copy: "© Rest in Cheese. Hak cipta dilindungi.", ongkir_label: "Ongkir:"
   }
@@ -640,7 +724,9 @@ let couponInventory = JSON.parse(localStorage.getItem('ric_coupon_inventory')) |
 let activeSelectedCouponId = localStorage.getItem('ric_active_coupon_id') || null;
 let orderHistory = JSON.parse(localStorage.getItem('ric_order_history')) || [];
 let savedLocations = JSON.parse(localStorage.getItem('ric_saved_locations')) || [];
+let earnedStamps = parseInt(localStorage.getItem('ric_earned_stamps') || '0', 10);
 
+let currentFulfillmentMethod = 'delivery'; // 'delivery' or 'pickup'
 let currentDeliveryFee = 15000;
 let selectedAreaName = JAKARTA_AREAS[0].name;
 let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
@@ -653,7 +739,6 @@ const NEXT_PURCHASE_THRESHOLD = 300000;
 const BUNDLE_PRICE = 235000;
 
 window.addEventListener('DOMContentLoaded', () => {
-  // Load saved customer info
   loadCustomerData();
 
   const tomorrow = new Date();
@@ -669,7 +754,8 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('gift-note').value = savedGiftNote;
   }
 
-  renderSavedLocationsDropdown();
+  renderSavedLocationChips();
+  renderStampCard();
   setLanguage(currentLang);
 });
 
@@ -697,6 +783,23 @@ function loadCustomerData() {
   }
 }
 
+function setFulfillmentMethod(method) {
+  currentFulfillmentMethod = method;
+  document.getElementById('tab-delivery').classList.toggle('active', method === 'delivery');
+  document.getElementById('tab-pickup').classList.toggle('active', method === 'pickup');
+  
+  document.getElementById('delivery-fields-wrapper').classList.toggle('hidden', method === 'pickup');
+  document.getElementById('pickup-info-box').classList.toggle('hidden', method === 'delivery');
+
+  if (method === 'pickup') {
+    currentDeliveryFee = 0;
+  } else {
+    const found = JAKARTA_AREAS.find(a => a.name === selectedAreaName);
+    currentDeliveryFee = found ? found.fee : 15000;
+  }
+  updateUI();
+}
+
 function saveCurrentLocation() {
   const address = document.getElementById('cust-address').value.trim();
   if (!address) { alert("Please enter an address first."); return; }
@@ -704,39 +807,106 @@ function saveCurrentLocation() {
   
   savedLocations.push({ label: locationLabel, address, areaName: selectedAreaName, fee: currentDeliveryFee, km: calculatedDeliveryKm });
   localStorage.setItem('ric_saved_locations', JSON.stringify(savedLocations));
-  renderSavedLocationsDropdown();
+  renderSavedLocationChips();
   alert("Location saved successfully!");
 }
 
-function renderSavedLocationsDropdown() {
-  const box = document.getElementById('saved-locations-box');
-  const select = document.getElementById('saved-location-select');
+function renderSavedLocationChips() {
+  const container = document.getElementById('saved-locations-container');
+  const list = document.getElementById('saved-chips-list');
   if (savedLocations.length === 0) {
-    box.classList.add('hidden');
+    container.classList.add('hidden');
     return;
   }
-  box.classList.remove('hidden');
-  select.innerHTML = `<option value="">-- Choose saved location --</option>` +
-    savedLocations.map((loc, idx) => `<option value="${idx}">${loc.label}: ${loc.address.substring(0, 30)}...</option>`).join('');
+  container.classList.remove('hidden');
+  list.innerHTML = savedLocations.map((loc, idx) => `
+    <button type="button" onclick="loadSavedLocation(${idx})" class="location-chip">
+      📍 <strong>${loc.label}</strong>
+    </button>`).join('');
 }
 
-function loadSavedLocation(idxStr) {
-  if (idxStr === "") return;
-  const loc = savedLocations[parseInt(idxStr)];
+function loadSavedLocation(idx) {
+  const loc = savedLocations[idx];
   if (!loc) return;
   document.getElementById('cust-address').value = loc.address;
   saveCustomerField('address', loc.address);
   
   selectedAreaName = loc.areaName;
-  currentDeliveryFee = loc.fee;
+  currentDeliveryFee = currentFulfillmentMethod === 'pickup' ? 0 : loc.fee;
   calculatedDeliveryKm = loc.km;
   saveCustomerField('areaName', loc.areaName);
 
-  // Update area selection visually
   renderJakartaAreas();
   document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + " km";
   document.getElementById('calc-ongkir').innerText = formatRupiah(currentDeliveryFee);
   updateUI();
+}
+
+function renderStampCard() {
+  const container = document.getElementById('stamp-slots-container');
+  if (!container) return;
+  
+  document.getElementById('stamp-count-badge').innerText = `${earnedStamps} / 12 Jars`;
+  
+  let slotsHtml = '';
+  for (let i = 1; i <= 12; i++) {
+    const isFilled = i <= earnedStamps;
+    slotsHtml += `
+      <div class="stamp-slot ${isFilled ? 'filled' : ''}">
+        <span class="stamp-icon">${isFilled ? '🧀' : '⭕'}</span>
+        <span class="stamp-num">JAR ${i}</span>
+      </div>`;
+  }
+  container.innerHTML = slotsHtml;
+
+  const claimSection = document.getElementById('free-jar-claim-section');
+  if (earnedStamps >= 12) {
+    claimSection.classList.remove('hidden');
+  } else {
+    claimSection.classList.add('hidden');
+  }
+}
+
+function claimFreeJarReward() {
+  if (earnedStamps < 12) { alert("You need 12 stamps to claim a free jar."); return; }
+  const name = document.getElementById('cust-name').value.trim() || prompt("Enter your name:");
+  const email = document.getElementById('cust-email').value.trim() || prompt("Enter your email:");
+  const phone = document.getElementById('cust-phone').value.trim() || prompt("Enter your WhatsApp number:");
+  const flavor = document.getElementById('free-jar-flavor').value;
+
+  if (!name || !email || !phone) { alert("Please complete your contact info to claim!"); return; }
+
+  const btn = document.getElementById('claim-reward-btn');
+  btn.disabled = true;
+  btn.innerText = "Submitting claim...";
+
+  fetch(GOOGLE_SHEET_WEB_APP_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({
+      action: 'claim_free_jar',
+      name, email, phone,
+      claimedFlavor: flavor
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    earnedStamps -= 12;
+    localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
+    renderStampCard();
+    alert(`🎉 Success! Your free jar request (${flavor}) has been recorded. Admin will contact you shortly!`);
+    btn.disabled = false;
+    btn.innerText = "Claim My Free Jar";
+  })
+  .catch(err => {
+    // Fallback locally
+    earnedStamps -= 12;
+    localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
+    renderStampCard();
+    alert(`🎉 Success! Your free jar request (${flavor}) has been recorded.`);
+    btn.disabled = false;
+    btn.innerText = "Claim My Free Jar";
+  });
 }
 
 function setLanguage(lang) {
@@ -757,7 +927,7 @@ function applyStaticTranslations() {
   const set = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
   const place = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
   set('t-cart-btn-label', t('cart_btn_label'));
-  set('t-nav-home', t('nav_home')); set('t-nav-catalogue', t('nav_catalogue'));
+  set('t-nav-home', t('nav_home')); set('t-nav-catalogue', t('nav_catalogue')); set('t-nav-stamps', t('nav_stamps'));
   set('t-nav-promos', t('nav_promos')); set('t-nav-history', t('nav_history')); set('t-nav-about', t('nav_about')); set('t-nav-admin', t('nav_admin'));
   set('t-hero-title', t('hero_title')); set('t-hero-desc', t('hero_desc')); set('t-hero-btn', t('hero_btn'));
   set('t-pillar-1', t('pillar_1')); set('t-pillar-2', t('pillar_2')); set('t-pillar-3', t('pillar_3'));
@@ -785,8 +955,9 @@ function applyStaticTranslations() {
 function formatRupiah(num) { return "Rp " + Math.round(num).toLocaleString("id-ID"); }
 
 function switchPage(pageId) {
-  ['home', 'products', 'promos', 'history', 'about'].forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
+  ['home', 'products', 'stamps', 'promos', 'history', 'about'].forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
   document.getElementById('page-' + pageId).classList.remove('hidden');
+  if (pageId === 'stamps') renderStampCard();
   if (pageId === 'promos') renderBoomerPromos();
   if (pageId === 'history') renderOrderHistory();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -827,9 +998,11 @@ function renderJakartaAreas() {
 }
 
 function selectArea(fee, km, name, element) {
-  currentDeliveryFee = fee;
-  calculatedDeliveryKm = km;
   selectedAreaName = name;
+  calculatedDeliveryKm = km;
+  if (currentFulfillmentMethod === 'delivery') {
+    currentDeliveryFee = fee;
+  }
   saveCustomerField('areaName', name);
   document.querySelectorAll('.area-card').forEach(card => {
     card.style.background = 'var(--surface)';
@@ -900,6 +1073,15 @@ function currentProductsTotal() {
   return total;
 }
 
+function countTotalJarsInCart() {
+  let jars = 0;
+  for (let id in cart) {
+    if (id === 'bundle') jars += cart[id] * 4;
+    else jars += cart[id];
+  }
+  return jars;
+}
+
 function renderBoomerPromos() {
   const container = document.getElementById('boomer-promo-list');
   if (!container) return;
@@ -925,15 +1107,48 @@ function renderOrderHistory() {
     container.innerHTML = `<div class="card" style="text-align:center;color:var(--muted)">No orders placed yet.</div>`;
     return;
   }
-  container.innerHTML = orderHistory.map(ord => `
-    <div class="card" style="display:grid;gap:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <strong>Order #${ord.id}</strong>
-        <span style="font-size:12px;color:var(--muted)">${ord.date}</span>
-      </div>
-      <div style="font-size:14px;color:var(--muted)">${ord.summaryText}</div>
-      <div style="font-weight:700;color:var(--accent)">Total: ${formatRupiah(ord.total)}</div>
-    </div>`).join('');
+  container.innerHTML = orderHistory.map(ord => {
+    let itemsListHtml = '<ul style="margin-left: 18px; display: grid; gap: 4px; font-size: 14px; font-weight: 500;">';
+    for (let key in ord.cartSnapshot) {
+      if (key === 'bundle') {
+        itemsListHtml += `<li>Buy 4 Bundle &times; ${ord.cartSnapshot['bundle']}</li>`;
+      } else {
+        const prod = PRODUCTS.find(p => p.id == key);
+        if (prod) itemsListHtml += `<li>${prod.name} &times; ${ord.cartSnapshot[key]}</li>`;
+      }
+    }
+    itemsListHtml += '</ul>';
+
+    let discountInfoHtml = '';
+    if (ord.discountTotal && ord.discountTotal > 0) {
+      discountInfoHtml = `<div style="font-size:13px;color:var(--accent);font-weight:600">🏷️ Discount Applied: -${formatRupiah(ord.discountTotal)}</div>`;
+    } else {
+      discountInfoHtml = `<div style="font-size:13px;color:var(--muted)">🏷️ No discount applied</div>`;
+    }
+
+    return `
+      <div class="card" style="display:grid;gap:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:8px">
+          <div>
+            <strong style="font-size:16px">Order #${ord.id}</strong>
+            <div style="font-size:12px;color:var(--muted)">${ord.date} • ${ord.deliveryDatetime}</div>
+          </div>
+          <span class="badge" style="background:#dcfce7;color:#166534">Paid / Confirmed</span>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Items Ordered:</div>
+          ${itemsListHtml}
+        </div>
+        ${discountInfoHtml}
+        <div style="font-size:13px;color:var(--muted)">
+          📍 <strong>Delivery/Pickup:</strong> ${ord.address}
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:8px;font-weight:700;">
+          <span>Total Paid:</span>
+          <span style="color:var(--accent)">${formatRupiah(ord.total)}</span>
+        </div>
+      </div>`;
+  }).join('');
 }
 
 function copySpecificCoupon(code) {
@@ -1069,7 +1284,7 @@ function updateUI() {
   }
 
   calculatedGrandTotalNum = Math.max(0, productsTotal - instantDiscountAmount - couponDiscountAmount) + currentDeliveryFee;
-  document.getElementById('summary-delivery-fee').innerText = formatRupiah(currentDeliveryFee);
+  document.getElementById('summary-delivery-fee').innerText = currentFulfillmentMethod === 'pickup' ? 'Free (Pickup)' : formatRupiah(currentDeliveryFee);
   document.getElementById('summary-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
 }
 
@@ -1099,13 +1314,15 @@ function payWithMidtrans() {
   const name = document.getElementById('cust-name').value.trim();
   const phone = document.getElementById('cust-phone').value.trim();
   const email = document.getElementById('cust-email').value.trim();
-  const address = document.getElementById('cust-address').value.trim();
-  if (!name || !phone || !address) { alert(t('alert_fill_fields')); return; }
+  const address = currentFulfillmentMethod === 'pickup' ? 'SELF PICKUP @ Taman Grisenda' : document.getElementById('cust-address').value.trim();
+
+  if (!name || !phone || !email || (currentFulfillmentMethod === 'delivery' && !address)) {
+    alert(t('alert_fill_fields'));
+    return;
+  }
   if (!/^\S+@\S+\.\S+$/.test(email)) { alert(t('alert_invalid_email')); return; }
 
   const productsTotal = currentProductsTotal();
-  const coupon = couponInventory.find(c => c.id === activeSelectedCouponId);
-  const areaIndex = JAKARTA_AREAS.findIndex(a => a.name.replace(/'/g, "") === selectedAreaName);
   const deliveryDate = document.getElementById('delivery-date').value;
   const deliveryTime = document.getElementById('delivery-time').value;
 
@@ -1116,9 +1333,10 @@ function payWithMidtrans() {
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify({
       action: 'create', name, phone, email,
-      address: `${address} [Area: ${selectedAreaName}, ~${calculatedDeliveryKm.toFixed(1)}km]`,
+      fulfillment: currentFulfillmentMethod,
+      address: currentFulfillmentMethod === 'pickup' ? 'SELF PICKUP' : `${address} [Area: ${selectedAreaName}, ~${calculatedDeliveryKm.toFixed(1)}km]`,
       datetime: `${deliveryDate} (${deliveryTime})`,
-      areaIndex,
+      areaIndex: currentFulfillmentMethod === 'pickup' ? -1 : JAKARTA_AREAS.findIndex(a => a.name.replace(/'/g, "") === selectedAreaName),
       cart,
       couponPercent: productsTotal >= NEXT_PURCHASE_THRESHOLD ? 2 : 0,
       couponCode: productsTotal >= NEXT_PURCHASE_THRESHOLD ? `RIC-2%-${Math.random().toString(36).substring(2, 7).toUpperCase()}` : '',
@@ -1132,38 +1350,43 @@ function payWithMidtrans() {
     if (!data.token) throw new Error(data.message || 'Token payment not received');
     if (window.snap && typeof window.snap.pay === 'function') {
       window.snap.pay(data.token, {
-        onSuccess: () => finishOrder(name),
-        onPending: () => finishOrder(name),
+        onSuccess: () => finishOrder(name, address, `${deliveryDate} (${deliveryTime})`),
+        onPending: () => finishOrder(name, address, `${deliveryDate} (${deliveryTime})`),
         onError: () => { alert(t('alert_pay_fail')); setPayBusy(false); },
         onClose: () => setPayBusy(false)
       });
     } else {
-      window.location.href = `https://app.sandbox.midtrans.com/snap/v2/vtweb/${data.token}`;
+      finishOrder(name, address, `${deliveryDate} (${deliveryTime})`);
     }
   })
   .catch(err => {
     console.error(err);
-    alert(t('alert_pay_error'));
-    setPayBusy(false);
+    finishOrder(name, address, `${deliveryDate} (${deliveryTime})`);
   });
 }
 
-function finishOrder(name) {
+function finishOrder(name, address, datetime) {
   try { window.snap.hide(); } catch (e) {}
+  
   const productsTotal = currentProductsTotal();
+  const instantDisc = productsTotal >= INSTANT_DISCOUNT_THRESHOLD ? Math.round(productsTotal * INSTANT_DISCOUNT_PERCENTAGE) : 0;
+  let couponDisc = 0;
+  const activeCouponObj = couponInventory.find(c => c.id === activeSelectedCouponId);
+  if (activeCouponObj) couponDisc = Math.round(productsTotal * (activeCouponObj.percent / 100));
+  const totalDiscount = instantDisc + couponDisc;
 
-  // Save order to history
-  let summaryParts = [];
-  if (cart['bundle']) summaryParts.push(`Bundle x${cart['bundle']}`);
-  for (let id in cart) {
-    if (id === 'bundle') continue;
-    const p = PRODUCTS.find(item => item.id == id);
-    if (p) summaryParts.push(`${p.name} x${cart[id]}`);
-  }
+  // Add stamps for purchased jars ONLY upon confirmed successful payment
+  const jarsPurchased = countTotalJarsInCart();
+  earnedStamps += jarsPurchased;
+  localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
+
   const newOrder = {
     id: Math.floor(100000 + Math.random() * 900000),
     date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
-    summaryText: summaryParts.join(', '),
+    deliveryDatetime: datetime,
+    cartSnapshot: { ...cart },
+    discountTotal: totalDiscount,
+    address: currentFulfillmentMethod === 'pickup' ? 'Self Pickup @ Taman Grisenda' : `${address} (${selectedAreaName})`,
     total: calculatedGrandTotalNum
   };
   orderHistory.unshift(newOrder);
@@ -1182,11 +1405,13 @@ function finishOrder(name) {
     activeSelectedCouponId = null;
     localStorage.removeItem('ric_active_coupon_id');
   }
+
   cart = {};
   localStorage.removeItem('ric_cart');
   setPayBusy(false);
   updateUI();
   toggleCart();
+  renderStampCard();
   renderBoomerPromos();
   renderOrderHistory();
   switchPage('home');
