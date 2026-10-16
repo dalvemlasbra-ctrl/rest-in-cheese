@@ -179,7 +179,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 }
 .qty-num { font-weight: 700; min-width: 22px; text-align: center; }
 
-/* ---------- Promos ---------- */
+/* ---------- Promos & History ---------- */
 .promo-list { display: grid; gap: 14px; max-width: 640px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
 .voucher-card {
@@ -271,20 +271,6 @@ footer a { color: var(--ink); font-weight: 600; }
 #discount-row, #coupon-discount-row { color: var(--accent); font-weight: 600; }
 .checkout-section { display: grid; gap: 14px; padding-top: 8px; }
 .checkout-section h4 { font-size: 24px; }
-
-/* ---------- Responsive ---------- */
-@media (min-width: 800px) {
-  .hero { grid-template-columns: 1.05fr 1fr; gap: 56px; padding: 64px 0 40px; }
-  .about-grid { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-  .bundle { grid-template-columns: 1fr auto; align-items: center; padding: 44px; }
-  .bundle-cta { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
-}
-@media (max-width: 560px) {
-  .pillars { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .brand { font-size: 20px; }
-  .lang-switch { display: none; }
-}
 </style>
 </head>
 <body>
@@ -316,6 +302,7 @@ footer a { color: var(--ink); font-weight: 600; }
       <button onclick="switchPage('home'); toggleMenu();" id="t-nav-home">Home</button>
       <button onclick="switchPage('products'); toggleMenu();" id="t-nav-catalogue">Catalogue</button>
       <button onclick="switchPage('promos'); toggleMenu();" id="t-nav-promos">Coupons &amp; Discounts</button>
+      <button onclick="switchPage('history'); toggleMenu();" id="t-nav-history">Order History</button>
       <button onclick="switchPage('about'); toggleMenu();" id="t-nav-about">About</button>
       <a href="https://wa.me/6282112002258?text=Halo%20Admin%20Rest%20in%20Cheese,%20saya%20mau%20tanya-tanya%20dulu%20sebelum%20order." target="_blank" id="t-nav-admin">Chat Admin</a>
     </div>
@@ -377,6 +364,14 @@ footer a { color: var(--ink); font-weight: 600; }
     <h2 class="section-title serif" id="t-promos-title">Coupons &amp; Discounts</h2>
     <p class="lead" id="t-promos-desc" style="margin-bottom:28px">Your active discount vouchers.</p>
     <div id="boomer-promo-list" class="promo-list"></div>
+  </div>
+
+  <!-- ORDER HISTORY -->
+  <div id="page-history" class="hidden section">
+    <span class="eyebrow">Your Purchases</span>
+    <h2 class="section-title serif" id="t-history-title">Order History</h2>
+    <p class="lead" id="t-history-desc" style="margin-bottom:28px">Track your previous cheesecakes orders.</p>
+    <div id="order-history-list" class="promo-list"></div>
   </div>
 
   <!-- ABOUT -->
@@ -443,25 +438,25 @@ footer a { color: var(--ink); font-weight: 600; }
 
         <div class="form-group">
           <label class="form-label" id="t-label-name">Full Name</label>
-          <input type="text" id="cust-name" class="form-input" placeholder="e.g. Sarah Jenkins">
+          <input type="text" id="cust-name" class="form-input" placeholder="e.g. Sarah Jenkins" oninput="saveCustomerField('name', this.value)">
         </div>
         <div class="form-group">
           <label class="form-label" id="t-label-phone">WhatsApp Number</label>
-          <input type="tel" id="cust-phone" class="form-input" placeholder="e.g. 081380003850">
+          <input type="tel" id="cust-phone" class="form-input" placeholder="e.g. 081380003850" oninput="saveCustomerField('phone', this.value)">
         </div>
         <div class="form-group">
           <label class="form-label" id="t-label-email">Email</label>
-          <input type="email" id="cust-email" class="form-input" placeholder="e.g. sarah@gmail.com">
+          <input type="email" id="cust-email" class="form-input" placeholder="e.g. sarah@gmail.com" oninput="saveCustomerField('email', this.value)">
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" id="t-label-date">Delivery Date</label>
-            <input type="date" id="delivery-date" class="form-input">
+            <input type="date" id="delivery-date" class="form-input" onchange="saveCustomerField('date', this.value)">
           </div>
           <div class="form-group">
             <label class="form-label" id="t-label-time">Delivery Time</label>
-            <select id="delivery-time" class="form-select">
+            <select id="delivery-time" class="form-select" onchange="saveCustomerField('time', this.value)">
               <option value="Morning (10:00 - 13:00)">Morning (10 - 13)</option>
               <option value="Afternoon (13:00 - 16:00)" selected>Afternoon (13 - 16)</option>
               <option value="Evening (16:00 - 19:00)">Evening (16 - 19)</option>
@@ -480,8 +475,19 @@ footer a { color: var(--ink); font-weight: 600; }
         </div>
 
         <div class="form-group">
-          <label class="form-label" id="t-label-address">Full Address</label>
-          <textarea id="cust-address" rows="3" class="form-textarea" placeholder="Street, House/Building No., Unit..."></textarea>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <label class="form-label" id="t-label-address">Full Address</label>
+            <button type="button" onclick="saveCurrentLocation()" class="btn btn-ghost" style="padding:4px 10px;font-size:12px;min-height:28px;">💾 Save Location</button>
+          </div>
+          <textarea id="cust-address" rows="3" class="form-textarea" placeholder="Street, House/Building No., Unit..." oninput="saveCustomerField('address', this.value)"></textarea>
+        </div>
+
+        <!-- Saved Locations Dropdown -->
+        <div id="saved-locations-box" class="form-group hidden">
+          <label class="form-label">Quick Load Saved Location</label>
+          <select id="saved-location-select" class="form-select" onchange="loadSavedLocation(this.value)">
+            <option value="">-- Choose saved location --</option>
+          </select>
         </div>
       </div>
     </div>
@@ -529,7 +535,7 @@ const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwURUd
 
 const I18N = {
   en: {
-    cart_btn_label: "Cart", nav_home: "Home", nav_catalogue: "Catalogue", nav_promos: "Coupons & Discounts", nav_about: "About", nav_admin: "Chat Admin",
+    cart_btn_label: "Cart", nav_home: "Home", nav_catalogue: "Catalogue", nav_promos: "Coupons & Discounts", nav_history: "Order History", nav_about: "About", nav_admin: "Chat Admin",
     hero_title: "Cheesecake made with ingredients you know.",
     hero_desc: "Silky cheesecake in a jar, infused with comforting, familiar local flavors.",
     hero_btn: "Order now", pillar_1: "Selected local ingredients", pillar_2: "No artificial flavorings", pillar_3: "Instant delivery across Jakarta",
@@ -537,6 +543,7 @@ const I18N = {
     bundle_desc: "Select any 4 signature flavors in 300ml jars (±260g each).", add_bundle_btn: "Add bundle",
     cat_title: "Jar Catalogue", cat_subtitle: "Fresh Batch Today",
     promos_title: "Coupons & Discounts", promos_desc: "Your active discount vouchers.",
+    history_title: "Order History", history_desc: "Track your previous cheesecakes orders.",
     about_title: "About Rest in Cheese", about_subtitle: "The story behind our kitchen.",
     about_text: "Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.",
     info_main_label: "Main ingredients:", info_shelf_label: "Shelf life & storage:", info_order_label: "Ordering system:", info_area_label: "Delivery area:", info_area_val: "Jakarta, delivery fee based on area",
@@ -556,7 +563,7 @@ const I18N = {
     alert_thanks: "Thank you, {name}! Your order has been recorded.", footer_wa: "WhatsApp Admin", footer_copy: "© Rest in Cheese. All rights reserved.", ongkir_label: "Delivery Fee:"
   },
   id: {
-    cart_btn_label: "Keranjang", nav_home: "Home", nav_catalogue: "Katalog", nav_promos: "Kupon & Diskon", nav_about: "Tentang", nav_admin: "Chat Admin",
+    cart_btn_label: "Keranjang", nav_home: "Home", nav_catalogue: "Katalog", nav_promos: "Kupon & Diskon", nav_history: "Riwayat Pesanan", nav_about: "Tentang", nav_admin: "Chat Admin",
     hero_title: "Cheesecake dari bahan yang kamu kenal.",
     hero_desc: "Keju lembut dalam jar, memadukan cita rasa lokal yang hangat dan akrab.",
     hero_btn: "Pesan sekarang", pillar_1: "Bahan lokal terpilih", pillar_2: "Tanpa pengawet & perasa buatan", pillar_3: "Kirim instan ke seluruh Jakarta",
@@ -564,6 +571,7 @@ const I18N = {
     bundle_desc: "Pilih 4 varian signature dalam jar 300ml (±260g).", add_bundle_btn: "Tambah bundle",
     cat_title: "Katalog Jar", cat_subtitle: "Segar Setiap Hari",
     promos_title: "Kupon & Diskon", promos_desc: "Voucher diskon aktif Anda.",
+    history_title: "Riwayat Pesanan", history_desc: "Lacak pesanan cheesecake Anda sebelumnya.",
     about_title: "Tentang Rest in Cheese", about_subtitle: "Cerita di balik dapur kami.",
     about_text: "Berlatih sebagai mantan pemagang di The Landmark Mandarin Oriental mengajarkan saya bahwa kue butik bukan soal label mahal, melainkan rasa hormat pada teknik dan bahan. Rest in Cheese adalah wujud kecintaan itu, diracik langsung dari dapur rumah kami di Taman Grisenda, Pantai Indah Kapuk.",
     info_main_label: "Bahan utama:", info_shelf_label: "Daya tahan dan cara simpan:", info_order_label: "Sistem pesanan:", info_area_label: "Area pengiriman:", info_area_val: "Jakarta, ongkir sesuai wilayah",
@@ -630,6 +638,9 @@ const JAKARTA_AREAS = [
 let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
 let couponInventory = JSON.parse(localStorage.getItem('ric_coupon_inventory')) || [];
 let activeSelectedCouponId = localStorage.getItem('ric_active_coupon_id') || null;
+let orderHistory = JSON.parse(localStorage.getItem('ric_order_history')) || [];
+let savedLocations = JSON.parse(localStorage.getItem('ric_saved_locations')) || [];
+
 let currentDeliveryFee = 15000;
 let selectedAreaName = JAKARTA_AREAS[0].name;
 let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
@@ -642,11 +653,14 @@ const NEXT_PURCHASE_THRESHOLD = 300000;
 const BUNDLE_PRICE = 235000;
 
 window.addEventListener('DOMContentLoaded', () => {
+  // Load saved customer info
+  loadCustomerData();
+
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const iso = tomorrow.toISOString().slice(0, 10);
   const dateInput = document.getElementById('delivery-date');
-  if (dateInput) { dateInput.value = iso; dateInput.min = iso; }
+  if (dateInput && !dateInput.value) { dateInput.value = iso; dateInput.min = iso; }
 
   const savedGiftNote = localStorage.getItem('ric_gift_note');
   if (savedGiftNote) {
@@ -654,8 +668,76 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('gift-note-container').classList.remove('hidden');
     document.getElementById('gift-note').value = savedGiftNote;
   }
+
+  renderSavedLocationsDropdown();
   setLanguage(currentLang);
 });
+
+function saveCustomerField(field, val) {
+  let custData = JSON.parse(localStorage.getItem('ric_cust_data')) || {};
+  custData[field] = val;
+  localStorage.setItem('ric_cust_data', JSON.stringify(custData));
+}
+
+function loadCustomerData() {
+  let custData = JSON.parse(localStorage.getItem('ric_cust_data')) || {};
+  if (custData.name) document.getElementById('cust-name').value = custData.name;
+  if (custData.phone) document.getElementById('cust-phone').value = custData.phone;
+  if (custData.email) document.getElementById('cust-email').value = custData.email;
+  if (custData.date) document.getElementById('delivery-date').value = custData.date;
+  if (custData.time) document.getElementById('delivery-time').value = custData.time;
+  if (custData.address) document.getElementById('cust-address').value = custData.address;
+  if (custData.areaName) {
+    selectedAreaName = custData.areaName;
+    const found = JAKARTA_AREAS.find(a => a.name === custData.areaName);
+    if (found) {
+      currentDeliveryFee = found.fee;
+      calculatedDeliveryKm = found.km;
+    }
+  }
+}
+
+function saveCurrentLocation() {
+  const address = document.getElementById('cust-address').value.trim();
+  if (!address) { alert("Please enter an address first."); return; }
+  const locationLabel = prompt("Give this saved location a name (e.g. Home, Office):", "Home") || "My Location";
+  
+  savedLocations.push({ label: locationLabel, address, areaName: selectedAreaName, fee: currentDeliveryFee, km: calculatedDeliveryKm });
+  localStorage.setItem('ric_saved_locations', JSON.stringify(savedLocations));
+  renderSavedLocationsDropdown();
+  alert("Location saved successfully!");
+}
+
+function renderSavedLocationsDropdown() {
+  const box = document.getElementById('saved-locations-box');
+  const select = document.getElementById('saved-location-select');
+  if (savedLocations.length === 0) {
+    box.classList.add('hidden');
+    return;
+  }
+  box.classList.remove('hidden');
+  select.innerHTML = `<option value="">-- Choose saved location --</option>` +
+    savedLocations.map((loc, idx) => `<option value="${idx}">${loc.label}: ${loc.address.substring(0, 30)}...</option>`).join('');
+}
+
+function loadSavedLocation(idxStr) {
+  if (idxStr === "") return;
+  const loc = savedLocations[parseInt(idxStr)];
+  if (!loc) return;
+  document.getElementById('cust-address').value = loc.address;
+  saveCustomerField('address', loc.address);
+  
+  selectedAreaName = loc.areaName;
+  currentDeliveryFee = loc.fee;
+  calculatedDeliveryKm = loc.km;
+  saveCustomerField('areaName', loc.areaName);
+
+  // Update area selection visually
+  renderJakartaAreas();
+  document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + " km";
+  document.getElementById('calc-ongkir').innerText = formatRupiah(currentDeliveryFee);
+  updateUI();
+}
 
 function setLanguage(lang) {
   currentLang = lang;
@@ -666,6 +748,7 @@ function setLanguage(lang) {
   applyStaticTranslations();
   renderProducts();
   renderBoomerPromos();
+  renderOrderHistory();
   renderJakartaAreas();
   updateUI();
 }
@@ -675,12 +758,13 @@ function applyStaticTranslations() {
   const place = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
   set('t-cart-btn-label', t('cart_btn_label'));
   set('t-nav-home', t('nav_home')); set('t-nav-catalogue', t('nav_catalogue'));
-  set('t-nav-promos', t('nav_promos')); set('t-nav-about', t('nav_about')); set('t-nav-admin', t('nav_admin'));
+  set('t-nav-promos', t('nav_promos')); set('t-nav-history', t('nav_history')); set('t-nav-about', t('nav_about')); set('t-nav-admin', t('nav_admin'));
   set('t-hero-title', t('hero_title')); set('t-hero-desc', t('hero_desc')); set('t-hero-btn', t('hero_btn'));
   set('t-pillar-1', t('pillar_1')); set('t-pillar-2', t('pillar_2')); set('t-pillar-3', t('pillar_3'));
   set('t-bundle-badge', t('bundle_badge')); set('t-bundle-desc', t('bundle_desc')); set('t-add-bundle-btn', t('add_bundle_btn'));
   set('t-cat-title', t('cat_title')); set('t-cat-subtitle', t('cat_subtitle'));
   set('t-promos-title', t('promos_title')); set('t-promos-desc', t('promos_desc'));
+  set('t-history-title', t('history_title')); set('t-history-desc', t('history_desc'));
   set('t-about-title', t('about_title')); set('t-about-subtitle', t('about_subtitle')); set('t-about-text', t('about_text'));
   set('t-info-main-label', t('info_main_label')); set('t-info-shelf-label', t('info_shelf_label'));
   set('t-info-order-label', t('info_order_label')); set('t-info-area-label', t('info_area_label')); set('t-info-area-val', t('info_area_val'));
@@ -701,9 +785,10 @@ function applyStaticTranslations() {
 function formatRupiah(num) { return "Rp " + Math.round(num).toLocaleString("id-ID"); }
 
 function switchPage(pageId) {
-  ['home', 'products', 'promos', 'about'].forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
+  ['home', 'products', 'promos', 'history', 'about'].forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
   document.getElementById('page-' + pageId).classList.remove('hidden');
   if (pageId === 'promos') renderBoomerPromos();
+  if (pageId === 'history') renderOrderHistory();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -728,8 +813,8 @@ function saveGiftNote(val) { localStorage.setItem('ric_gift_note', val); }
 
 function renderJakartaAreas() {
   const container = document.getElementById('jakarta-area-cards');
-  container.innerHTML = JAKARTA_AREAS.map((area, index) => {
-    const isSelected = index === 0;
+  container.innerHTML = JAKARTA_AREAS.map((area) => {
+    const isSelected = area.name === selectedAreaName;
     return `
       <div onclick="selectArea(${area.fee}, ${area.km}, '${area.name.replace(/'/g, "")}', this)" class="area-card" style="${isSelected ? 'background: var(--accent-soft);' : ''}">
         <div>
@@ -745,6 +830,7 @@ function selectArea(fee, km, name, element) {
   currentDeliveryFee = fee;
   calculatedDeliveryKm = km;
   selectedAreaName = name;
+  saveCustomerField('areaName', name);
   document.querySelectorAll('.area-card').forEach(card => {
     card.style.background = 'var(--surface)';
     card.querySelector('.check-icon').style.color = 'transparent';
@@ -830,6 +916,24 @@ function renderBoomerPromos() {
         </div>
         <button onclick="copySpecificCoupon('${c.code}')" class="btn btn-ghost btn-small">${t('copy_btn')}</button>
       </div>`).join('');
+}
+
+function renderOrderHistory() {
+  const container = document.getElementById('order-history-list');
+  if (!container) return;
+  if (orderHistory.length === 0) {
+    container.innerHTML = `<div class="card" style="text-align:center;color:var(--muted)">No orders placed yet.</div>`;
+    return;
+  }
+  container.innerHTML = orderHistory.map(ord => `
+    <div class="card" style="display:grid;gap:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong>Order #${ord.id}</strong>
+        <span style="font-size:12px;color:var(--muted)">${ord.date}</span>
+      </div>
+      <div style="font-size:14px;color:var(--muted)">${ord.summaryText}</div>
+      <div style="font-weight:700;color:var(--accent)">Total: ${formatRupiah(ord.total)}</div>
+    </div>`).join('');
 }
 
 function copySpecificCoupon(code) {
@@ -1047,6 +1151,24 @@ function payWithMidtrans() {
 function finishOrder(name) {
   try { window.snap.hide(); } catch (e) {}
   const productsTotal = currentProductsTotal();
+
+  // Save order to history
+  let summaryParts = [];
+  if (cart['bundle']) summaryParts.push(`Bundle x${cart['bundle']}`);
+  for (let id in cart) {
+    if (id === 'bundle') continue;
+    const p = PRODUCTS.find(item => item.id == id);
+    if (p) summaryParts.push(`${p.name} x${cart[id]}`);
+  }
+  const newOrder = {
+    id: Math.floor(100000 + Math.random() * 900000),
+    date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+    summaryText: summaryParts.join(', '),
+    total: calculatedGrandTotalNum
+  };
+  orderHistory.unshift(newOrder);
+  localStorage.setItem('ric_order_history', JSON.stringify(orderHistory));
+
   if (productsTotal >= NEXT_PURCHASE_THRESHOLD) {
     const wonPercent = 2;
     const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
@@ -1066,6 +1188,7 @@ function finishOrder(name) {
   updateUI();
   toggleCart();
   renderBoomerPromos();
+  renderOrderHistory();
   switchPage('home');
   alert(t('alert_thanks', { name }));
 }
