@@ -1,1979 +1,1187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rest in Cheese | Artisanal Cheesecake from PIK</title>
-    <meta name="description" content="Artisanal cheesecake in a jar from a home kitchen in Taman Grisenda, Pantai Indah Kapuk, North Jakarta. Handcrafted daily with familiar ingredients and boutique technique." />
-    <meta name="theme-color" content="#F6F1E9">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Rest in Cheese | Artisanal Cheesecake" />
-    <meta property="og:description" content="Artisanal cheesecake in a jar from Taman Grisenda, PIK." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23F6F1E9'/%3E%3Ctext x='50' y='62' font-family='serif' font-size='50' fill='%231F1A17' text-anchor='middle' font-weight='300'%3ER%3C/text%3E%3C/svg%3E" />
-
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231F1A17'/%3E%3Ctext x='50' y='65' font-family='serif' font-size='50' fill='%23F6F1E9' text-anchor='middle' font-weight='300'%3ER%3C/text%3E%3C/svg%3E" />
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Midtrans Sandbox Snap SDK -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-kuh_2ZttMf5eUjih"></script>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <style>
-        :root {
-            --bg: #F6F1E9;
-            --surface: #FFFFFF;
-            --ink: #1F1A17;
-            --muted: #8C8279;
-            --line: #E4DBCF;
-            --accent: #A8561F;
-            --dark: #1F1A17;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: var(--bg);
-            color: var(--ink);
-            font-size: 16px;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            padding-bottom: 120px;
-        }
-
-        h1, h2, h3, h4, .serif-font {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 300;
-        }
-
-        button, input, select, textarea {
-            font-family: inherit;
-        }
-
-        .hidden { display: none !important; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .justify-center { justify-content: center; }
-
-        header, main {
-            max-width: 480px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 40;
-            background: rgba(246, 241, 233, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--line);
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .menu-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            color: var(--ink);
-            padding: 8px;
-            margin: -8px;
-            min-height: 44px;
-            min-width: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .brand-logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
-            font-weight: 400;
-            letter-spacing: 0.02em;
-            color: var(--ink);
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .lang-switch {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--muted);
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            gap: 4px;
-        }
-
-        .lang-switch span {
-            cursor: pointer;
-        }
-
-        .lang-switch span.active {
-            color: var(--accent);
-            text-decoration: underline;
-            font-weight: 700;
-        }
-
-        .cart-toggle-btn {
-            background: var(--ink);
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 999px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-height: 44px;
-        }
-
-        #cart-count {
-            background: var(--accent);
-            color: #fff;
-            padding: 2px 6px;
-            border-radius: 999px;
-            font-size: 12px;
-        }
-
-        #menu-drawer {
-            position: fixed;
-            inset: 0;
-            z-index: 50;
-            background: rgba(31, 26, 23, 0.4);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: flex-start;
-            transition: opacity 0.35s ease;
-        }
-
-        #menu-panel {
-            width: 320px;
-            background: var(--bg);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--line);
-            transform: translateX(-100%);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .drawer-header {
-            padding: 24px;
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .drawer-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--muted);
-            min-height: 44px;
-            min-width: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .drawer-links {
-            padding: 32px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .drawer-links button, .drawer-links a {
-            background: none;
-            border: none;
-            text-align: left;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
-            color: var(--ink);
-            text-decoration: none;
-            cursor: pointer;
-            padding: 4px 0;
-            transition: color 0.2s;
-        }
-
-        .drawer-links button:hover, .drawer-links a:hover {
-            color: var(--accent);
-        }
-
-        main {
-            padding: 32px 24px 64px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 64px;
-        }
-
-        .hero-section {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .hero-img-wrap {
-            width: 100%;
-            height: 55vh;
-            background: var(--line);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .hero-img-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .hero-title {
-            font-size: 38px;
-            line-height: 1.1;
-            letter-spacing: -0.01em;
-        }
-
-        .hero-desc {
-            color: var(--muted);
-            font-size: 16px;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 16px 24px;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            text-align: center;
-            width: 100%;
-            transition: opacity 0.2s;
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-        }
-
-        .btn-primary:disabled, .btn-primary.opacity-60 {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .pillars-grid {
-            border-top: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
-            padding: 32px 0;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
-        }
-
-        .pillar-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .pillar-num {
-            font-size: 13px;
-            color: var(--muted);
-            font-weight: 500;
-        }
-
-        .pillar-text {
-            font-size: 16px;
-            color: var(--ink);
-            font-weight: 500;
-        }
-
-        .brand-story-box {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            padding: 32px 0;
-            border-bottom: 1px solid var(--line);
-        }
-
-        .bundle-box {
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 32px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .bundle-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-
-        .bundle-prices {
-            display: flex;
-            align-items: baseline;
-            gap: 12px;
-        }
-
-        .line-through {
-            text-decoration: line-through;
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .current-price {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .catalogue-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 8px;
-        }
-
-        .badge-signature {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        .product-card {
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 24px;
-        }
-
-        .product-img {
-            width: 100%;
-            aspect-ratio: 4/5;
-            background: var(--line);
-            position: relative;
-        }
-
-        .product-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-body {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .product-title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .product-title {
-            font-size: 24px;
-        }
-
-        .product-price {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--accent);
-        }
-
-        .product-desc {
-            color: var(--muted);
-            font-size: 15px;
-        }
-
-        .product-story {
-            font-size: 13px;
-            color: var(--accent);
-            font-weight: 500;
-            padding-top: 8px;
-            border-top: 1px dashed var(--line);
-        }
-
-        .product-actions {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--line);
-        }
-
-        .qty-btn {
-            width: 44px;
-            height: 44px;
-            background: var(--bg);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--ink);
-        }
-
-        .qty-num {
-            font-weight: 700;
-            min-width: 24px;
-            text-align: center;
-        }
-
-        .promos-container {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .voucher-card {
-            background: var(--surface);
-            border: 1px dashed var(--accent);
-            border-radius: 6px;
-            padding: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .voucher-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .voucher-code {
-            font-family: monospace;
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--accent);
-        }
-
-        .btn-secondary {
-            background: var(--bg);
-            border: 1px solid var(--line);
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            cursor: pointer;
-            min-height: 44px;
-        }
-
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .chef-img {
-            width: 100%;
-            aspect-ratio: 4/3;
-            background: var(--line);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .chef-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .info-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding-top: 24px;
-            border-top: 1px solid var(--line);
-        }
-
-        .info-item {
-            font-size: 14px;
-            color: var(--muted);
-        }
-
-        .info-item strong {
-            color: var(--ink);
-        }
-
-        #cart-drawer {
-            position: fixed;
-            inset: 0;
-            z-index: 50;
-            background: rgba(31, 26, 23, 0.4);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: flex-end;
-            transition: opacity 0.35s ease;
-        }
-
-        #drawer-panel {
-            width: 100%;
-            max-width: 420px;
-            background: var(--bg);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            transform: translateX(100%);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .cart-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .cart-footer {
-            background: var(--surface);
-            border-top: 1px solid var(--line);
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .floating-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 35;
-            background: var(--surface);
-            border-top: 1px solid var(--line);
-            padding: 16px 24px;
-            box-shadow: 0 -8px 24px rgba(31, 26, 23, 0.04);
-        }
-
-        .floating-bar-inner {
-            max-width: 480px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .progress-bar-wrap {
-            width: 100%;
-            background: var(--line);
-            height: 4px;
-            border-radius: 999px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            background: var(--accent);
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        #puggle-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 60;
-            background: rgba(31, 26, 23, 0.8);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-
-        .puggle-card {
-            background: var(--dark);
-            color: #fff;
-            width: 100%;
-            max-width: 380px;
-            border-radius: 6px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #puggle-board {
-            width: 100%;
-            height: 380px;
-            background: #110E0D;
-            border: 1px solid var(--muted);
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 16px;
-        }
-
-        @keyframes chaosPinball {
-            0%   { transform: translate(0px, 0px) rotate(0deg); }
-            12%  { transform: translate(-30px, 40px) rotate(-35deg); }
-            25%  { transform: translate(25px, 90px) rotate(45deg); }
-            38%  { transform: translate(-25px, 140px) rotate(-60deg); }
-            50%  { transform: translate(30px, 190px) rotate(90deg); }
-            62%  { transform: translate(-25px, 240px) rotate(-120deg); }
-            75%  { transform: translate(20px, 290px) rotate(180deg); }
-            88%  { transform: translate(var(--target-x), 330px) rotate(270deg); }
-            100% { transform: translate(var(--target-x), 360px) rotate(360deg); }
-        }
-        .bouncing-drop-anim { animation: chaosPinball 5s cubic-bezier(0.36, 0, 0.66, 1) forwards; }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--ink);
-        }
-
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            font-size: 15px;
-            color: var(--ink);
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: var(--accent);
-        }
-
-        .area-list-box {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            background: var(--surface);
-        }
-
-        .area-card {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--line);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .area-card:last-child {
-            border-bottom: none;
-        }
-
-        .floating-puggle-trigger {
-            position: fixed;
-            bottom: 96px;
-            right: 24px;
-            z-index: 38;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 999px;
-            font-weight: 500;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(31, 26, 23, 0.12);
-        }
-
-        footer {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 32px 24px;
-            border-top: 1px solid var(--line);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        footer a {
-            color: var(--ink);
-            text-decoration: underline;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Rest in Cheese | Artisanal Cheesecake from PIK</title>
+<meta name="description" content="Artisanal cheesecake in a jar from a home kitchen in Taman Grisenda, Pantai Indah Kapuk, North Jakarta.">
+<meta name="theme-color" content="#1C1616">
+<meta property="og:title" content="Rest in Cheese | Artisanal Cheesecake">
+<meta property="og:description" content="Artisanal cheesecake in a jar from Taman Grisenda, PIK.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231C1616'/%3E%3Ctext x='50' y='65' font-family='serif' font-size='50' fill='%23F7F2EA' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-kuh_2ZttMf5eUjih"></script>
+<style>
+:root {
+  --bg: #F7F2EA;
+  --surface: #FFFFFF;
+  --ink: #1C1616;
+  --muted: #7A6F6A;
+  --line: #E8DED2;
+  --accent: #B45309;
+  --accent-soft: #FBEBD6;
+  --dark: #1C1616;
+  --radius: 16px;
+  --shadow: 0 1px 2px rgba(28,22,22,.04), 0 8px 24px rgba(28,22,22,.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 110px;
+}
+h1, h2, h3, .serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; }
+button, input, select, textarea { font-family: inherit; }
+.hidden { display: none !important; }
+img { max-width: 100%; display: block; }
+
+/* ---------- Header ---------- */
+header {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(247,242,234,.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+  padding: env(safe-area-inset-top, 0px) 0 0;
+}
+.nav {
+  max-width: 1100px; margin: 0 auto; padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.menu-btn {
+  width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--line);
+  background: var(--surface); cursor: pointer; font-size: 18px; color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.brand { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.lang-switch { display: flex; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.lang-switch span { cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+.lang-switch span.active { color: var(--ink); background: var(--surface); box-shadow: var(--shadow); }
+.cart-toggle-btn {
+  background: var(--ink); color: #fff; border: none; border-radius: 999px;
+  padding: 9px 16px; font-size: 14px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 8px; min-height: 42px;
+}
+#cart-count {
+  background: var(--accent); color: #fff; border-radius: 999px;
+  min-width: 22px; padding: 1px 7px; font-size: 12px; text-align: center;
+}
+
+/* ---------- Drawer menu ---------- */
+#menu-drawer {
+  position: fixed; inset: 0; z-index: 50; background: rgba(28,22,22,.35);
+  backdrop-filter: blur(4px); display: flex;
+}
+#menu-panel {
+  width: min(320px, 85%); background: var(--bg); height: 100%;
+  padding: 24px; display: flex; flex-direction: column; gap: 28px;
+  transform: translateX(-100%); transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+.drawer-header { display: flex; justify-content: space-between; align-items: center; }
+.drawer-close {
+  background: none; border: none; font-size: 28px; cursor: pointer; color: var(--muted);
+  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+}
+.drawer-links { display: flex; flex-direction: column; gap: 6px; }
+.drawer-links button, .drawer-links a {
+  background: none; border: none; text-align: left; cursor: pointer; text-decoration: none;
+  font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--ink);
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+
+/* ---------- Layout ---------- */
+main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.section { padding: 56px 0; }
+.eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 12px; display: block;
+}
+.section-title { font-size: clamp(32px, 5vw, 44px); margin-bottom: 10px; }
+.lead { color: var(--muted); font-size: 17px; max-width: 560px; }
+
+/* ---------- Hero ---------- */
+.hero { display: grid; gap: 32px; padding: 40px 0 24px; align-items: center; }
+.hero-img {
+  aspect-ratio: 4/5; border-radius: 24px; overflow: hidden; background: var(--accent-soft);
+  box-shadow: var(--shadow);
+}
+.hero-img img { width: 100%; height: 100%; object-fit: cover; }
+.hero-title { font-size: clamp(40px, 7vw, 60px); margin-bottom: 16px; }
+.hero-desc { color: var(--muted); font-size: 17px; margin-bottom: 28px; max-width: 480px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: none; border-radius: 999px; padding: 14px 26px; font-size: 15px; font-weight: 600;
+  cursor: pointer; text-decoration: none; min-height: 48px; transition: transform .15s, opacity .2s;
+}
+.btn:active { transform: scale(.98); }
+.btn-primary { background: var(--accent); color: #fff; box-shadow: 0 6px 18px rgba(180,83,9,.25); }
+.btn-dark { background: var(--ink); color: #fff; }
+.btn-ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+.btn-block { width: 100%; }
+
+.pillars {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px;
+}
+.pillar {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 18px 16px;
+}
+.pillar-num { font-size: 12px; color: var(--accent); font-weight: 700; }
+.pillar-text { font-size: 15px; font-weight: 500; margin-top: 4px; display: block; }
+
+/* ---------- Story ---------- */
+.story { display: grid; gap: 24px; align-items: center; }
+.story-img { aspect-ratio: 4/3; border-radius: 20px; overflow: hidden; background: var(--line); }
+.story-img img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Bundle ---------- */
+.bundle {
+  background: var(--ink); color: #fff; border-radius: 24px; padding: 32px 26px;
+  display: grid; gap: 22px;
+}
+.bundle .eyebrow { color: #F4B860; }
+.bundle h3 { font-size: 34px; margin-bottom: 8px; }
+.bundle p { color: #CFC6C2; }
+.bundle-price { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.price-old { text-decoration: line-through; color: #8E8380; font-size: 15px; }
+.price-now { font-size: 28px; font-weight: 700; color: #F4B860; }
+.bundle .btn { background: #fff; color: var(--ink); }
+
+/* ---------- Catalogue ---------- */
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+.product-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.product-card {
+  background: var(--surface); border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow); display: flex; flex-direction: column;
+}
+.product-img { aspect-ratio: 4/4.2; background: var(--accent-soft); }
+.product-img img { width: 100%; height: 100%; object-fit: cover; }
+.product-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.product-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.product-title { font-size: 26px; }
+.badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 999px; margin-bottom: 6px; }
+.product-price { font-weight: 700; color: var(--accent); white-space: nowrap; }
+.product-desc { color: var(--muted); font-size: 15px; }
+.product-story { font-size: 13px; color: var(--ink); background: var(--bg); border-radius: 10px; padding: 10px 12px; }
+.product-actions { margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--line); }
+.qty { display: flex; align-items: center; gap: 12px; }
+.qty-btn {
+  width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg);
+  font-size: 18px; cursor: pointer; color: var(--ink);
+}
+.qty-num { font-weight: 700; min-width: 22px; text-align: center; }
+
+/* ---------- Promos ---------- */
+.promo-list { display: grid; gap: 14px; max-width: 640px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+.card-row { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.voucher-card {
+  background: var(--surface); border: 1.5px dashed var(--accent); border-radius: var(--radius);
+  padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.voucher-code { font-family: ui-monospace, monospace; font-weight: 700; color: var(--accent); }
+.btn-small { padding: 10px 16px; min-height: 40px; font-size: 14px; }
+
+/* ---------- About ---------- */
+.about-grid { display: grid; gap: 28px; }
+.about-img { aspect-ratio: 4/3; border-radius: 20px; overflow: hidden; background: var(--line); }
+.about-img img { width: 100%; height: 100%; object-fit: cover; }
+.info-list { display: grid; gap: 0; border-top: 1px solid var(--line); margin-top: 8px; }
+.info-item { display: flex; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.info-item strong { color: var(--ink); font-weight: 600; }
+.info-item span { color: var(--muted); text-align: right; }
+
+/* ---------- Footer ---------- */
+footer { max-width: 1100px; margin: 0 auto; padding: 40px 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: grid; gap: 10px; }
+footer a { color: var(--ink); font-weight: 600; }
+
+/* ---------- Bottom cart bar ---------- */
+.floating-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 35;
+  background: rgba(255,255,255,.96); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(28,22,22,.06);
+  padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
+}
+.floating-bar-inner { max-width: 1100px; margin: 0 auto; display: grid; gap: 8px; }
+.bar-top { display: flex; justify-content: space-between; align-items: center; font-size: 14px; gap: 12px; }
+.bar-top strong { font-size: 16px; }
+.progress-bar-wrap { width: 100%; height: 5px; background: var(--line); border-radius: 999px; overflow: hidden; }
+.progress-bar-fill { height: 100%; width: 0%; background: var(--accent); border-radius: 999px; transition: width .4s ease; }
+#floating-progress-text { font-size: 12px; color: var(--muted); }
+.floating-puggle-trigger {
+  position: fixed; right: 20px; bottom: 150px; z-index: 36;
+  background: var(--ink); color: #fff; border: none; border-radius: 999px;
+  padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow);
+}
+
+/* ---------- Cart drawer ---------- */
+#cart-drawer { position: fixed; inset: 0; z-index: 50; background: rgba(28,22,22,.4); backdrop-filter: blur(4px); display: flex; justify-content: flex-end; }
+#drawer-panel {
+  width: 100%; max-width: 440px; height: 100%; background: var(--bg);
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform .35s cubic-bezier(.16,1,.3,1);
+}
+.drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 20px 22px; border-bottom: 1px solid var(--line); background: var(--surface); }
+.drawer-head h3 { font-size: 26px; }
+.cart-body { flex: 1; overflow-y: auto; padding: 20px 22px; display: grid; gap: 18px; align-content: start; }
+.cart-footer { background: var(--surface); border-top: 1px solid var(--line); padding: 18px 22px calc(18px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; }
+.cart-item {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.cart-item-name { font-weight: 600; font-size: 15px; }
+.cart-item-meta { font-size: 13px; color: var(--muted); }
+.cart-item-controls { display: flex; align-items: center; gap: 10px; }
+.cart-item-controls .qty-btn { width: 32px; height: 32px; font-size: 14px; border-radius: 10px; }
+.section-label { font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.check-row { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.check-row input { width: 18px; height: 18px; accent-color: var(--accent); }
+.coupon-item { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer; }
+.coupon-item.active { border-color: var(--accent); background: var(--accent-soft); }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 13px; font-weight: 600; color: var(--ink); }
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 12px; font-size: 15px; color: var(--ink); outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(180,83,9,.12); }
+.form-textarea { resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.area-list-box { max-height: 210px; overflow-y: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.area-card { padding: 12px 14px; border-bottom: 1px solid var(--line); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--surface); }
+.area-card:last-child { border-bottom: none; }
+.area-card .area-name { font-size: 14px; }
+.area-card .area-fee { font-size: 12px; color: var(--muted); }
+.fee-box { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--muted); display: grid; gap: 4px; }
+.fee-box strong { color: var(--ink); }
+.sum-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); }
+.sum-row.total { font-size: 18px; font-weight: 700; color: var(--ink); border-top: 1px solid var(--line); padding-top: 10px; }
+#discount-row { color: var(--accent); font-weight: 600; }
+.checkout-section { display: grid; gap: 14px; padding-top: 8px; }
+.checkout-section h4 { font-size: 24px; }
+
+/* ---------- Puggle modal ---------- */
+#puggle-modal { position: fixed; inset: 0; z-index: 60; background: rgba(28,22,22,.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.puggle-card { background: var(--ink); color: #fff; width: 100%; max-width: 380px; border-radius: 20px; overflow: hidden; }
+.puggle-head { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; }
+#puggle-board { width: 100%; height: 380px; background: #110E0D; border: 1px solid #3A312E; border-radius: 12px; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 16px; }
+@keyframes chaosPinball {
+  0% { transform: translate(0,0) rotate(0deg); }
+  12% { transform: translate(-30px,40px) rotate(-35deg); }
+  25% { transform: translate(25px,90px) rotate(45deg); }
+  38% { transform: translate(-25px,140px) rotate(-60deg); }
+  50% { transform: translate(30px,190px) rotate(90deg); }
+  62% { transform: translate(-25px,240px) rotate(-120deg); }
+  75% { transform: translate(20px,290px) rotate(180deg); }
+  88% { transform: translate(var(--target-x),330px) rotate(270deg); }
+  100% { transform: translate(var(--target-x),360px) rotate(360deg); }
+}
+.bouncing-drop-anim { animation: chaosPinball 5s cubic-bezier(.36,0,.66,1) forwards; }
+
+/* ---------- Responsive ---------- */
+@media (min-width: 800px) {
+  .hero { grid-template-columns: 1.05fr 1fr; gap: 56px; padding: 64px 0 40px; }
+  .story { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .about-grid { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .bundle { grid-template-columns: 1fr auto; align-items: center; padding: 44px; }
+  .bundle-cta { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+}
+@media (max-width: 560px) {
+  .pillars { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .brand { font-size: 20px; }
+  .lang-switch { display: none; }
+}
+</style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <button onclick="toggleMenu()" class="menu-btn" aria-label="Open Menu">
-            <span>&#9776;</span>
-        </button>
-        <a onclick="switchPage('home')" class="brand-logo">Rest in Cheese</a>
-        <div class="header-controls">
-            <div class="lang-switch">
-                <span id="lang-en" onclick="setLanguage('en')">EN</span>
-                <span>|</span>
-                <span id="lang-id" onclick="setLanguage('id')">ID</span>
-            </div>
-            <button onclick="toggleCart()" class="cart-toggle-btn" aria-label="Open Cart">
-                <span id="t-cart-btn-label">Cart</span>
-                <span id="cart-count">0</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Navigation Drawer -->
-    <div id="menu-drawer" class="hidden">
-        <div id="menu-panel">
-            <div class="drawer-header">
-                <span class="brand-logo">Rest in Cheese</span>
-                <button onclick="toggleMenu()" class="drawer-close" aria-label="Close Menu">&times;</button>
-            </div>
-            <div class="drawer-links">
-                <button onclick="switchPage('home'); toggleMenu();" id="t-nav-home">Home</button>
-                <button onclick="switchPage('products'); toggleMenu();" id="t-nav-catalogue">Catalogue</button>
-                <button onclick="switchPage('promos'); toggleMenu();" id="t-nav-promos">Coupons & Discounts</button>
-                <button onclick="switchPage('about'); toggleMenu();" id="t-nav-about">About</button>
-                <a href="https://wa.me/6282112002258?text=Halo%20Admin%20Rest%20in%20Cheese,%20saya%20mau%20tanya-tanya%20dulu%20sebelum%20order." target="_blank" id="t-nav-admin">Chat Admin</a>
-            </div>
-        </div>
+<header>
+  <div class="nav">
+    <button onclick="toggleMenu()" class="menu-btn" aria-label="Open menu">&#9776;</button>
+    <div class="brand" onclick="switchPage('home')">Rest in Cheese</div>
+    <div class="header-right">
+      <div class="lang-switch">
+        <span id="lang-en" onclick="setLanguage('en')">EN</span>
+        <span id="lang-id" onclick="setLanguage('id')">ID</span>
+      </div>
+      <button onclick="toggleCart()" class="cart-toggle-btn" aria-label="Open cart">
+        <span id="t-cart-btn-label">Cart</span>
+        <span id="cart-count">0</span>
+      </button>
     </div>
+  </div>
+</header>
 
-    <!-- Main Container -->
-    <main>
-
-        <!-- PAGE 1: HOME -->
-        <div id="page-home" class="hero-section">
-            <div class="hero-img-wrap">
-                <!-- GANTI FOTO DI SINI -->
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'%3E%3Crect width='800' height='1000' fill='%23E4DBCF'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%238C8279'%3EHero Photo%3C/text%3E%3C/svg%3E" alt="Cheesecake in a jar" loading="lazy" width="800" height="1000">
-            </div>
-            <div class="hero-content">
-                <h1 class="hero-title serif-font" id="t-hero-title">Cheesecake made with ingredients you know.</h1>
-                <p class="hero-desc" id="t-hero-desc">Artisanal cheesecake pairing boutique technique with comforting, familiar Indonesian flavors.</p>
-                <button onclick="switchPage('products')" class="btn-primary" id="t-hero-btn">Order now</button>
-            </div>
-
-            <div class="pillars-grid">
-                <div class="pillar-item">
-                    <span class="pillar-num">01</span>
-                    <span class="pillar-text" id="t-pillar-1">Selected local ingredients</span>
-                </div>
-                <div class="pillar-item">
-                    <span class="pillar-num">02</span>
-                    <span class="pillar-text" id="t-pillar-2">Freshly baked in PIK</span>
-                </div>
-                <div class="pillar-item">
-                    <span class="pillar-num">03</span>
-                    <span class="pillar-text" id="t-pillar-3">Instant delivery across Jakarta</span>
-                </div>
-            </div>
-
-            <div class="brand-story-box">
-                <h2 class="serif-font" style="font-size: 28px;" id="t-home-story-title">Crafted with Heart in PIK</h2>
-                <p class="hero-desc" id="t-home-story-desc">Born in a home kitchen in Taman Grisenda, we transform everyday local ingredients into velvety, hotel-grade cheesecakes.</p>
-                <div>
-                    <button onclick="switchPage('products')" class="btn-primary" style="width: auto; padding: 12px 20px; font-size: 14px;" id="t-home-story-btn">See catalogue</button>
-                </div>
-            </div>
-
-            <div class="bundle-box">
-                <div>
-                    <span class="badge-signature" id="t-bundle-badge">Special Offer</span>
-                    <h3 class="serif-font" style="font-size: 26px; margin-top: 4px;">The Ultimate Trio Bundle</h3>
-                    <p class="hero-desc" style="margin-top: 8px;" id="t-bundle-desc">Enjoy all 3 signature flavors in one exclusive box set.</p>
-                </div>
-                <div class="bundle-meta">
-                    <div class="bundle-prices">
-                        <span class="line-through">Rp 200.000</span>
-                        <span class="current-price">Rp 189.000</span>
-                    </div>
-                    <button onclick="addBundleToCart()" class="btn-primary" style="width: auto; padding: 12px 20px; font-size: 14px;" id="t-add-bundle-btn">Add bundle</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- PAGE 2: PRODUCTS -->
-        <div id="page-products" class="hidden">
-            <div class="catalogue-header">
-                <h2 class="section-header-title serif-font" id="t-cat-title">Jar Catalogue</h2>
-                <span class="badge-signature" id="t-cat-subtitle">Fresh Batch Today</span>
-            </div>
-            <div id="product-list"></div>
-        </div>
-
-        <!-- PAGE 3: PROMOS -->
-        <div id="page-promos" class="hidden promos-container">
-            <div>
-                <h2 class="section-header-title serif-font" id="t-promos-title">Coupons & Discounts</h2>
-                <p class="hero-desc" id="t-promos-desc">Your active vouchers and minigame rewards.</p>
-            </div>
-            <div id="boomer-promo-list"></div>
-        </div>
-
-        <!-- PAGE 4: ABOUT -->
-        <div id="page-about" class="hidden about-content">
-            <div>
-                <h2 class="section-header-title serif-font" id="t-about-title">About Rest in Cheese</h2>
-                <p class="hero-desc" id="t-about-subtitle">The story behind our kitchen.</p>
-            </div>
-            <div class="chef-img">
-                <!-- GANTI FOTO DI SINI -->
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23E4DBCF'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%238C8279'%3EChef Photo%3C/text%3E%3C/svg%3E" alt="Rest in Cheese Chef" loading="lazy" width="800" height="600">
-            </div>
-            <p class="hero-desc" id="t-about-text">
-                Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.
-            </p>
-            <div class="info-list">
-                <div class="info-item"><strong id="t-info-main-label">Main ingredients:</strong> <span id="t-info-main-val">[FILL]</span></div>
-                <div class="info-item"><strong id="t-info-shelf-label">Shelf life & storage:</strong> <span id="t-info-shelf-val">[FILL]</span></div>
-                <div class="info-item"><strong id="t-info-order-label">Ordering system:</strong> <span id="t-info-order-val">[FILL]</span></div>
-                <div class="info-item"><strong id="t-info-area-label">Delivery area:</strong> <span id="t-info-area-val">Jakarta, delivery fee based on area</span></div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- FLOATING PUGGLE TRIGGER -->
-    <button id="floating-puggle-trigger" onclick="openPuggleModal()" class="floating-puggle-trigger hidden">
-        Play Pinball
-    </button>
-
-    <!-- FLOATING PROGRESS BAR -->
-    <div class="floating-bar" id="floating-bar-container">
-        <div class="floating-bar-inner">
-            <div class="flex justify-between items-center" style="font-size: 14px;">
-                <span id="floating-spending-amount" style="font-weight: 700;">Rp 0</span>
-                <span id="floating-progress-badge" style="color: var(--muted); font-size: 13px;">0%</span>
-            </div>
-            <div class="progress-bar-wrap">
-                <div id="floating-progress-bar" class="progress-bar-fill"></div>
-            </div>
-            <p id="floating-progress-text" style="font-size: 13px; color: var(--muted);">5% OFF for orders over Rp 250.000</p>
-        </div>
+<div id="menu-drawer" class="hidden">
+  <div id="menu-panel">
+    <div class="drawer-header">
+      <span class="brand">Rest in Cheese</span>
+      <button onclick="toggleMenu()" class="drawer-close" aria-label="Close menu">&times;</button>
     </div>
-
-    <!-- PUGGLE MODAL -->
-    <div id="puggle-modal" class="hidden">
-        <div class="puggle-card">
-            <div style="padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
-                <h3 class="serif-font" style="font-size: 22px;">Puggle Pinball</h3>
-                <button onclick="closePuggleModal()" style="background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;">&times;</button>
-            </div>
-            <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
-                <p style="font-size: 14px; color: #D4CECA;" id="t-puggle-intro">Bounce the cheese to win a discount coupon.</p>
-                <div id="puggle-board">
-                    <div style="display: flex; justify-content: space-around; opacity: 0.4; font-size: 12px;"><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span></div>
-                    <div style="display: flex; justify-content: space-around; opacity: 0.4; font-size: 12px;"><span>•</span><span>•</span><span>•</span><span>•</span></div>
-                    <div style="display: flex; justify-content: space-around; opacity: 0.4; font-size: 12px;"><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span></div>
-                    <div style="display: flex; justify-content: space-around; opacity: 0.4; font-size: 12px;"><span>•</span><span>•</span><span>•</span><span>•</span></div>
-                    
-                    <div id="puggle-cheese" class="hidden" style="position: absolute; left: 50%; top: 10px; transform: translateX(-50%); font-size: 24px; z-index: 20;">🧀</div>
-
-                    <div id="puggle-slots" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 8px; text-align: center; font-size: 12px; font-weight: 700;">
-                        <div data-slot="2" style="background: rgba(255,255,255,0.05); padding: 8px 4px; border-radius: 4px;">2%</div>
-                        <div data-slot="3" style="background: rgba(255,255,255,0.05); padding: 8px 4px; border-radius: 4px;">3%</div>
-                        <div data-slot="4" style="background: rgba(255,255,255,0.05); padding: 8px 4px; border-radius: 4px;">4%</div>
-                        <div data-slot="5" style="background: rgba(255,255,255,0.05); padding: 8px 4px; border-radius: 4px; color: var(--accent);">5%</div>
-                    </div>
-                </div>
-                <div id="puggle-status" style="font-size: 14px; text-align: center; min-height: 20px;">Press button to drop</div>
-                <button id="puggle-drop-btn" onclick="startPuggleDrop()" class="btn-primary">Drop Cheese</button>
-            </div>
-        </div>
+    <div class="drawer-links">
+      <button onclick="switchPage('home'); toggleMenu();" id="t-nav-home">Home</button>
+      <button onclick="switchPage('products'); toggleMenu();" id="t-nav-catalogue">Catalogue</button>
+      <button onclick="switchPage('promos'); toggleMenu();" id="t-nav-promos">Coupons &amp; Discounts</button>
+      <button onclick="switchPage('about'); toggleMenu();" id="t-nav-about">About</button>
+      <a href="https://wa.me/6282112002258?text=Halo%20Admin%20Rest%20in%20Cheese,%20saya%20mau%20tanya-tanya%20dulu%20sebelum%20order." target="_blank" id="t-nav-admin">Chat Admin</a>
     </div>
+  </div>
+</div>
 
-    <!-- CART DRAWER -->
-    <div id="cart-drawer" class="hidden">
-        <div id="drawer-panel">
-            <div class="drawer-header">
-                <h3 class="serif-font" style="font-size: 24px;" id="t-cart-title">Order Summary</h3>
-                <button onclick="toggleCart()" class="drawer-close">&times;</button>
-            </div>
+<main>
 
-            <div class="cart-body">
-                <div id="coupon-wallet-container"></div>
-
-                <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <input type="checkbox" id="gift-option" onchange="toggleGiftBox()" style="width: 18px; height: 18px; accent-color: var(--accent);">
-                        <label for="gift-option" style="font-size: 14px; font-weight: 500; cursor: pointer;" id="t-gift-label">Send as a gift? (+ Greeting Card)</label>
-                    </div>
-                    <div id="gift-note-container" class="hidden">
-                        <textarea id="gift-note" rows="2" placeholder="Write your greeting message here..." oninput="saveGiftNote(this.value)" class="form-textarea" style="font-size: 14px;"></textarea>
-                    </div>
-                </div>
-
-                <div id="cart-items" style="display: flex; flex-direction: column; gap: 12px;"></div>
-
-                <div id="empty-cart" style="text-align: center; padding: 40px 0; color: var(--muted);">
-                    <p style="font-size: 15px;" id="t-empty-cart">No items added yet.</p>
-                </div>
-
-                <div id="checkout-form-section" class="hidden" style="display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--line); padding-top: 24px;">
-                    <h4 class="serif-font" style="font-size: 20px;" id="t-checkout-title">Delivery Details</h4>
-                    
-                    <div class="form-group">
-                        <label class="form-label" id="t-label-name">Full Name</label>
-                        <input type="text" id="cust-name" class="form-input" placeholder="e.g. Sarah Jenkins">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" id="t-label-phone">WhatsApp Number</label>
-                        <input type="tel" id="cust-phone" class="form-input" placeholder="e.g. 081380003850">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" id="t-label-email">Email</label>
-                        <input type="email" id="cust-email" class="form-input" placeholder="e.g. sarah@gmail.com">
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div class="form-group">
-                            <label class="form-label" id="t-label-date">Delivery Date</label>
-                            <input type="date" id="delivery-date" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" id="t-label-time">Delivery Time</label>
-                            <select id="delivery-time" class="form-select">
-                                <option value="Morning (10:00 - 13:00)">Morning (10 - 13)</option>
-                                <option value="Afternoon (13:00 - 16:00)" selected>Afternoon (13 - 16)</option>
-                                <option value="Evening (16:00 - 19:00)">Evening (16 - 19)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" id="t-label-area">Delivery Area in Jakarta</label>
-                        <div class="area-list-box" id="jakarta-area-cards"></div>
-                    </div>
-
-                    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; font-size: 14px; color: var(--muted); display: flex; flex-direction: column; gap: 4px;">
-                        <div><span id="t-dist-label">Est. Distance:</span> <strong id="dist-km" style="color: var(--ink);">2.0 km</strong></div>
-                        <div><span id="t-fee-label">Delivery Fee:</span> <strong id="calc-ongkir" style="color: var(--ink);">Rp 15.000</strong></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" id="t-label-address">Full Address</label>
-                        <textarea id="cust-address" rows="3" class="form-textarea" placeholder="Street, House/Building No., Unit..."></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cart-footer">
-                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
-                    <div class="flex justify-between" style="color: var(--muted);">
-                        <span id="t-summary-subtotal">Product Subtotal</span>
-                        <span id="summary-products-total" style="color: var(--ink);">Rp 0</span>
-                    </div>
-                    <div id="discount-row" class="flex justify-between hidden" style="color: var(--accent); font-weight: 500;">
-                        <span id="discount-label-text">Discount</span>
-                        <span id="summary-discount">-Rp 0</span>
-                    </div>
-                    <div class="flex justify-between" style="color: var(--muted);">
-                        <span id="t-summary-delivery">Delivery Fee</span>
-                        <span id="summary-delivery-fee" style="color: var(--ink);">Rp 15.000</span>
-                    </div>
-                    <div class="flex justify-between" style="font-size: 18px; font-weight: 700; color: var(--ink); border-top: 1px solid var(--line); padding-top: 8px;">
-                        <span id="t-summary-total">Total Payment</span>
-                        <span id="summary-grand-total">Rp 15.000</span>
-                    </div>
-                </div>
-
-                <button type="button" onclick="payWithMidtrans()" id="whatsapp-btn" class="btn-primary">
-                    <span>Proceed to Payment</span>
-                </button>
-            </div>
+  <!-- HOME -->
+  <div id="page-home">
+    <section class="hero">
+      <div class="hero-img">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'%3E%3Crect width='800' height='1000' fill='%23FBEBD6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23B45309'%3EHero Photo%3C/text%3E%3C/svg%3E" alt="Cheesecake in a jar" width="800" height="1000">
+      </div>
+      <div>
+        <span class="eyebrow">Pantai Indah Kapuk, Jakarta</span>
+        <h1 class="hero-title serif" id="t-hero-title">Cheesecake made with ingredients you know.</h1>
+        <p class="hero-desc" id="t-hero-desc">Artisanal cheesecake pairing boutique technique with comforting, familiar Indonesian flavors.</p>
+        <button onclick="switchPage('products')" class="btn btn-primary" id="t-hero-btn">Order now</button>
+        <div class="pillars" style="margin-top:28px">
+          <div class="pillar"><span class="pillar-num">01</span><span class="pillar-text" id="t-pillar-1">Selected local ingredients</span></div>
+          <div class="pillar"><span class="pillar-num">02</span><span class="pillar-text" id="t-pillar-2">Freshly baked in PIK</span></div>
+          <div class="pillar"><span class="pillar-num">03</span><span class="pillar-text" id="t-pillar-3">Instant delivery across Jakarta</span></div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- Footer -->
-    <footer>
+    <section class="section">
+      <div class="story">
+        <div class="story-img">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23E8DED2'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%237A6F6A'%3EKitchen Photo%3C/text%3E%3C/svg%3E" alt="Our kitchen" width="800" height="600">
+        </div>
         <div>
-            <p>Rest in Cheese, Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara.</p>
-            <p style="margin-top: 4px;"><a href="https://wa.me/6282112002258" target="_blank" id="t-footer-wa">WhatsApp Admin</a></p>
+          <span class="eyebrow">Our story</span>
+          <h2 class="section-title serif" id="t-home-story-title">Crafted with Heart in PIK</h2>
+          <p class="lead" id="t-home-story-desc">Born in a home kitchen in Taman Grisenda, we transform everyday local ingredients into velvety, hotel-grade cheesecakes.</p>
+          <button onclick="switchPage('products')" class="btn btn-dark" style="margin-top:24px" id="t-home-story-btn">See catalogue</button>
         </div>
-        <p style="color: var(--muted); font-size: 13px;" id="t-footer-copy">&copy; Rest in Cheese. All rights reserved.</p>
-    </footer>
-
-    <script>
-        const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwURUdj3sPQ4AjN5hs7jRRxePCXWvGyCYGgXOHQBVFknDuUvqRFmoy70D3CPChmvJi_jg/exec";
-
-        const I18N = {
-            en: {
-                cart_btn_label: "Cart",
-                nav_home: "Home",
-                nav_catalogue: "Catalogue",
-                nav_promos: "Coupons & Discounts",
-                nav_about: "About",
-                nav_admin: "Chat Admin",
-                hero_title: "Cheesecake made with ingredients you know.",
-                hero_desc: "Artisanal cheesecake pairing boutique technique with comforting, familiar Indonesian flavors.",
-                hero_btn: "Order now",
-                pillar_1: "Selected local ingredients",
-                pillar_2: "Freshly baked in PIK",
-                pillar_3: "Instant delivery across Jakarta",
-                home_story_title: "Crafted with Heart in PIK",
-                home_story_desc: "Born in a home kitchen in Taman Grisenda, we transform everyday local ingredients into velvety, hotel-grade cheesecakes.",
-                home_story_btn: "See catalogue",
-                bundle_badge: "Special Offer",
-                bundle_desc: "Enjoy all 3 signature flavors in one exclusive box set.",
-                add_bundle_btn: "Add bundle",
-                cat_title: "Jar Catalogue",
-                cat_subtitle: "Fresh Batch Today",
-                promos_title: "Coupons & Discounts",
-                promos_desc: "Your active vouchers and minigame rewards.",
-                about_title: "About Rest in Cheese",
-                about_subtitle: "The story behind our kitchen.",
-                about_text: "Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.",
-                info_main_label: "Main ingredients:",
-                info_shelf_label: "Shelf life & storage:",
-                info_order_label: "Ordering system:",
-                info_area_label: "Delivery area:",
-                info_area_val: "Jakarta, delivery fee based on area",
-                puggle_trigger: "Play Pinball",
-                puggle_intro: "Bounce the cheese to win a discount coupon.",
-                puggle_status_init: "Press button to drop",
-                puggle_status_dropping: "Cheese is dropping...",
-                puggle_btn_drop: "Drop Cheese",
-                puggle_btn_again: "Play Again",
-                puggle_btn_done: "Coupon Added to Wallet",
-                puggle_win_msg: "Congrats! You won a {percent}% discount!",
-                puggle_locked_title: "Pinball Locked",
-                puggle_locked_desc: "Complete an order over Rp 300.000 to get a game token.",
-                puggle_unlocked_title: "Pinball Unlocked ({tokens} Token)",
-                puggle_unlocked_desc: "You have play tokens ready!",
-                puggle_play_now: "Play Now",
-                cart_title: "Order Summary",
-                gift_label: "Send as a gift? (+ Greeting Card)",
-                gift_placeholder: "Write your greeting message here...",
-                empty_cart: "No items added yet.",
-                checkout_title: "Delivery Details",
-                label_name: "Full Name",
-                placeholder_name: "e.g. Sarah Jenkins",
-                label_phone: "WhatsApp Number",
-                placeholder_phone: "e.g. 081380003850",
-                label_email: "Email",
-                placeholder_email: "e.g. sarah@gmail.com",
-                label_date: "Delivery Date",
-                label_time: "Delivery Time",
-                label_area: "Delivery Area in Jakarta",
-                dist_label: "Est. Distance:",
-                fee_label: "Delivery Fee:",
-                label_address: "Full Address",
-                placeholder_address: "Street, House/Building No., Unit...",
-                summary_subtotal: "Product Subtotal",
-                summary_delivery: "Delivery Fee",
-                summary_total: "Total Payment",
-                btn_proceed: "Proceed to Payment",
-                btn_processing: "Processing...",
-                coupon_select_label: "Select Coupon (Max 1):",
-                coupon_active: "Active coupon applied",
-                coupon_tap: "Tap to apply",
-                coupon_collection: "Your Coupons ({count}):",
-                coupon_empty: "No coupons in your wallet yet.",
-                copy_btn: "Copy",
-                copy_alert: "Coupon {code} copied.",
-                discount_unlocked: "5% Discount Unlocked (-{amount})",
-                discount_progress: "Add {amount} more for 5% OFF",
-                alert_fill_fields: "Please fill in your name, WhatsApp number, and complete address.",
-                alert_invalid_email: "Please enter a valid email address.",
-                alert_pay_fail: "Payment failed. Please try again.",
-                alert_pay_error: "Failed to initiate payment. Please try again or contact admin.",
-                alert_thanks: "Thank you, {name}! Your order has been recorded.",
-                footer_wa: "WhatsApp Admin",
-                footer_copy: "© Rest in Cheese. All rights reserved.",
-                ongkir_label: "Delivery Fee:"
-            },
-            id: {
-                cart_btn_label: "Keranjang",
-                nav_home: "Home",
-                nav_catalogue: "Katalog",
-                nav_promos: "Kupon & Diskon",
-                nav_about: "Tentang",
-                nav_admin: "Chat Admin",
-                hero_title: "Cheesecake dari bahan yang kamu kenal.",
-                hero_desc: "Kelezatan lapis keju artisanal yang memadukan teknik butik dengan cita rasa yang akrab di lidah Indonesia.",
-                hero_btn: "Pesan sekarang",
-                pillar_1: "Bahan lokal terpilih",
-                pillar_2: "Dibuat segar dari dapur PIK",
-                pillar_3: "Kirim instan ke seluruh Jakarta",
-                home_story_title: "Dibuat Sepenuh Hati di PIK",
-                home_story_desc: "Lahir dari dapur rumah di Taman Grisenda, kami mengolah bahan harian menjadi cheesecake lembut berkelas hotel.",
-                home_story_btn: "Lihat katalog",
-                bundle_badge: "Penawaran Khusus",
-                bundle_desc: "Nikmati kelezatan 3 varian signature sekaligus dalam satu kemasan.",
-                add_bundle_btn: "Tambah bundle",
-                cat_title: "Katalog Jar",
-                cat_subtitle: "Segar Setiap Hari",
-                promos_title: "Kupon & Diskon",
-                promos_desc: "Voucher aktif dan token mini-game eksklusif Anda.",
-                about_title: "Tentang Rest in Cheese",
-                about_subtitle: "Cerita di balik dapur kami.",
-                about_text: "Berlatih sebagai mantan pemagang di The Landmark Mandarin Oriental mengajarkan saya bahwa kue butik bukan soal label mahal, melainkan rasa hormat pada teknik dan bahan. Rest in Cheese adalah wujud kecintaan itu, diracik langsung dari dapur rumah kami di Taman Grisenda, Pantai Indah Kapuk.",
-                info_main_label: "Bahan utama:",
-                info_shelf_label: "Daya tahan dan cara simpan:",
-                info_order_label: "Sistem pesanan:",
-                info_area_label: "Area pengiriman:",
-                info_area_val: "Jakarta, ongkir sesuai wilayah",
-                puggle_trigger: "Mainkan Pinball",
-                puggle_intro: "Pantulkan keju untuk memenangkan kupon diskon.",
-                puggle_status_init: "Tekan tombol untuk memulai",
-                puggle_status_dropping: "Keju sedang dijatuhkan...",
-                puggle_btn_drop: "Lempar Keju",
-                puggle_btn_again: "Main Lagi",
-                puggle_btn_done: "Kupon Masuk Dompet",
-                puggle_win_msg: "Selamat! Anda memenangkan diskon {percent}%!",
-                puggle_locked_title: "Pinball Terkunci",
-                puggle_locked_desc: "Selesaikan pesanan minimal Rp 300.000 untuk mendapatkan token.",
-                puggle_unlocked_title: "Pinball Terbuka ({tokens} Token)",
-                puggle_unlocked_desc: "Anda memiliki kesempatan bermain!",
-                puggle_play_now: "Mainkan",
-                cart_title: "Ringkasan Pesanan",
-                gift_label: "Kirim sebagai hadiah? (+ Kartu Ucapan)",
-                gift_placeholder: "Tulis pesan ucapan di sini...",
-                empty_cart: "Belum ada item dipilih.",
-                checkout_title: "Detail Pengiriman",
-                label_name: "Nama Pemesan",
-                placeholder_name: "e.g. Sarah Jenkins",
-                label_phone: "Nomor WhatsApp",
-                placeholder_phone: "e.g. 081380003850",
-                label_email: "Email",
-                placeholder_email: "e.g. sarah@gmail.com",
-                label_date: "Tanggal Kirim",
-                label_time: "Waktu Kirim",
-                label_area: "Wilayah Tujuan di Jakarta",
-                dist_label: "Estimasi Jarak:",
-                fee_label: "Ongkir:",
-                label_address: "Alamat Lengkap",
-                placeholder_address: "Jalan, Nomor Rumah, Patokan...",
-                summary_subtotal: "Subtotal Produk",
-                summary_delivery: "Ongkir",
-                summary_total: "Total Pembayaran",
-                btn_proceed: "Lanjut Pembayaran",
-                btn_processing: "Memproses...",
-                coupon_select_label: "Gunakan Kupon (Maks. 1):",
-                coupon_active: "Kupon aktif diterapkan",
-                coupon_tap: "Ketuk untuk pilih",
-                coupon_collection: "Koleksi Kupon ({count}):",
-                coupon_empty: "Belum ada kupon di dompet Anda.",
-                copy_btn: "Salin",
-                copy_alert: "Kupon {code} disalin.",
-                discount_unlocked: "Diskon 5% aktif (-{amount})",
-                discount_progress: "Tambah {amount} lagi untuk diskon 5%",
-                alert_fill_fields: "Mohon lengkapi nama, nomor WhatsApp, dan alamat lengkap.",
-                alert_invalid_email: "Mohon isi email yang valid.",
-                alert_pay_fail: "Pembayaran gagal. Silakan coba lagi.",
-                alert_pay_error: "Gagal memulai pembayaran. Coba lagi atau hubungi admin.",
-                alert_thanks: "Terima kasih, {name}! Pesanan Anda sudah tercatat.",
-                footer_wa: "WhatsApp Admin",
-                footer_copy: "© Rest in Cheese. Hak cipta dilindungi.",
-                ongkir_label: "Ongkir:"
-            }
-        };
-
-        let currentLang = localStorage.getItem('ric_lang') || 'en';
-
-        function t(key, vars = {}) {
-            let str = (I18N[currentLang] && I18N[currentLang][key]) || I18N['en'][key] || key;
-            for (let k in vars) {
-                str = str.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
-            }
-            return str;
-        }
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('ric_lang', lang);
-            document.documentElement.lang = lang;
-
-            document.getElementById('lang-en').className = lang === 'en' ? 'active' : '';
-            document.getElementById('lang-id').className = lang === 'id' ? 'active' : '';
-
-            applyStaticTranslations();
-            renderProducts();
-            renderBoomerPromos();
-            renderJakartaAreas();
-            updateUI();
-        }
-
-        function applyStaticTranslations() {
-            document.getElementById('t-cart-btn-label').innerText = t('cart_btn_label');
-            document.getElementById('t-nav-home').innerText = t('nav_home');
-            document.getElementById('t-nav-catalogue').innerText = t('nav_catalogue');
-            document.getElementById('t-nav-promos').innerText = t('nav_promos');
-            document.getElementById('t-nav-about').innerText = t('nav_about');
-            document.getElementById('t-nav-admin').innerText = t('nav_admin');
-            
-            document.getElementById('t-hero-title').innerText = t('hero_title');
-            document.getElementById('t-hero-desc').innerText = t('hero_desc');
-            document.getElementById('t-hero-btn').innerText = t('hero_btn');
-            
-            document.getElementById('t-pillar-1').innerText = t('pillar_1');
-            document.getElementById('t-pillar-2').innerText = t('pillar_2');
-            document.getElementById('t-pillar-3').innerText = t('pillar_3');
-            
-            document.getElementById('t-home-story-title').innerText = t('home_story_title');
-            document.getElementById('t-home-story-desc').innerText = t('home_story_desc');
-            document.getElementById('t-home-story-btn').innerText = t('home_story_btn');
-
-            document.getElementById('t-bundle-badge').innerText = t('bundle_badge');
-            document.getElementById('t-bundle-desc').innerText = t('bundle_desc');
-            document.getElementById('t-add-bundle-btn').innerText = t('add_bundle_btn');
-
-            document.getElementById('t-cat-title').innerText = t('cat_title');
-            document.getElementById('t-cat-subtitle').innerText = t('cat_subtitle');
-
-            document.getElementById('t-promos-title').innerText = t('promos_title');
-            document.getElementById('t-promos-desc').innerText = t('promos_desc');
-
-            document.getElementById('t-about-title').innerText = t('about_title');
-            document.getElementById('t-about-subtitle').innerText = t('about_subtitle');
-            document.getElementById('t-about-text').innerText = t('about_text');
-
-            document.getElementById('t-info-main-label').innerText = t('info_main_label');
-            document.getElementById('t-info-shelf-label').innerText = t('info_shelf_label');
-            document.getElementById('t-info-order-label').innerText = t('info_order_label');
-            document.getElementById('t-info-area-label').innerText = t('info_area_label');
-            document.getElementById('t-info-area-val').innerText = t('info_area_val');
-
-            document.getElementById('floating-puggle-trigger').innerText = t('puggle_trigger');
-            document.getElementById('t-puggle-intro').innerText = t('puggle_intro');
-            document.getElementById('puggle-status').innerText = t('puggle_status_init');
-            document.getElementById('puggle-drop-btn').innerText = t('puggle_btn_drop');
-
-            document.getElementById('t-cart-title').innerText = t('cart_title');
-            document.getElementById('t-gift-label').innerText = t('gift_label');
-            document.getElementById('gift-note').placeholder = t('gift_placeholder');
-            document.getElementById('t-empty-cart').innerText = t('empty_cart');
-            document.getElementById('t-checkout-title').innerText = t('checkout_title');
-
-            document.getElementById('t-label-name').innerText = t('label_name');
-            document.getElementById('cust-name').placeholder = t('placeholder_name');
-            document.getElementById('t-label-phone').innerText = t('label_phone');
-            document.getElementById('cust-phone').placeholder = t('placeholder_phone');
-            document.getElementById('t-label-email').innerText = t('label_email');
-            document.getElementById('cust-email').placeholder = t('placeholder_email');
-            document.getElementById('t-label-date').innerText = t('label_date');
-            document.getElementById('t-label-time').innerText = t('label_time');
-            document.getElementById('t-label-area').innerText = t('label_area');
-            
-            document.getElementById('t-dist-label').innerText = t('dist_label');
-            document.getElementById('t-fee-label').innerText = t('fee_label');
-            
-            document.getElementById('t-label-address').innerText = t('label_address');
-            document.getElementById('cust-address').placeholder = t('placeholder_address');
-
-            document.getElementById('t-summary-subtotal').innerText = t('summary_subtotal');
-            document.getElementById('t-summary-delivery').innerText = t('summary_delivery');
-            document.getElementById('t-summary-total').innerText = t('summary_total');
-            
-            const payBtnSpan = document.getElementById('whatsapp-btn').firstElementChild;
-            if (payBtnSpan && !payBusy) payBtnSpan.innerText = t('btn_proceed');
-
-            document.getElementById('t-footer-wa').innerText = t('footer_wa');
-            document.getElementById('t-footer-copy').innerText = t('footer_copy');
-        }
-
-        const PRODUCTS = [
-            { 
-                id: 1, 
-                name: "Pumpkin & Vanilla Bean", 
-                description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", 
-                price: 70000, 
-                badge: "Signature",
-                story: {
-                    en: "Roasted yellow pumpkin—a familiar comfort from local kolak—meets rich cream cheese and vanilla bean.",
-                    id: "Labu kuning panggang, akrab dari kolak, bertemu krim keju gurih dan vanilla bean."
-                }
-            },
-            { 
-                id: 2, 
-                name: "Roasted Banana & Honey", 
-                description: "Caramelized roasted banana puree paired with wild artisanal honey and cream cheese richness.", 
-                price: 65000, 
-                badge: "",
-                story: {
-                    en: "Slow-roasted caramelized bananas paired with wild honey and velvety cream cheese.",
-                    id: "Pisang panggang karamel berpadu madu hutan liar dan kelembutan krim keju."
-                }
-            },
-            { 
-                id: 3, 
-                name: "Corn & Coconut", 
-                description: "Sweet sweetcorn cream layered with rich, aromatic coconut glaze and a buttery crumb base.", 
-                price: 65000, 
-                badge: "",
-                story: {
-                    en: "Sweetcorn cream topped with aromatic coconut glaze over a buttery, crunchy base.",
-                    id: "Krim jagung manis berlapis glase kelapa aromatik di atas dasar renyah yang mentega."
-                }
-            }
-        ];
-
-        const JAKARTA_AREAS = [
-            { name: "PIK, Kapuk & Taman Grisenda (Dekat Dapur)", fee: 15000, km: 2.0 },
-            { name: "Muara Karang & Pluit", fee: 18000, km: 4.5 },
-            { name: "Penjaringan & Ancol", fee: 22000, km: 7.0 },
-            { name: "Grogol Petamburan & Jelambar", fee: 25000, km: 9.0 },
-            { name: "Tanjung Duren & Tomang", fee: 28000, km: 11.0 },
-            { name: "Kebon Jeruk & Puri Indah", fee: 32000, km: 14.0 },
-            { name: "Kota Tua & Mangga Dua", fee: 35000, km: 16.5 },
-            { name: "Harmoni & Sawah Besar (Jakarta Pusat)", fee: 38000, km: 18.0 },
-            { name: "Menteng, Cikini & Gambir", fee: 42000, km: 21.0 },
-            { name: "Tanah Abang & Senen", fee: 45000, km: 23.0 },
-            { name: "Senayan, SCBD & Kebayoran Baru (Jaksel)", fee: 48000, km: 25.0 },
-            { name: "Pondok Indah, Lebak Bulus & Cilandak", fee: 55000, km: 29.0 },
-            { name: "Tebet, Kuningan & Setiabudi", fee: 52000, km: 27.0 },
-            { name: "Kelapa Gading & Sunter (Jakarta Utara)", fee: 35000, km: 15.0 },
-            { name: "Rawamangun, Jatinegara & Duren Sawit (Jaktim)", fee: 55000, km: 28.0 },
-            { name: "Cibubur, Cipayung & Ciracas (Jakarta Timur)", fee: 65000, km: 35.0 },
-            { name: "Cengkareng & Kalideres (Jakarta Barat)", fee: 22000, km: 8.0 }
-        ];
-
-        let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
-        let couponInventory = JSON.parse(localStorage.getItem('ric_coupon_inventory')) || [];
-        let activeSelectedCouponId = localStorage.getItem('ric_active_coupon_id') || null;
-
-        let currentDeliveryFee = 15000;
-        let selectedAreaName = JAKARTA_AREAS[0].name;
-        let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
-        let calculatedGrandTotalNum = 0;
-        let payBusy = false;
-
-        const DISCOUNT_MIN_ORDER = 250000;
-        const PUGGLE_MIN_ORDER = 300000;
-        const AUTO_DISCOUNT_PERCENTAGE = 0.05;
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const yyyy = tomorrow.getFullYear();
-            const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
-            const dd = String(tomorrow.getDate()).padStart(2, '0');
-            const dateInput = document.getElementById('delivery-date');
-            if(dateInput) {
-                dateInput.value = `${yyyy}-${mm}-${dd}`;
-                dateInput.min = `${yyyy}-${mm}-${dd}`;
-            }
-
-            const savedGiftNote = localStorage.getItem('ric_gift_note');
-            if(savedGiftNote) {
-                document.getElementById('gift-option').checked = true;
-                document.getElementById('gift-note-container').classList.remove('hidden');
-                document.getElementById('gift-note').value = savedGiftNote;
-            }
-
-            setLanguage(currentLang);
-        });
-
-        function renderJakartaAreas() {
-            const container = document.getElementById('jakarta-area-cards');
-            container.innerHTML = JAKARTA_AREAS.map((area, index) => {
-                const isSelected = index === 0;
-                return `
-                    <div onclick="selectArea(${area.fee}, ${area.km}, '${area.name.replace(/'/g, "")}', this)" class="area-card" style="${isSelected ? 'background: rgba(168,86,31,0.05); font-weight: 500;' : ''}">
-                        <div>
-                            <div style="font-size: 14px; color: var(--ink);">${area.name}</div>
-                            <div style="font-size: 12px; color: var(--muted);">${t('ongkir_label')} Rp ${area.fee.toLocaleString("id-ID")} (~${area.km} km)</div>
-                        </div>
-                        <span class="check-icon" style="font-size: 12px; color: ${isSelected ? 'var(--accent)' : 'transparent'};">&#10003;</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function selectArea(fee, km, name, element) {
-            currentDeliveryFee = fee;
-            calculatedDeliveryKm = km;
-            selectedAreaName = name;
-
-            document.querySelectorAll('.area-card').forEach(card => {
-                card.style.background = 'var(--surface)';
-                card.style.fontWeight = '400';
-                card.querySelector('.check-icon').style.color = 'transparent';
-            });
-
-            element.style.background = 'rgba(168,86,31,0.05)';
-            element.style.fontWeight = '500';
-            element.querySelector('.check-icon').style.color = 'var(--accent)';
-
-            document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + " km";
-            document.getElementById('calc-ongkir').innerText = "Rp " + currentDeliveryFee.toLocaleString("id-ID");
-
-            updateUI();
-        }
-
-        function formatRupiah(num) {
-            return "Rp " + num.toLocaleString("id-ID");
-        }
-
-        function switchPage(pageId) {
-            document.getElementById('page-home').classList.add('hidden');
-            document.getElementById('page-products').classList.add('hidden');
-            document.getElementById('page-promos').classList.add('hidden');
-            document.getElementById('page-about').classList.add('hidden');
-            document.getElementById('page-' + pageId).classList.remove('hidden');
-            if(pageId === 'promos') renderBoomerPromos();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleMenu() {
-            const drawer = document.getElementById('menu-drawer');
-            const panel = document.getElementById('menu-panel');
-            if (drawer.classList.contains('hidden')) {
-                drawer.classList.remove('hidden');
-                setTimeout(() => panel.style.transform = 'translateX(0)', 10);
-            } else {
-                panel.style.transform = 'translateX(-100%)';
-                setTimeout(() => drawer.classList.add('hidden'), 350);
-            }
-        }
-
-        function toggleGiftBox() {
-            const isChecked = document.getElementById('gift-option').checked;
-            const container = document.getElementById('gift-note-container');
-            if (isChecked) container.classList.remove('hidden');
-            else {
-                container.classList.add('hidden');
-                localStorage.removeItem('ric_gift_note');
-                document.getElementById('gift-note').value = '';
-            }
-        }
-
-        function saveGiftNote(val) {
-            localStorage.setItem('ric_gift_note', val);
-        }
-
-        function openPuggleModal() {
-            const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
-            if (playTokens <= 0) {
-                alert(t('puggle_locked_desc'));
-                return;
-            }
-            document.getElementById('puggle-modal').classList.remove('hidden');
-        }
-
-        function closePuggleModal() {
-            document.getElementById('puggle-modal').classList.add('hidden');
-        }
-
-        function startPuggleDrop() {
-            let playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
-            if (playTokens <= 0) return;
-
-            const btn = document.getElementById('puggle-drop-btn');
-            const cheese = document.getElementById('puggle-cheese');
-            const status = document.getElementById('puggle-status');
-
-            btn.disabled = true;
-            btn.classList.add('opacity-60');
-            status.innerText = t('puggle_status_dropping');
-
-            const slots = document.querySelectorAll('#puggle-slots > div');
-            slots.forEach(s => s.style.background = 'rgba(255,255,255,0.05)');
-
-            const rand = Math.random() * 100;
-            let wonPercent = 2;
-            let targetX = "-105px";
-
-            if (rand < 45) { wonPercent = 2; targetX = "-105px"; } 
-            else if (rand < 85) { wonPercent = 3; targetX = "-35px"; } 
-            else if (rand < 95) { wonPercent = 4; targetX = "35px"; } 
-            else { wonPercent = 5; targetX = "105px"; }
-
-            cheese.style.setProperty('--target-x', targetX);
-            cheese.classList.remove('hidden');
-            cheese.classList.add('bouncing-drop-anim');
-
-            setTimeout(() => {
-                const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
-                const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
-                
-                couponInventory.push({
-                    id: uniqueId,
-                    percent: wonPercent,
-                    code: rewardCode,
-                    label: `${wonPercent}% OFF (${rewardCode})`
-                });
-                localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
-
-                playTokens = Math.max(0, playTokens - 1);
-                localStorage.setItem('ric_game_tokens', playTokens.toString());
-
-                cheese.classList.remove('bouncing-drop-anim');
-                cheese.classList.add('hidden');
-
-                slots.forEach(s => {
-                    if (s.getAttribute('data-slot') == wonPercent) {
-                        s.style.background = 'var(--accent)';
-                    }
-                });
-
-                status.innerHTML = t('puggle_win_msg', { percent: wonPercent });
-                btn.innerText = playTokens > 0 ? t('puggle_btn_again') : t('puggle_btn_done');
-                btn.disabled = false;
-                btn.classList.remove('opacity-60');
-
-                renderBoomerPromos();
-                updateUI();
-                
-                setTimeout(() => { closePuggleModal(); }, 2500);
-            }, 5000);
-        }
-
-        function renderBoomerPromos() {
-            const container = document.getElementById('boomer-promo-list');
-            if (!container) return;
-
-            let gameHtml = "";
-            const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
-
-            if (playTokens > 0) {
-                gameHtml = `
-                    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <div>
-                            <div style="font-weight: 500; font-size: 15px;">${t('puggle_unlocked_title', { tokens: playTokens })}</div>
-                            <div style="font-size: 13px; color: var(--muted); margin-top: 2px;">${t('puggle_unlocked_desc')}</div>
-                        </div>
-                        <button onclick="openPuggleModal()" class="btn-primary" style="width: auto; padding: 10px 16px; font-size: 14px;">${t('puggle_play_now')}</button>
-                    </div>
-                `;
-            } else {
-                gameHtml = `
-                    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; text-align: center; margin-bottom: 24px;">
-                        <div style="font-weight: 500; font-size: 15px;">${t('puggle_locked_title')}</div>
-                        <div style="font-size: 13px; color: var(--muted); margin-top: 4px;">${t('puggle_locked_desc')}</div>
-                    </div>
-                `;
-            }
-
-            if (couponInventory.length === 0) {
-                container.innerHTML = gameHtml + `
-                    <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 32px; text-align: center; color: var(--muted);">
-                        <p style="font-size: 15px;">${t('coupon_empty')}</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let inventoryHtml = couponInventory.map(c => `
-                <div class="voucher-card">
-                    <div class="voucher-info">
-                        <span class="voucher-code">${c.code}</span>
-                        <span style="font-size: 13px; color: var(--ink);">${c.percent}% OFF</span>
-                    </div>
-                    <button onclick="copySpecificCoupon('${c.code}')" class="btn-secondary">${t('copy_btn')}</button>
-                </div>
-            `).join('');
-
-            container.innerHTML = gameHtml + `<div style="display: flex; flex-direction: column; gap: 16px;"><div style="font-size: 14px; font-weight: 500;">${t('coupon_collection', { count: couponInventory.length })}</div>` + inventoryHtml + `</div>`;
-        }
-
-        function copySpecificCoupon(code) {
-            navigator.clipboard.writeText(code);
-            alert(t('copy_alert', { code: code }));
-        }
-
-        function toggleCouponSelection(id) {
-            if (activeSelectedCouponId === id) {
-                activeSelectedCouponId = null;
-            } else {
-                activeSelectedCouponId = id;
-            }
-            localStorage.setItem('ric_active_coupon_id', activeSelectedCouponId || '');
-            updateUI();
-        }
-
-        function renderProducts() {
-            const listEl = document.getElementById('product-list');
-            listEl.innerHTML = PRODUCTS.map(p => `
-                <div class="product-card">
-                    <div class="product-img">
-                        <!-- GANTI FOTO DI SINI -->
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'%3E%3Crect width='800' height='1000' fill='%23E4DBCF'/%3E%3Ctext x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%238C8279'%3EProduct Photo%3C/text%3E%3C/svg%3E" alt="${p.name}" loading="lazy" width="800" height="1000">
-                    </div>
-                    <div class="product-body">
-                        <div class="product-title-row">
-                            <div>
-                                ${p.badge ? `<span class="badge-signature" style="display: block; margin-bottom: 4px;">${p.badge}</span>` : ''}
-                                <h3 class="product-title serif-font">${p.name}</h3>
-                            </div>
-                            <span class="product-price">${formatRupiah(p.price)}</span>
-                        </div>
-                        <p class="product-desc">${p.description}</p>
-                        <p class="product-story">${p.story[currentLang] || p.story.en}</p>
-                        <div class="product-actions">
-                            <button onclick="updateCart(${p.id}, -1)" class="qty-btn">-</button>
-                            <span class="qty-num" id="qty-${p.id}">${cart[p.id] || 0}</span>
-                            <button onclick="updateCart(${p.id}, 1)" class="qty-btn">+</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updateCart(productId, change) {
-            if (!cart[productId]) cart[productId] = 0;
-            cart[productId] += change;
-            if (cart[productId] <= 0) delete cart[productId];
-            
-            localStorage.setItem('ric_cart', JSON.stringify(cart));
-            updateUI();
-        }
-
-        function addBundleToCart() {
-            if (!cart['bundle']) cart['bundle'] = 0;
-            cart['bundle'] += 1;
-            localStorage.setItem('ric_cart', JSON.stringify(cart));
-            updateUI();
-        }
-
-        function updateCartBundle(change) {
-            if (!cart['bundle']) cart['bundle'] = 0;
-            cart['bundle'] += change;
-            if (cart['bundle'] <= 0) delete cart['bundle'];
-            localStorage.setItem('ric_cart', JSON.stringify(cart));
-            updateUI();
-        }
-
-        function updateUI() {
-            let totalCount = 0;
-            let productsTotal = 0;
-
-            for (let id in cart) {
-                if (id === 'bundle') {
-                    totalCount += cart[id];
-                    productsTotal += 189000 * cart[id];
-                } else {
-                    totalCount += cart[id];
-                    const p = PRODUCTS.find(item => item.id == id);
-                    if (p) productsTotal += p.price * cart[id];
-                }
-            }
-
-            document.getElementById('cart-count').innerText = totalCount;
-            document.getElementById('summary-products-total').innerText = formatRupiah(productsTotal);
-            document.getElementById('floating-spending-amount').innerText = formatRupiah(productsTotal);
-
-            PRODUCTS.forEach(p => {
-                const qEl = document.getElementById(`qty-${p.id}`);
-                if (qEl) qEl.innerText = cart[p.id] || 0;
-            });
-
-            const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
-            const puggleTrigger = document.getElementById('floating-puggle-trigger');
-            if (playTokens > 0) {
-                puggleTrigger.classList.remove('hidden');
-            } else {
-                puggleTrigger.classList.add('hidden');
-            }
-
-            const walletContainer = document.getElementById('coupon-wallet-container');
-            if (couponInventory.length > 0) {
-                let walletHtml = `<div style="font-size: 14px; font-weight: 500; margin-bottom: 8px;">${t('coupon_select_label')}</div>`;
-                walletHtml += couponInventory.map(c => {
-                    const isSelected = activeSelectedCouponId === c.id;
-                    return `
-                        <div onclick="toggleCouponSelection('${c.id}')" style="background: var(--surface); border: 1px solid ${isSelected ? 'var(--accent)' : 'var(--line)'}; border-radius: 6px; padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <div>
-                                <div style="font-size: 14px; font-weight: 500;">${c.label}</div>
-                                <div style="font-size: 12px; color: var(--muted);">${isSelected ? t('coupon_active') : t('coupon_tap')}</div>
-                            </div>
-                            <span style="font-size: 14px; color: ${isSelected ? 'var(--accent)' : 'transparent'};">&#10003;</span>
-                        </div>
-                    `;
-                }).join('');
-                walletContainer.innerHTML = walletHtml;
-            } else {
-                walletContainer.innerHTML = '';
-            }
-
-            const progressPercent = Math.min(100, Math.round((productsTotal / DISCOUNT_MIN_ORDER) * 100));
-            const floatingBar = document.getElementById('floating-progress-bar');
-            const floatingBadge = document.getElementById('floating-progress-badge');
-            const floatingText = document.getElementById('floating-progress-text');
-            const discountRow = document.getElementById('discount-row');
-            
-            let autoDiscountAmount = productsTotal >= DISCOUNT_MIN_ORDER ? Math.round(productsTotal * AUTO_DISCOUNT_PERCENTAGE) : 0;
-            
-            let activeCouponObj = couponInventory.find(c => c.id === activeSelectedCouponId);
-            let couponDiscountAmount = 0;
-            let couponPctNum = 0;
-
-            if (activeCouponObj) {
-                couponPctNum = activeCouponObj.percent;
-                couponDiscountAmount = Math.round(productsTotal * (couponPctNum / 100));
-            }
-
-            let totalDiscountAmount = autoDiscountAmount + couponDiscountAmount;
-            let totalDiscountPercentNum = (productsTotal >= DISCOUNT_MIN_ORDER ? 5 : 0) + couponPctNum;
-            let discountLabel = `${currentLang === 'id' ? 'Diskon' : 'Discount'} (${totalDiscountPercentNum}%)`;
-
-            if (productsTotal >= DISCOUNT_MIN_ORDER) {
-                floatingBar.style.width = "100%";
-                floatingBadge.innerText = "100%";
-                floatingText.innerHTML = t('discount_unlocked', { amount: formatRupiah(totalDiscountAmount) });
-            } else {
-                const remaining = DISCOUNT_MIN_ORDER - productsTotal;
-                floatingBar.style.width = progressPercent + "%";
-                floatingBadge.innerText = progressPercent + "%";
-                floatingText.innerText = t('discount_progress', { amount: formatRupiah(remaining) });
-            }
-
-            if (totalDiscountAmount > 0) {
-                discountRow.classList.remove('hidden');
-                document.getElementById('discount-label-text').innerText = discountLabel;
-                document.getElementById('summary-discount').innerText = "-" + formatRupiah(totalDiscountAmount);
-            } else {
-                discountRow.classList.add('hidden');
-            }
-
-            const cartItemsEl = document.getElementById('cart-items');
-            const emptyCartEl = document.getElementById('empty-cart');
-            const checkoutSection = document.getElementById('checkout-form-section');
-            const floatingBarContainer = document.getElementById('floating-bar-container');
-
-            if (totalCount === 0) {
-                cartItemsEl.innerHTML = '';
-                emptyCartEl.classList.remove('hidden');
-                checkoutSection.classList.add('hidden');
-                floatingBarContainer.classList.add('hidden');
-            } else {
-                emptyCartEl.classList.add('hidden');
-                checkoutSection.classList.remove('hidden');
-                floatingBarContainer.classList.remove('hidden');
-
-                let html = '';
-                if (cart['bundle']) {
-                    html += `
-                        <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-weight: 500; font-size: 15px;">The Ultimate Trio Bundle</div>
-                                <div style="font-size: 13px; color: var(--muted); margin-top: 2px;">Rp 189.000 &times; ${cart['bundle']}</div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 12px;">
-                                <span style="font-weight: 500;">${formatRupiah(189000 * cart['bundle'])}</span>
-                                <button onclick="updateCartBundle(-1)" class="qty-btn" style="width: 32px; height: 32px; font-size: 14px;">-</button>
-                                <span style="font-weight: 700; min-width: 16px; text-align: center;">${cart['bundle']}</span>
-                                <button onclick="updateCartBundle(1)" class="qty-btn" style="width: 32px; height: 32px; font-size: 14px;">+</button>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                for (let id in cart) {
-                    if (id !== 'bundle') {
-                        const p = PRODUCTS.find(item => item.id == id);
-                        const qty = cart[id];
-                        html += `
-                            <div style="background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; justify-content: space-between; align-items: center;">
-                                <div>
-                                    <div style="font-weight: 500; font-size: 15px;">${p.name}</div>
-                                    <div style="font-size: 13px; color: var(--muted); margin-top: 2px;">${formatRupiah(p.price)} &times; ${qty}</div>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <span style="font-weight: 500;">${formatRupiah(p.price * qty)}</span>
-                                    <button onclick="updateCart(${p.id}, -1)" class="qty-btn" style="width: 32px; height: 32px; font-size: 14px;">-</button>
-                                    <span style="font-weight: 700; min-width: 16px; text-align: center;">${qty}</span>
-                                    <button onclick="updateCart(${p.id}, 1)" class="qty-btn" style="width: 32px; height: 32px; font-size: 14px;">+</button>
-                                </div>
-                            </div>
-                        `;
-                    }
-                }
-                cartItemsEl.innerHTML = html;
-            }
-
-            calculatedGrandTotalNum = Math.max(0, productsTotal - totalDiscountAmount) + currentDeliveryFee;
-            document.getElementById('summary-delivery-fee').innerText = formatRupiah(currentDeliveryFee);
-            document.getElementById('summary-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            const panel = document.getElementById('drawer-panel');
-            if (drawer.classList.contains('hidden')) {
-                drawer.classList.remove('hidden');
-                setTimeout(() => panel.style.transform = 'translateX(0)', 10);
-                updateUI();
-            } else {
-                panel.style.transform = 'translateX(100%)';
-                setTimeout(() => drawer.classList.add('hidden'), 350);
-            }
-        }
-
-        function setPayBusy(busy) {
-            payBusy = busy;
-            const btn = document.getElementById('whatsapp-btn');
-            if (!btn) return;
-            btn.disabled = busy;
-            btn.classList.toggle('opacity-60', busy);
-            btn.firstElementChild.innerText = busy ? t('btn_processing') : t('btn_proceed');
-        }
-
-        function currentProductsTotal() {
-            let total = 0;
-            if (cart['bundle']) total += 189000 * cart['bundle'];
-            for (let id in cart) {
-                if (id !== 'bundle') {
-                    const p = PRODUCTS.find(item => item.id == id);
-                    if (p) total += p.price * cart[id];
-                }
-            }
-            return total;
-        }
-
-        function payWithMidtrans() {
-            if (payBusy) return;
-
-            const name = document.getElementById('cust-name').value.trim();
-            const phone = document.getElementById('cust-phone').value.trim();
-            const email = document.getElementById('cust-email').value.trim();
-            const address = document.getElementById('cust-address').value.trim();
-
-            if (!name || !phone || !address) {
-                alert(t('alert_fill_fields'));
-                return;
-            }
-            if (!/^\S+@\S+\.\S+$/.test(email)) {
-                alert(t('alert_invalid_email'));
-                return;
-            }
-
-            const coupon = couponInventory.find(c => c.id === activeSelectedCouponId);
-            const areaIndex = JAKARTA_AREAS.findIndex(a => a.name.replace(/'/g, "") === selectedAreaName);
-            const deliveryDate = document.getElementById('delivery-date').value;
-            const deliveryTime = document.getElementById('delivery-time').value;
-
-            setPayBusy(true);
-
-            fetch(GOOGLE_SHEET_WEB_APP_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                    action: 'create',
-                    name: name,
-                    phone: phone,
-                    email: email,
-                    address: `${address} [Area: ${selectedAreaName}, ~${calculatedDeliveryKm.toFixed(1)}km]`,
-                    datetime: `${deliveryDate} (${deliveryTime})`,
-                    areaIndex: areaIndex,
-                    cart: cart,
-                    couponPercent: coupon ? coupon.percent : 0,
-                    couponCode: coupon ? coupon.code : '',
-                    gift: document.getElementById('gift-option').checked,
-                    giftNote: document.getElementById('gift-note').value.trim(),
-                    lang: currentLang
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (!data.token) throw new Error(data.message || 'Token payment not received');
-                
-                if (window.snap && typeof window.snap.pay === 'function') {
-                    window.snap.pay(data.token, {
-                        onSuccess: function () { finishOrder(name); },
-                        onPending: function () { finishOrder(name); },
-                        onError: function () {
-                            alert(t('alert_pay_fail'));
-                            setPayBusy(false);
-                        },
-                        onClose: function () { setPayBusy(false); }
-                    });
-                } else {
-                    window.location.href = `https://app.sandbox.midtrans.com/snap/v2/vtweb/${data.token}`;
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert(t('alert_pay_error'));
-                setPayBusy(false);
-            });
-        }
-
-        function finishOrder(name) {
-            try { window.snap.hide(); } catch (e) {}
-
-            if (currentProductsTotal() >= PUGGLE_MIN_ORDER) {
-                const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
-                localStorage.setItem('ric_game_tokens', (playTokens + 1).toString());
-            }
-
-            if (activeSelectedCouponId) {
-                couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
-                localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
-                activeSelectedCouponId = null;
-                localStorage.removeItem('ric_active_coupon_id');
-            }
-
-            cart = {};
-            localStorage.removeItem('ric_cart');
-            setPayBusy(false);
-            updateUI();
-            toggleCart();
-            renderBoomerPromos();
-            switchPage('home');
-
-            alert(t('alert_thanks', { name: name }));
-        }
-    </script>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="bundle">
+        <div>
+          <span class="eyebrow" id="t-bundle-badge">Special Offer</span>
+          <h3 class="serif">The Ultimate Trio Bundle</h3>
+          <p id="t-bundle-desc">Enjoy all 3 signature flavors in one exclusive box set.</p>
+        </div>
+        <div class="bundle-cta">
+          <div class="bundle-price">
+            <span class="price-old">Rp 200.000</span>
+            <span class="price-now">Rp 189.000</span>
+          </div>
+          <button onclick="addBundleToCart()" class="btn" id="t-add-bundle-btn">Add bundle</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div id="page-products" class="hidden section">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Fresh batch today</span>
+        <h2 class="section-title serif" id="t-cat-title">Jar Catalogue</h2>
+      </div>
+      <span class="badge" id="t-cat-subtitle">Fresh Batch Today</span>
+    </div>
+    <div id="product-list" class="product-grid"></div>
+  </div>
+
+  <!-- PROMOS -->
+  <div id="page-promos" class="hidden section">
+    <span class="eyebrow">Rewards</span>
+    <h2 class="section-title serif" id="t-promos-title">Coupons &amp; Discounts</h2>
+    <p class="lead" id="t-promos-desc" style="margin-bottom:28px">Your active vouchers and minigame rewards.</p>
+    <div id="boomer-promo-list" class="promo-list"></div>
+  </div>
+
+  <!-- ABOUT -->
+  <div id="page-about" class="hidden section">
+    <div class="about-grid">
+      <div>
+        <span class="eyebrow">Behind the kitchen</span>
+        <h2 class="section-title serif" id="t-about-title">About Rest in Cheese</h2>
+        <p class="lead" id="t-about-subtitle" style="margin-bottom:20px">The story behind our kitchen.</p>
+        <p id="t-about-text" style="color:var(--muted)">Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.</p>
+        <div class="info-list">
+          <div class="info-item"><strong id="t-info-main-label">Main ingredients:</strong> <span id="t-info-main-val">[FILL]</span></div>
+          <div class="info-item"><strong id="t-info-shelf-label">Shelf life &amp; storage:</strong> <span id="t-info-shelf-val">[FILL]</span></div>
+          <div class="info-item"><strong id="t-info-order-label">Ordering system:</strong> <span id="t-info-order-val">[FILL]</span></div>
+          <div class="info-item"><strong id="t-info-area-label">Delivery area:</strong> <span id="t-info-area-val">Jakarta, delivery fee based on area</span></div>
+        </div>
+      </div>
+      <div class="about-img">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23E8DED2'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%237A6F6A'%3EChef Photo%3C/text%3E%3C/svg%3E" alt="Rest in Cheese chef" width="800" height="600">
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<button id="floating-puggle-trigger" onclick="openPuggleModal()" class="floating-puggle-trigger hidden">Play Pinball</button>
+
+<div class="floating-bar" id="floating-bar-container">
+  <div class="floating-bar-inner">
+    <div class="bar-top">
+      <strong id="floating-spending-amount">Rp 0</strong>
+      <span id="floating-progress-badge" style="color:var(--muted)">0%</span>
+    </div>
+    <div class="progress-bar-wrap"><div id="floating-progress-bar" class="progress-bar-fill"></div></div>
+    <p id="floating-progress-text">5% OFF for orders over Rp 250.000</p>
+  </div>
+</div>
+
+<!-- PUGGLE MODAL -->
+<div id="puggle-modal" class="hidden">
+  <div class="puggle-card">
+    <div class="puggle-head">
+      <h3 class="serif" style="font-size:24px">Puggle Pinball</h3>
+      <button onclick="closePuggleModal()" style="background:none;border:none;color:#fff;font-size:26px;cursor:pointer">&times;</button>
+    </div>
+    <div style="padding:20px;display:grid;gap:16px">
+      <p style="font-size:14px;color:#D4CECA" id="t-puggle-intro">Bounce the cheese to win a discount coupon.</p>
+      <div id="puggle-board">
+        <div style="display:flex;justify-content:space-around;opacity:.4;font-size:12px"><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span></div>
+        <div style="display:flex;justify-content:space-around;opacity:.4;font-size:12px"><span>•</span><span>•</span><span>•</span><span>•</span></div>
+        <div style="display:flex;justify-content:space-around;opacity:.4;font-size:12px"><span>•</span><span>•</span><span>•</span><span>•</span><span>•</span></div>
+        <div style="display:flex;justify-content:space-around;opacity:.4;font-size:12px"><span>•</span><span>•</span><span>•</span><span>•</span></div>
+        <div id="puggle-cheese" class="hidden" style="position:absolute;left:50%;top:10px;transform:translateX(-50%);font-size:24px;z-index:20">🧀</div>
+        <div id="puggle-slots" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;border-top:1px solid rgba(255,255,255,.2);padding-top:8px;text-align:center;font-size:12px;font-weight:700">
+          <div data-slot="2" style="background:rgba(255,255,255,.06);padding:8px 4px;border-radius:6px">2%</div>
+          <div data-slot="3" style="background:rgba(255,255,255,.06);padding:8px 4px;border-radius:6px">3%</div>
+          <div data-slot="4" style="background:rgba(255,255,255,.06);padding:8px 4px;border-radius:6px">4%</div>
+          <div data-slot="5" style="background:rgba(255,255,255,.06);padding:8px 4px;border-radius:6px;color:#F4B860">5%</div>
+        </div>
+      </div>
+      <div id="puggle-status" style="font-size:14px;text-align:center;min-height:20px">Press button to drop</div>
+      <button id="puggle-drop-btn" onclick="startPuggleDrop()" class="btn btn-primary btn-block">Drop Cheese</button>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div id="cart-drawer" class="hidden">
+  <div id="drawer-panel">
+    <div class="drawer-head">
+      <h3 id="t-cart-title">Order Summary</h3>
+      <button onclick="toggleCart()" class="drawer-close" aria-label="Close cart">&times;</button>
+    </div>
+
+    <div class="cart-body">
+      <div id="coupon-wallet-container"></div>
+
+      <label class="box check-row">
+        <input type="checkbox" id="gift-option" onchange="toggleGiftBox()">
+        <span id="t-gift-label">Send as a gift? (+ Greeting Card)</span>
+      </label>
+      <div id="gift-note-container" class="hidden">
+        <textarea id="gift-note" rows="2" placeholder="Write your greeting message here..." oninput="saveGiftNote(this.value)" class="form-textarea"></textarea>
+      </div>
+
+      <div id="cart-items" style="display:grid;gap:10px"></div>
+
+      <div id="empty-cart" style="text-align:center;padding:36px 0;color:var(--muted)">
+        <p id="t-empty-cart">No items added yet.</p>
+      </div>
+
+      <div id="checkout-form-section" class="hidden checkout-section">
+        <h4 class="serif" id="t-checkout-title">Delivery Details</h4>
+
+        <div class="form-group">
+          <label class="form-label" id="t-label-name">Full Name</label>
+          <input type="text" id="cust-name" class="form-input" placeholder="e.g. Sarah Jenkins">
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="t-label-phone">WhatsApp Number</label>
+          <input type="tel" id="cust-phone" class="form-input" placeholder="e.g. 081380003850">
+        </div>
+        <div class="form-group">
+          <label class="form-label" id="t-label-email">Email</label>
+          <input type="email" id="cust-email" class="form-input" placeholder="e.g. sarah@gmail.com">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" id="t-label-date">Delivery Date</label>
+            <input type="date" id="delivery-date" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" id="t-label-time">Delivery Time</label>
+            <select id="delivery-time" class="form-select">
+              <option value="Morning (10:00 - 13:00)">Morning (10 - 13)</option>
+              <option value="Afternoon (13:00 - 16:00)" selected>Afternoon (13 - 16)</option>
+              <option value="Evening (16:00 - 19:00)">Evening (16 - 19)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="t-label-area">Delivery Area in Jakarta</label>
+          <div class="area-list-box" id="jakarta-area-cards"></div>
+        </div>
+
+        <div class="fee-box">
+          <div><span id="t-dist-label">Est. Distance:</span> <strong id="dist-km">2.0 km</strong></div>
+          <div><span id="t-fee-label">Delivery Fee:</span> <strong id="calc-ongkir">Rp 15.000</strong></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="t-label-address">Full Address</label>
+          <textarea id="cust-address" rows="3" class="form-textarea" placeholder="Street, House/Building No., Unit..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-footer">
+      <div style="display:grid;gap:8px">
+        <div class="sum-row">
+          <span id="t-summary-subtotal">Product Subtotal</span>
+          <span id="summary-products-total" style="color:var(--ink)">Rp 0</span>
+        </div>
+        <div id="discount-row" class="sum-row hidden">
+          <span id="discount-label-text">Discount</span>
+          <span id="summary-discount">-Rp 0</span>
+        </div>
+        <div class="sum-row">
+          <span id="t-summary-delivery">Delivery Fee</span>
+          <span id="summary-delivery-fee" style="color:var(--ink)">Rp 15.000</span>
+        </div>
+        <div class="sum-row total">
+          <span id="t-summary-total">Total Payment</span>
+          <span id="summary-grand-total">Rp 15.000</span>
+        </div>
+      </div>
+      <button type="button" onclick="payWithMidtrans()" id="whatsapp-btn" class="btn btn-primary btn-block">
+        <span>Proceed to Payment</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <p>Rest in Cheese, Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara.</p>
+    <p style="margin-top:6px"><a href="https://wa.me/6282112002258" target="_blank" id="t-footer-wa">WhatsApp Admin</a></p>
+  </div>
+  <p id="t-footer-copy">&copy; Rest in Cheese. All rights reserved.</p>
+</footer>
+
+<script>
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwURUdj3sPQ4AjN5hs7jRRxePCXWvGyCYGgXOHQBVFknDuUvqRFmoy70D3CPChmvJi_jg/exec";
+
+const I18N = {
+  en: {
+    cart_btn_label: "Cart", nav_home: "Home", nav_catalogue: "Catalogue", nav_promos: "Coupons & Discounts", nav_about: "About", nav_admin: "Chat Admin",
+    hero_title: "Cheesecake made with ingredients you know.",
+    hero_desc: "Artisanal cheesecake pairing boutique technique with comforting, familiar Indonesian flavors.",
+    hero_btn: "Order now", pillar_1: "Selected local ingredients", pillar_2: "Freshly baked in PIK", pillar_3: "Instant delivery across Jakarta",
+    home_story_title: "Crafted with Heart in PIK",
+    home_story_desc: "Born in a home kitchen in Taman Grisenda, we transform everyday local ingredients into velvety, hotel-grade cheesecakes.",
+    home_story_btn: "See catalogue", bundle_badge: "Special Offer",
+    bundle_desc: "Enjoy all 3 signature flavors in one exclusive box set.", add_bundle_btn: "Add bundle",
+    cat_title: "Jar Catalogue", cat_subtitle: "Fresh Batch Today",
+    promos_title: "Coupons & Discounts", promos_desc: "Your active vouchers and minigame rewards.",
+    about_title: "About Rest in Cheese", about_subtitle: "The story behind our kitchen.",
+    about_text: "Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.",
+    info_main_label: "Main ingredients:", info_shelf_label: "Shelf life & storage:", info_order_label: "Ordering system:", info_area_label: "Delivery area:", info_area_val: "Jakarta, delivery fee based on area",
+    puggle_trigger: "Play Pinball", puggle_intro: "Bounce the cheese to win a discount coupon.", puggle_status_init: "Press button to drop",
+    puggle_status_dropping: "Cheese is dropping...", puggle_btn_drop: "Drop Cheese", puggle_btn_again: "Play Again", puggle_btn_done: "Coupon Added to Wallet",
+    puggle_win_msg: "Congrats! You won a {percent}% discount!", puggle_locked_title: "Pinball Locked",
+    puggle_locked_desc: "Complete an order over Rp 300.000 to get a game token.", puggle_unlocked_title: "Pinball Unlocked ({tokens} Token)",
+    puggle_unlocked_desc: "You have play tokens ready!", puggle_play_now: "Play Now",
+    cart_title: "Order Summary", gift_label: "Send as a gift? (+ Greeting Card)", gift_placeholder: "Write your greeting message here...",
+    empty_cart: "No items added yet.", checkout_title: "Delivery Details",
+    label_name: "Full Name", placeholder_name: "e.g. Sarah Jenkins", label_phone: "WhatsApp Number", placeholder_phone: "e.g. 081380003850",
+    label_email: "Email", placeholder_email: "e.g. sarah@gmail.com", label_date: "Delivery Date", label_time: "Delivery Time",
+    label_area: "Delivery Area in Jakarta", dist_label: "Est. Distance:", fee_label: "Delivery Fee:", label_address: "Full Address",
+    placeholder_address: "Street, House/Building No., Unit...", summary_subtotal: "Product Subtotal", summary_delivery: "Delivery Fee",
+    summary_total: "Total Payment", btn_proceed: "Proceed to Payment", btn_processing: "Processing...",
+    coupon_select_label: "Select Coupon (Max 1):", coupon_active: "Active coupon applied", coupon_tap: "Tap to apply",
+    coupon_collection: "Your Coupons ({count}):", coupon_empty: "No coupons in your wallet yet.", copy_btn: "Copy", copy_alert: "Coupon {code} copied.",
+    discount_unlocked: "5% Discount Unlocked (-{amount})", discount_progress: "Add {amount} more for 5% OFF",
+    alert_fill_fields: "Please fill in your name, WhatsApp number, and complete address.",
+    alert_invalid_email: "Please enter a valid email address.", alert_pay_fail: "Payment failed. Please try again.",
+    alert_pay_error: "Failed to initiate payment. Please try again or contact admin.",
+    alert_thanks: "Thank you, {name}! Your order has been recorded.", footer_wa: "WhatsApp Admin", footer_copy: "© Rest in Cheese. All rights reserved.", ongkir_label: "Delivery Fee:"
+  },
+  id: {
+    cart_btn_label: "Keranjang", nav_home: "Home", nav_catalogue: "Katalog", nav_promos: "Kupon & Diskon", nav_about: "Tentang", nav_admin: "Chat Admin",
+    hero_title: "Cheesecake dari bahan yang kamu kenal.",
+    hero_desc: "Kelezatan lapis keju artisanal yang memadukan teknik butik dengan cita rasa yang akrab di lidah Indonesia.",
+    hero_btn: "Pesan sekarang", pillar_1: "Bahan lokal terpilih", pillar_2: "Dibuat segar dari dapur PIK", pillar_3: "Kirim instan ke seluruh Jakarta",
+    home_story_title: "Dibuat Sepenuh Hati di PIK",
+    home_story_desc: "Lahir dari dapur rumah di Taman Grisenda, kami mengolah bahan harian menjadi cheesecake lembut berkelas hotel.",
+    home_story_btn: "Lihat katalog", bundle_badge: "Penawaran Khusus",
+    bundle_desc: "Nikmati kelezatan 3 varian signature sekaligus dalam satu kemasan.", add_bundle_btn: "Tambah bundle",
+    cat_title: "Katalog Jar", cat_subtitle: "Segar Setiap Hari",
+    promos_title: "Kupon & Diskon", promos_desc: "Voucher aktif dan token mini-game eksklusif Anda.",
+    about_title: "Tentang Rest in Cheese", about_subtitle: "Cerita di balik dapur kami.",
+    about_text: "Berlatih sebagai mantan pemagang di The Landmark Mandarin Oriental mengajarkan saya bahwa kue butik bukan soal label mahal, melainkan rasa hormat pada teknik dan bahan. Rest in Cheese adalah wujud kecintaan itu, diracik langsung dari dapur rumah kami di Taman Grisenda, Pantai Indah Kapuk.",
+    info_main_label: "Bahan utama:", info_shelf_label: "Daya tahan dan cara simpan:", info_order_label: "Sistem pesanan:", info_area_label: "Area pengiriman:", info_area_val: "Jakarta, ongkir sesuai wilayah",
+    puggle_trigger: "Mainkan Pinball", puggle_intro: "Pantulkan keju untuk memenangkan kupon diskon.", puggle_status_init: "Tekan tombol untuk memulai",
+    puggle_status_dropping: "Keju sedang dijatuhkan...", puggle_btn_drop: "Lempar Keju", puggle_btn_again: "Main Lagi", puggle_btn_done: "Kupon Masuk Dompet",
+    puggle_win_msg: "Selamat! Anda memenangkan diskon {percent}%!", puggle_locked_title: "Pinball Terkunci",
+    puggle_locked_desc: "Selesaikan pesanan minimal Rp 300.000 untuk mendapatkan token.", puggle_unlocked_title: "Pinball Terbuka ({tokens} Token)",
+    puggle_unlocked_desc: "Anda memiliki kesempatan bermain!", puggle_play_now: "Mainkan",
+    cart_title: "Ringkasan Pesanan", gift_label: "Kirim sebagai hadiah? (+ Kartu Ucapan)", gift_placeholder: "Tulis pesan ucapan di sini...",
+    empty_cart: "Belum ada item dipilih.", checkout_title: "Detail Pengiriman",
+    label_name: "Nama Pemesan", placeholder_name: "e.g. Sarah Jenkins", label_phone: "Nomor WhatsApp", placeholder_phone: "e.g. 081380003850",
+    label_email: "Email", placeholder_email: "e.g. sarah@gmail.com", label_date: "Tanggal Kirim", label_time: "Waktu Kirim",
+    label_area: "Wilayah Tujuan di Jakarta", dist_label: "Estimasi Jarak:", fee_label: "Ongkir:", label_address: "Alamat Lengkap",
+    placeholder_address: "Jalan, Nomor Rumah, Patokan...", summary_subtotal: "Subtotal Produk", summary_delivery: "Ongkir",
+    summary_total: "Total Pembayaran", btn_proceed: "Lanjut Pembayaran", btn_processing: "Memproses...",
+    coupon_select_label: "Gunakan Kupon (Maks. 1):", coupon_active: "Kupon aktif diterapkan", coupon_tap: "Ketuk untuk pilih",
+    coupon_collection: "Koleksi Kupon ({count}):", coupon_empty: "Belum ada kupon di dompet Anda.", copy_btn: "Salin", copy_alert: "Kupon {code} disalin.",
+    discount_unlocked: "Diskon 5% aktif (-{amount})", discount_progress: "Tambah {amount} lagi untuk diskon 5%",
+    alert_fill_fields: "Mohon lengkapi nama, nomor WhatsApp, dan alamat lengkap.", alert_invalid_email: "Mohon isi email yang valid.",
+    alert_pay_fail: "Pembayaran gagal. Silakan coba lagi.", alert_pay_error: "Gagal memulai pembayaran. Coba lagi atau hubungi admin.",
+    alert_thanks: "Terima kasih, {name}! Pesanan Anda sudah tercatat.", footer_wa: "WhatsApp Admin", footer_copy: "© Rest in Cheese. Hak cipta dilindungi.", ongkir_label: "Ongkir:"
+  }
+};
+
+let currentLang = localStorage.getItem('ric_lang') || 'en';
+function t(key, vars = {}) {
+  let str = (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
+  for (let k in vars) str = str.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
+  return str;
+}
+
+const PRODUCTS = [
+  { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky roasted pumpkin custard infused with pure Madagascar vanilla bean and warm spices.", price: 70000, badge: "Signature",
+    story: { en: "Roasted yellow pumpkin—a familiar comfort from local kolak—meets rich cream cheese and vanilla bean.", id: "Labu kuning panggang, akrab dari kolak, bertemu krim keju gurih dan vanilla bean." } },
+  { id: 2, name: "Roasted Banana & Honey", description: "Caramelized roasted banana puree paired with wild artisanal honey and cream cheese richness.", price: 65000, badge: "",
+    story: { en: "Slow-roasted caramelized bananas paired with wild honey and velvety cream cheese.", id: "Pisang panggang karamel berpadu madu hutan liar dan kelembutan krim keju." } },
+  { id: 3, name: "Corn & Coconut", description: "Sweet sweetcorn cream layered with rich, aromatic coconut glaze and a buttery crumb base.", price: 65000, badge: "",
+    story: { en: "Sweetcorn cream topped with aromatic coconut glaze over a buttery, crunchy base.", id: "Krim jagung manis berlapis glase kelapa aromatik di atas dasar renyah yang mentega." } }
+];
+
+const JAKARTA_AREAS = [
+  { name: "PIK, Kapuk & Taman Grisenda (Dekat Dapur)", fee: 15000, km: 2.0 },
+  { name: "Muara Karang & Pluit", fee: 18000, km: 4.5 },
+  { name: "Penjaringan & Ancol", fee: 22000, km: 7.0 },
+  { name: "Grogol Petamburan & Jelambar", fee: 25000, km: 9.0 },
+  { name: "Tanjung Duren & Tomang", fee: 28000, km: 11.0 },
+  { name: "Kebon Jeruk & Puri Indah", fee: 32000, km: 14.0 },
+  { name: "Kota Tua & Mangga Dua", fee: 35000, km: 16.5 },
+  { name: "Harmoni & Sawah Besar (Jakarta Pusat)", fee: 38000, km: 18.0 },
+  { name: "Menteng, Cikini & Gambir", fee: 42000, km: 21.0 },
+  { name: "Tanah Abang & Senen", fee: 45000, km: 23.0 },
+  { name: "Senayan, SCBD & Kebayoran Baru (Jaksel)", fee: 48000, km: 25.0 },
+  { name: "Pondok Indah, Lebak Bulus & Cilandak", fee: 55000, km: 29.0 },
+  { name: "Tebet, Kuningan & Setiabudi", fee: 52000, km: 27.0 },
+  { name: "Kelapa Gading & Sunter (Jakarta Utara)", fee: 35000, km: 15.0 },
+  { name: "Rawamangun, Jatinegara & Duren Sawit (Jaktim)", fee: 55000, km: 28.0 },
+  { name: "Cibubur, Cipayung & Ciracas (Jakarta Timur)", fee: 65000, km: 35.0 },
+  { name: "Cengkareng & Kalideres (Jakarta Barat)", fee: 22000, km: 8.0 }
+];
+
+let cart = JSON.parse(localStorage.getItem('ric_cart')) || {};
+let couponInventory = JSON.parse(localStorage.getItem('ric_coupon_inventory')) || [];
+let activeSelectedCouponId = localStorage.getItem('ric_active_coupon_id') || null;
+let currentDeliveryFee = 15000;
+let selectedAreaName = JAKARTA_AREAS[0].name;
+let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
+let calculatedGrandTotalNum = 0;
+let payBusy = false;
+
+const DISCOUNT_MIN_ORDER = 250000;
+const PUGGLE_MIN_ORDER = 300000;
+const AUTO_DISCOUNT_PERCENTAGE = 0.05;
+const BUNDLE_PRICE = 189000;
+
+window.addEventListener('DOMContentLoaded', () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const iso = tomorrow.toISOString().slice(0, 10);
+  const dateInput = document.getElementById('delivery-date');
+  if (dateInput) { dateInput.value = iso; dateInput.min = iso; }
+
+  const savedGiftNote = localStorage.getItem('ric_gift_note');
+  if (savedGiftNote) {
+    document.getElementById('gift-option').checked = true;
+    document.getElementById('gift-note-container').classList.remove('hidden');
+    document.getElementById('gift-note').value = savedGiftNote;
+  }
+  setLanguage(currentLang);
+});
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('ric_lang', lang);
+  document.documentElement.lang = lang;
+  document.getElementById('lang-en').className = lang === 'en' ? 'active' : '';
+  document.getElementById('lang-id').className = lang === 'id' ? 'active' : '';
+  applyStaticTranslations();
+  renderProducts();
+  renderBoomerPromos();
+  renderJakartaAreas();
+  updateUI();
+}
+
+function applyStaticTranslations() {
+  const set = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+  const place = (id, text) => { const el = document.getElementById(id); if (el) el.placeholder = text; };
+  set('t-cart-btn-label', t('cart_btn_label'));
+  set('t-nav-home', t('nav_home')); set('t-nav-catalogue', t('nav_catalogue'));
+  set('t-nav-promos', t('nav_promos')); set('t-nav-about', t('nav_about')); set('t-nav-admin', t('nav_admin'));
+  set('t-hero-title', t('hero_title')); set('t-hero-desc', t('hero_desc')); set('t-hero-btn', t('hero_btn'));
+  set('t-pillar-1', t('pillar_1')); set('t-pillar-2', t('pillar_2')); set('t-pillar-3', t('pillar_3'));
+  set('t-home-story-title', t('home_story_title')); set('t-home-story-desc', t('home_story_desc')); set('t-home-story-btn', t('home_story_btn'));
+  set('t-bundle-badge', t('bundle_badge')); set('t-bundle-desc', t('bundle_desc')); set('t-add-bundle-btn', t('add_bundle_btn'));
+  set('t-cat-title', t('cat_title')); set('t-cat-subtitle', t('cat_subtitle'));
+  set('t-promos-title', t('promos_title')); set('t-promos-desc', t('promos_desc'));
+  set('t-about-title', t('about_title')); set('t-about-subtitle', t('about_subtitle')); set('t-about-text', t('about_text'));
+  set('t-info-main-label', t('info_main_label')); set('t-info-shelf-label', t('info_shelf_label'));
+  set('t-info-order-label', t('info_order_label')); set('t-info-area-label', t('info_area_label')); set('t-info-area-val', t('info_area_val'));
+  set('floating-puggle-trigger', t('puggle_trigger')); set('t-puggle-intro', t('puggle_intro'));
+  set('puggle-status', t('puggle_status_init')); set('puggle-drop-btn', t('puggle_btn_drop'));
+  set('t-cart-title', t('cart_title')); set('t-gift-label', t('gift_label')); place('gift-note', t('gift_placeholder'));
+  set('t-empty-cart', t('empty_cart')); set('t-checkout-title', t('checkout_title'));
+  set('t-label-name', t('label_name')); place('cust-name', t('placeholder_name'));
+  set('t-label-phone', t('label_phone')); place('cust-phone', t('placeholder_phone'));
+  set('t-label-email', t('label_email')); place('cust-email', t('placeholder_email'));
+  set('t-label-date', t('label_date')); set('t-label-time', t('label_time')); set('t-label-area', t('label_area'));
+  set('t-dist-label', t('dist_label')); set('t-fee-label', t('fee_label'));
+  set('t-label-address', t('label_address')); place('cust-address', t('placeholder_address'));
+  set('t-summary-subtotal', t('summary_subtotal')); set('t-summary-delivery', t('summary_delivery')); set('t-summary-total', t('summary_total'));
+  const payBtnSpan = document.getElementById('whatsapp-btn').firstElementChild;
+  if (payBtnSpan && !payBusy) payBtnSpan.innerText = t('btn_proceed');
+  set('t-footer-wa', t('footer_wa')); set('t-footer-copy', t('footer_copy'));
+}
+
+function formatRupiah(num) { return "Rp " + Math.round(num).toLocaleString("id-ID"); }
+
+function switchPage(pageId) {
+  ['home', 'products', 'promos', 'about'].forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
+  document.getElementById('page-' + pageId).classList.remove('hidden');
+  if (pageId === 'promos') renderBoomerPromos();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleMenu() {
+  const drawer = document.getElementById('menu-drawer');
+  const panel = document.getElementById('menu-panel');
+  if (drawer.classList.contains('hidden')) {
+    drawer.classList.remove('hidden');
+    setTimeout(() => panel.style.transform = 'translateX(0)', 10);
+  } else {
+    panel.style.transform = 'translateX(-100%)';
+    setTimeout(() => drawer.classList.add('hidden'), 350);
+  }
+}
+
+function toggleGiftBox() {
+  const checked = document.getElementById('gift-option').checked;
+  document.getElementById('gift-note-container').classList.toggle('hidden', !checked);
+  if (!checked) { localStorage.removeItem('ric_gift_note'); document.getElementById('gift-note').value = ''; }
+}
+function saveGiftNote(val) { localStorage.setItem('ric_gift_note', val); }
+
+function renderJakartaAreas() {
+  const container = document.getElementById('jakarta-area-cards');
+  container.innerHTML = JAKARTA_AREAS.map((area, index) => {
+    const isSelected = index === 0;
+    return `
+      <div onclick="selectArea(${area.fee}, ${area.km}, '${area.name.replace(/'/g, "")}', this)" class="area-card" style="${isSelected ? 'background: var(--accent-soft);' : ''}">
+        <div>
+          <div class="area-name">${area.name}</div>
+          <div class="area-fee">${t('ongkir_label')} Rp ${area.fee.toLocaleString("id-ID")} (~${area.km} km)</div>
+        </div>
+        <span class="check-icon" style="font-size:13px;color:${isSelected ? 'var(--accent)' : 'transparent'};font-weight:700">&#10003;</span>
+      </div>`;
+  }).join('');
+}
+
+function selectArea(fee, km, name, element) {
+  currentDeliveryFee = fee;
+  calculatedDeliveryKm = km;
+  selectedAreaName = name;
+  document.querySelectorAll('.area-card').forEach(card => {
+    card.style.background = 'var(--surface)';
+    card.querySelector('.check-icon').style.color = 'transparent';
+  });
+  element.style.background = 'var(--accent-soft)';
+  element.querySelector('.check-icon').style.color = 'var(--accent)';
+  document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + " km";
+  document.getElementById('calc-ongkir').innerText = formatRupiah(currentDeliveryFee);
+  updateUI();
+}
+
+function renderProducts() {
+  document.getElementById('product-list').innerHTML = PRODUCTS.map(p => `
+    <article class="product-card">
+      <div class="product-img">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Crect width='800' height='800' fill='%23FBEBD6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='28' fill='%23B45309'%3EProduct Photo%3C/text%3E%3C/svg%3E" alt="${p.name}" loading="lazy" width="800" height="800">
+      </div>
+      <div class="product-body">
+        ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
+        <div class="product-top">
+          <h3 class="product-title serif">${p.name}</h3>
+          <span class="product-price">${formatRupiah(p.price)}</span>
+        </div>
+        <p class="product-desc">${p.description}</p>
+        <p class="product-story">${p.story[currentLang] || p.story.en}</p>
+        <div class="product-actions">
+          <div class="qty">
+            <button onclick="updateCart(${p.id}, -1)" class="qty-btn" aria-label="Less">-</button>
+            <span class="qty-num" id="qty-${p.id}">${cart[p.id] || 0}</span>
+            <button onclick="updateCart(${p.id}, 1)" class="qty-btn" aria-label="More">+</button>
+          </div>
+        </div>
+      </div>
+    </article>`).join('');
+}
+
+function updateCart(productId, change) {
+  if (!cart[productId]) cart[productId] = 0;
+  cart[productId] += change;
+  if (cart[productId] <= 0) delete cart[productId];
+  localStorage.setItem('ric_cart', JSON.stringify(cart));
+  updateUI();
+}
+
+function addBundleToCart() {
+  cart['bundle'] = (cart['bundle'] || 0) + 1;
+  localStorage.setItem('ric_cart', JSON.stringify(cart));
+  updateUI();
+}
+
+function updateCartBundle(change) {
+  cart['bundle'] = (cart['bundle'] || 0) + change;
+  if (cart['bundle'] <= 0) delete cart['bundle'];
+  localStorage.setItem('ric_cart', JSON.stringify(cart));
+  updateUI();
+}
+
+function currentProductsTotal() {
+  let total = 0;
+  for (let id in cart) {
+    if (id === 'bundle') total += BUNDLE_PRICE * cart[id];
+    else {
+      const p = PRODUCTS.find(item => item.id == id);
+      if (p) total += p.price * cart[id];
+    }
+  }
+  return total;
+}
+
+function openPuggleModal() {
+  const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+  if (playTokens <= 0) { alert(t('puggle_locked_desc')); return; }
+  document.getElementById('puggle-modal').classList.remove('hidden');
+}
+function closePuggleModal() { document.getElementById('puggle-modal').classList.add('hidden'); }
+
+function startPuggleDrop() {
+  let playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+  if (playTokens <= 0) return;
+  const btn = document.getElementById('puggle-drop-btn');
+  const cheese = document.getElementById('puggle-cheese');
+  const status = document.getElementById('puggle-status');
+  btn.disabled = true;
+  btn.classList.add('opacity-60');
+  status.innerText = t('puggle_status_dropping');
+  const slots = document.querySelectorAll('#puggle-slots > div');
+  slots.forEach(s => s.style.background = 'rgba(255,255,255,.06)');
+
+  const rand = Math.random() * 100;
+  let wonPercent, targetX;
+  if (rand < 45) { wonPercent = 2; targetX = "-105px"; }
+  else if (rand < 85) { wonPercent = 3; targetX = "-35px"; }
+  else if (rand < 95) { wonPercent = 4; targetX = "35px"; }
+  else { wonPercent = 5; targetX = "105px"; }
+
+  cheese.style.setProperty('--target-x', targetX);
+  cheese.classList.remove('hidden');
+  cheese.classList.add('bouncing-drop-anim');
+
+  setTimeout(() => {
+    const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
+    const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
+    couponInventory.push({ id: uniqueId, percent: wonPercent, code: rewardCode, label: `${wonPercent}% OFF (${rewardCode})` });
+    localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
+    playTokens = Math.max(0, playTokens - 1);
+    localStorage.setItem('ric_game_tokens', playTokens.toString());
+    cheese.classList.remove('bouncing-drop-anim');
+    cheese.classList.add('hidden');
+    slots.forEach(s => { if (s.getAttribute('data-slot') == wonPercent) s.style.background = '#B45309'; });
+    status.innerHTML = t('puggle_win_msg', { percent: wonPercent });
+    btn.innerText = playTokens > 0 ? t('puggle_btn_again') : t('puggle_btn_done');
+    btn.disabled = false;
+    btn.classList.remove('opacity-60');
+    renderBoomerPromos();
+    updateUI();
+    setTimeout(() => closePuggleModal(), 2500);
+  }, 5000);
+}
+
+function renderBoomerPromos() {
+  const container = document.getElementById('boomer-promo-list');
+  if (!container) return;
+  const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+  let gameHtml = playTokens > 0
+    ? `<div class="card card-row">
+         <div><div style="font-weight:600">${t('puggle_unlocked_title', { tokens: playTokens })}</div>
+         <div style="font-size:13px;color:var(--muted)">${t('puggle_unlocked_desc')}</div></div>
+         <button onclick="openPuggleModal()" class="btn btn-primary btn-small">${t('puggle_play_now')}</button>
+       </div>`
+    : `<div class="card" style="text-align:center">
+         <div style="font-weight:600">${t('puggle_locked_title')}</div>
+         <div style="font-size:13px;color:var(--muted);margin-top:4px">${t('puggle_locked_desc')}</div>
+       </div>`;
+
+  if (couponInventory.length === 0) {
+    container.innerHTML = gameHtml + `<div class="card" style="text-align:center;color:var(--muted)">${t('coupon_empty')}</div>`;
+    return;
+  }
+  const inventoryHtml = couponInventory.map(c => `
+    <div class="voucher-card">
+      <div>
+        <div class="voucher-code">${c.code}</div>
+        <div style="font-size:13px">${c.percent}% OFF</div>
+      </div>
+      <button onclick="copySpecificCoupon('${c.code}')" class="btn btn-ghost btn-small">${t('copy_btn')}</button>
+    </div>`).join('');
+  container.innerHTML = gameHtml +
+    `<div style="font-size:14px;font-weight:600">${t('coupon_collection', { count: couponInventory.length })}</div>` + inventoryHtml;
+}
+
+function copySpecificCoupon(code) {
+  navigator.clipboard.writeText(code);
+  alert(t('copy_alert', { code: code }));
+}
+
+function toggleCouponSelection(id) {
+  activeSelectedCouponId = activeSelectedCouponId === id ? null : id;
+  localStorage.setItem('ric_active_coupon_id', activeSelectedCouponId || '');
+  updateUI();
+}
+
+function updateUI() {
+  let totalCount = 0;
+  for (let id in cart) totalCount += cart[id];
+  const productsTotal = currentProductsTotal();
+
+  document.getElementById('cart-count').innerText = totalCount;
+  document.getElementById('summary-products-total').innerText = formatRupiah(productsTotal);
+  document.getElementById('floating-spending-amount').innerText = formatRupiah(productsTotal);
+  PRODUCTS.forEach(p => { const q = document.getElementById(`qty-${p.id}`); if (q) q.innerText = cart[p.id] || 0; });
+
+  const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+  document.getElementById('floating-puggle-trigger').classList.toggle('hidden', playTokens <= 0);
+
+  const walletContainer = document.getElementById('coupon-wallet-container');
+  if (couponInventory.length > 0) {
+    walletContainer.innerHTML = `<div class="section-label" style="margin-bottom:8px">${t('coupon_select_label')}</div>` +
+      couponInventory.map(c => {
+        const isSelected = activeSelectedCouponId === c.id;
+        return `
+          <div onclick="toggleCouponSelection('${c.id}')" class="coupon-item ${isSelected ? 'active' : ''}">
+            <div>
+              <div style="font-size:14px;font-weight:600">${c.label}</div>
+              <div style="font-size:12px;color:var(--muted)">${isSelected ? t('coupon_active') : t('coupon_tap')}</div>
+            </div>
+            <span style="color:${isSelected ? 'var(--accent)' : 'transparent'};font-weight:700">&#10003;</span>
+          </div>`;
+      }).join('');
+  } else {
+    walletContainer.innerHTML = '';
+  }
+
+  const progressPercent = Math.min(100, Math.round((productsTotal / DISCOUNT_MIN_ORDER) * 100));
+  const autoDiscountAmount = productsTotal >= DISCOUNT_MIN_ORDER ? Math.round(productsTotal * AUTO_DISCOUNT_PERCENTAGE) : 0;
+  const activeCouponObj = couponInventory.find(c => c.id === activeSelectedCouponId);
+  const couponPctNum = activeCouponObj ? activeCouponObj.percent : 0;
+  const couponDiscountAmount = activeCouponObj ? Math.round(productsTotal * (couponPctNum / 100)) : 0;
+  const totalDiscountAmount = autoDiscountAmount + couponDiscountAmount;
+  const totalDiscountPercentNum = (productsTotal >= DISCOUNT_MIN_ORDER ? 5 : 0) + couponPctNum;
+
+  const bar = document.getElementById('floating-progress-bar');
+  const badge = document.getElementById('floating-progress-badge');
+  const text = document.getElementById('floating-progress-text');
+  if (productsTotal >= DISCOUNT_MIN_ORDER) {
+    bar.style.width = "100%";
+    badge.innerText = "100%";
+    text.innerText = t('discount_unlocked', { amount: formatRupiah(totalDiscountAmount) });
+  } else {
+    bar.style.width = progressPercent + "%";
+    badge.innerText = progressPercent + "%";
+    text.innerText = t('discount_progress', { amount: formatRupiah(DISCOUNT_MIN_ORDER - productsTotal) });
+  }
+
+  const discountRow = document.getElementById('discount-row');
+  if (totalDiscountAmount > 0) {
+    discountRow.classList.remove('hidden');
+    document.getElementById('discount-label-text').innerText =
+      `${currentLang === 'id' ? 'Diskon' : 'Discount'} (${totalDiscountPercentNum}%)`;
+    document.getElementById('summary-discount').innerText = "-" + formatRupiah(totalDiscountAmount);
+  } else {
+    discountRow.classList.add('hidden');
+  }
+
+  const cartItemsEl = document.getElementById('cart-items');
+  const hasItems = totalCount > 0;
+  document.getElementById('empty-cart').classList.toggle('hidden', hasItems);
+  document.getElementById('checkout-form-section').classList.toggle('hidden', !hasItems);
+  document.getElementById('floating-bar-container').classList.toggle('hidden', !hasItems);
+
+  if (!hasItems) {
+    cartItemsEl.innerHTML = '';
+  } else {
+    let html = '';
+    if (cart['bundle']) {
+      html += `
+        <div class="cart-item">
+          <div>
+            <div class="cart-item-name">The Ultimate Trio Bundle</div>
+            <div class="cart-item-meta">${formatRupiah(BUNDLE_PRICE)} &times; ${cart['bundle']}</div>
+          </div>
+          <div class="cart-item-controls">
+            <span style="font-weight:600">${formatRupiah(BUNDLE_PRICE * cart['bundle'])}</span>
+            <button onclick="updateCartBundle(-1)" class="qty-btn">-</button>
+            <span class="qty-num">${cart['bundle']}</span>
+            <button onclick="updateCartBundle(1)" class="qty-btn">+</button>
+          </div>
+        </div>`;
+    }
+    for (let id in cart) {
+      if (id === 'bundle') continue;
+      const p = PRODUCTS.find(item => item.id == id);
+      const qty = cart[id];
+      html += `
+        <div class="cart-item">
+          <div>
+            <div class="cart-item-name">${p.name}</div>
+            <div class="cart-item-meta">${formatRupiah(p.price)} &times; ${qty}</div>
+          </div>
+          <div class="cart-item-controls">
+            <span style="font-weight:600">${formatRupiah(p.price * qty)}</span>
+            <button onclick="updateCart(${p.id}, -1)" class="qty-btn">-</button>
+            <span class="qty-num">${qty}</span>
+            <button onclick="updateCart(${p.id}, 1)" class="qty-btn">+</button>
+          </div>
+        </div>`;
+    }
+    cartItemsEl.innerHTML = html;
+  }
+
+  calculatedGrandTotalNum = Math.max(0, productsTotal - totalDiscountAmount) + currentDeliveryFee;
+  document.getElementById('summary-delivery-fee').innerText = formatRupiah(currentDeliveryFee);
+  document.getElementById('summary-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
+}
+
+function toggleCart() {
+  const drawer = document.getElementById('cart-drawer');
+  const panel = document.getElementById('drawer-panel');
+  if (drawer.classList.contains('hidden')) {
+    drawer.classList.remove('hidden');
+    setTimeout(() => panel.style.transform = 'translateX(0)', 10);
+    updateUI();
+  } else {
+    panel.style.transform = 'translateX(100%)';
+    setTimeout(() => drawer.classList.add('hidden'), 350);
+  }
+}
+
+function setPayBusy(busy) {
+  payBusy = busy;
+  const btn = document.getElementById('whatsapp-btn');
+  btn.disabled = busy;
+  btn.classList.toggle('opacity-60', busy);
+  btn.firstElementChild.innerText = busy ? t('btn_processing') : t('btn_proceed');
+}
+
+function payWithMidtrans() {
+  if (payBusy) return;
+  const name = document.getElementById('cust-name').value.trim();
+  const phone = document.getElementById('cust-phone').value.trim();
+  const email = document.getElementById('cust-email').value.trim();
+  const address = document.getElementById('cust-address').value.trim();
+  if (!name || !phone || !address) { alert(t('alert_fill_fields')); return; }
+  if (!/^\S+@\S+\.\S+$/.test(email)) { alert(t('alert_invalid_email')); return; }
+
+  const coupon = couponInventory.find(c => c.id === activeSelectedCouponId);
+  const areaIndex = JAKARTA_AREAS.findIndex(a => a.name.replace(/'/g, "") === selectedAreaName);
+  const deliveryDate = document.getElementById('delivery-date').value;
+  const deliveryTime = document.getElementById('delivery-time').value;
+
+  setPayBusy(true);
+
+  fetch(GOOGLE_SHEET_WEB_APP_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({
+      action: 'create', name, phone, email,
+      address: `${address} [Area: ${selectedAreaName}, ~${calculatedDeliveryKm.toFixed(1)}km]`,
+      datetime: `${deliveryDate} (${deliveryTime})`,
+      areaIndex,
+      cart,
+      couponPercent: coupon ? coupon.percent : 0,
+      couponCode: coupon ? coupon.code : '',
+      gift: document.getElementById('gift-option').checked,
+      giftNote: document.getElementById('gift-note').value.trim(),
+      lang: currentLang
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.token) throw new Error(data.message || 'Token payment not received');
+    if (window.snap && typeof window.snap.pay === 'function') {
+      window.snap.pay(data.token, {
+        onSuccess: () => finishOrder(name),
+        onPending: () => finishOrder(name),
+        onError: () => { alert(t('alert_pay_fail')); setPayBusy(false); },
+        onClose: () => setPayBusy(false)
+      });
+    } else {
+      window.location.href = `https://app.sandbox.midtrans.com/snap/v2/vtweb/${data.token}`;
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert(t('alert_pay_error'));
+    setPayBusy(false);
+  });
+}
+
+function finishOrder(name) {
+  try { window.snap.hide(); } catch (e) {}
+  if (currentProductsTotal() >= 300000) {
+    const playTokens = parseInt(localStorage.getItem('ric_game_tokens') || '0');
+    localStorage.setItem('ric_game_tokens', (playTokens + 1).toString());
+  }
+  if (activeSelectedCouponId) {
+    couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
+    localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
+    activeSelectedCouponId = null;
+    localStorage.removeItem('ric_active_coupon_id');
+  }
+  cart = {};
+  localStorage.removeItem('ric_cart');
+  setPayBusy(false);
+  updateUI();
+  toggleCart();
+  renderBoomerPromos();
+  switchPage('home');
+  alert(t('alert_thanks', { name }));
+}
+</script>
 </body>
 </html>
