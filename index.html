@@ -21,8 +21,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <!-- Midtrans Production Snap SDK -->
-    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-qw70TUJoWJ_t6-Mi"></script>
+    <!-- Midtrans Sandbox Snap SDK -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-kuh_2ZttMf5eUjih"></script>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1939,7 +1939,7 @@
                         onClose: function () { setPayBusy(false); }
                     });
                 } else {
-                    window.location.href = `https://app.midtrans.com/snap/v2/vtweb/${data.token}`;
+                    window.location.href = `https://app.sandbox.midtrans.com/snap/v2/vtweb/${data.token}`;
                 }
             })
             .catch(err => {
