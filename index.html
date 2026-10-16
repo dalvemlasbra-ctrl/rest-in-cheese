@@ -474,7 +474,7 @@ footer a { color: var(--ink); font-weight: 600; }
       <span id="floating-progress-badge" style="color:var(--muted)">0%</span>
     </div>
     <div class="progress-bar-wrap"><div id="floating-progress-bar" class="progress-bar-fill"></div></div>
-    <p id="floating-progress-text">Spend over Rp 200.000 for 4% instant discount &amp; over Rp 300.000 for 2% next coupon</p>
+    <p id="floating-progress-text">Spend over Rp 200.000 for 4% instant discount &amp; over Rp 300.000 for a 2% next coupon</p>
   </div>
 </div>
 
@@ -891,21 +891,19 @@ function claimFreeJarReward() {
   })
   .then(res => res.json())
   .then(data => {
+    if (data.status !== 'success') throw new Error(data.message || 'Server error');
     earnedStamps -= 12;
     localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
     renderStampCard();
     alert(`🎉 Success! Your free jar request (${flavor}) has been recorded. Admin will contact you shortly!`);
-    btn.disabled = false;
-    btn.innerText = "Claim My Free Jar";
   })
   .catch(err => {
-    // Fallback locally
-    earnedStamps -= 12;
-    localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
-    renderStampCard();
-    alert(`🎉 Success! Your free jar request (${flavor}) has been recorded.`);
+    console.error(err);
+    alert('Claim failed. Please try again, or contact admin.');
+  })
+  .finally(() => {
     btn.disabled = false;
-    btn.innerText = "Claim My Free Jar";
+    btn.innerText = 'Claim My Free Jar';
   });
 }
 
@@ -1126,6 +1124,11 @@ function renderOrderHistory() {
       discountInfoHtml = `<div style="font-size:13px;color:var(--muted)">🏷️ No discount applied</div>`;
     }
 
+    const badgeStyle = ord.status === 'pending'
+      ? 'background:#fef3c7;color:#92400e'
+      : 'background:#dcfce7;color:#166534';
+    const badgeText = ord.status === 'pending' ? 'Menunggu Pembayaran' : 'Paid / Confirmed';
+
     return `
       <div class="card" style="display:grid;gap:12px">
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:8px">
@@ -1133,7 +1136,7 @@ function renderOrderHistory() {
             <strong style="font-size:16px">Order #${ord.id}</strong>
             <div style="font-size:12px;color:var(--muted)">${ord.date} • ${ord.deliveryDatetime}</div>
           </div>
-          <span class="badge" style="background:#dcfce7;color:#166534">Paid / Confirmed</span>
+          <span class="badge" style="${badgeStyle}">${badgeText}</span>
         </div>
         <div>
           <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Items Ordered:</div>
@@ -1326,6 +1329,9 @@ function payWithMidtrans() {
   const deliveryDate = document.getElementById('delivery-date').value;
   const deliveryTime = document.getElementById('delivery-time').value;
 
+  const activeCouponObj = couponInventory.find(c => c.id === activeSelectedCouponId);
+  const sentCouponPercent = activeCouponObj ? activeCouponObj.percent : 0;
+
   setPayBusy(true);
 
   fetch(GOOGLE_SHEET_WEB_APP_URL, {
@@ -1338,8 +1344,7 @@ function payWithMidtrans() {
       datetime: `${deliveryDate} (${deliveryTime})`,
       areaIndex: currentFulfillmentMethod === 'pickup' ? -1 : JAKARTA_AREAS.findIndex(a => a.name.replace(/'/g, "") === selectedAreaName),
       cart,
-      couponPercent: productsTotal >= NEXT_PURCHASE_THRESHOLD ? 2 : 0,
-      couponCode: productsTotal >= NEXT_PURCHASE_THRESHOLD ? `RIC-2%-${Math.random().toString(36).substring(2, 7).toUpperCase()}` : '',
+      couponPercent: sentCouponPercent,
       gift: document.getElementById('gift-option').checked,
       giftNote: document.getElementById('gift-note').value.trim(),
       lang: currentLang
@@ -1350,22 +1355,24 @@ function payWithMidtrans() {
     if (!data.token) throw new Error(data.message || 'Token payment not received');
     if (window.snap && typeof window.snap.pay === 'function') {
       window.snap.pay(data.token, {
-        onSuccess: () => finishOrder(name, address, `${deliveryDate} (${deliveryTime})`),
-        onPending: () => finishOrder(name, address, `${deliveryDate} (${deliveryTime})`),
+        onSuccess: () => finishOrder(name, address, `${deliveryDate} (${deliveryTime})`, 'success'),
+        onPending: () => finishOrder(name, address, `${deliveryDate} (${deliveryTime})`, 'pending'),
         onError: () => { alert(t('alert_pay_fail')); setPayBusy(false); },
         onClose: () => setPayBusy(false)
       });
     } else {
-      finishOrder(name, address, `${deliveryDate} (${deliveryTime})`);
+      alert(t('alert_pay_error'));
+      setPayBusy(false);
     }
   })
   .catch(err => {
     console.error(err);
-    finishOrder(name, address, `${deliveryDate} (${deliveryTime})`);
+    alert(t('alert_pay_error'));
+    setPayBusy(false);
   });
 }
 
-function finishOrder(name, address, datetime) {
+function finishOrder(name, address, datetime, status = 'success') {
   try { window.snap.hide(); } catch (e) {}
   
   const productsTotal = currentProductsTotal();
@@ -1375,10 +1382,26 @@ function finishOrder(name, address, datetime) {
   if (activeCouponObj) couponDisc = Math.round(productsTotal * (activeCouponObj.percent / 100));
   const totalDiscount = instantDisc + couponDisc;
 
-  // Add stamps for purchased jars ONLY upon confirmed successful payment
-  const jarsPurchased = countTotalJarsInCart();
-  earnedStamps += jarsPurchased;
-  localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
+  if (status === 'success') {
+    const jarsPurchased = countTotalJarsInCart();
+    earnedStamps += jarsPurchased;
+    localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
+
+    if (productsTotal >= NEXT_PURCHASE_THRESHOLD) {
+      const wonPercent = 2;
+      const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
+      const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
+      couponInventory.push({ id: uniqueId, percent: wonPercent, code: rewardCode, label: `${wonPercent}% OFF Next Purchase (${rewardCode})` });
+      localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
+    }
+    
+    if (activeSelectedCouponId) {
+      couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
+      localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
+      activeSelectedCouponId = null;
+      localStorage.removeItem('ric_active_coupon_id');
+    }
+  }
 
   const newOrder = {
     id: Math.floor(100000 + Math.random() * 900000),
@@ -1387,24 +1410,11 @@ function finishOrder(name, address, datetime) {
     cartSnapshot: { ...cart },
     discountTotal: totalDiscount,
     address: currentFulfillmentMethod === 'pickup' ? 'Self Pickup @ Taman Grisenda' : `${address} (${selectedAreaName})`,
-    total: calculatedGrandTotalNum
+    total: calculatedGrandTotalNum,
+    status: status
   };
   orderHistory.unshift(newOrder);
   localStorage.setItem('ric_order_history', JSON.stringify(orderHistory));
-
-  if (productsTotal >= NEXT_PURCHASE_THRESHOLD) {
-    const wonPercent = 2;
-    const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
-    const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
-    couponInventory.push({ id: uniqueId, percent: wonPercent, code: rewardCode, label: `${wonPercent}% OFF Next Purchase (${rewardCode})` });
-    localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
-  }
-  if (activeSelectedCouponId) {
-    couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
-    localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
-    activeSelectedCouponId = null;
-    localStorage.removeItem('ric_active_coupon_id');
-  }
 
   cart = {};
   localStorage.removeItem('ric_cart');
@@ -1414,8 +1424,13 @@ function finishOrder(name, address, datetime) {
   renderStampCard();
   renderBoomerPromos();
   renderOrderHistory();
-  switchPage('home');
-  alert(t('alert_thanks', { name }));
+  switchPage('history');
+
+  if (status === 'pending') {
+    alert("Pesanan Anda dicatat! Silakan selesaikan pembayaran sesuai instruksi VA.");
+  } else {
+    alert(t('alert_thanks', { name }));
+  }
 }
 </script>
 </body>
