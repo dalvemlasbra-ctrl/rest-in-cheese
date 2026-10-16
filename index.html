@@ -1373,7 +1373,9 @@ function payWithMidtrans() {
 }
 
 function finishOrder(name, address, datetime, status = 'success') {
-  try { window.snap.hide(); } catch (e) {}
+  if (status === 'success') {
+    try { window.snap.hide(); } catch (e) {}
+  }
   
   const productsTotal = currentProductsTotal();
   const instantDisc = productsTotal >= INSTANT_DISCOUNT_THRESHOLD ? Math.round(productsTotal * INSTANT_DISCOUNT_PERCENTAGE) : 0;
@@ -1394,13 +1396,14 @@ function finishOrder(name, address, datetime, status = 'success') {
       couponInventory.push({ id: uniqueId, percent: wonPercent, code: rewardCode, label: `${wonPercent}% OFF Next Purchase (${rewardCode})` });
       localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
     }
-    
-    if (activeSelectedCouponId) {
-      couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
-      localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
-      activeSelectedCouponId = null;
-      localStorage.removeItem('ric_active_coupon_id');
-    }
+  }
+
+  // Moved outside of success check so used coupons are correctly removed from wallet on checkout creation
+  if (activeSelectedCouponId) {
+    couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
+    localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
+    activeSelectedCouponId = null;
+    localStorage.removeItem('ric_active_coupon_id');
   }
 
   const newOrder = {
