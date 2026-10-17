@@ -397,7 +397,7 @@ footer a { color: var(--ink); font-weight: 600; }
     <span class="eyebrow">Rewards Program</span>
     <h2 class="section-title serif">Loyalty Stamp Card</h2>
     <p class="lead" style="margin-bottom:28px">Collect 12 stamps to get 1 FREE cheesecake jar of your choice!</p>
-    
+
     <div class="loyalty-card">
       <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px">
         <div>
@@ -409,22 +409,7 @@ footer a { color: var(--ink); font-weight: 600; }
 
       <div class="stamp-grid" id="stamp-slots-container"></div>
 
-      <div id="free-jar-claim-section" class="hidden" style="background:var(--accent-soft);border:1.5px dashed var(--accent);border-radius:16px;padding:20px;display:grid;gap:12px">
-        <strong style="color:var(--accent);font-size:18px">🎉 You've Unlocked 1 Free Jar!</strong>
-        <p style="font-size:14px;color:var(--ink)">Choose your free flavor below and we'll send it directly to your email & admin for processing:</p>
-        
-        <div class="form-group">
-          <label class="form-label">Select Free Jar Flavor</label>
-          <select id="free-jar-flavor" class="form-select">
-            <option value="Pumpkin & Vanilla Bean">Pumpkin & Vanilla Bean</option>
-            <option value="Corn & Coconut">Corn & Coconut</option>
-            <option value="Roasted Banana & Honey">Roasted Banana & Honey</option>
-            <option value="Purple Sweet Potato">Purple Sweet Potato</option>
-          </select>
-        </div>
-
-        <button type="button" onclick="claimFreeJarReward()" id="claim-reward-btn" class="btn btn-primary btn-block">Claim My Free Jar</button>
-      </div>
+      <p style="font-size:14px;color:var(--ink)">When your stamps reach 12, your order that completes them includes 1 FREE jar. You choose its flavor at checkout.</p>
     </div>
   </div>
 
@@ -441,6 +426,13 @@ footer a { color: var(--ink); font-weight: 600; }
     <span class="eyebrow">Your Purchases</span>
     <h2 class="section-title serif" id="t-history-title">Order History</h2>
     <p class="lead" id="t-history-desc" style="margin-bottom:28px">Track your previous cheesecakes orders and details.</p>
+    <div class="card" style="display:grid;gap:10px;margin-bottom:16px;max-width:640px">
+      <strong style="font-size:15px">Cek pesanan &amp; struk</strong>
+      <input type="text" id="lookup-order-id" class="form-input" placeholder="No. pesanan (contoh: RIC-260101-AB12C)">
+      <input type="text" id="lookup-contact" class="form-input" placeholder="Email atau WhatsApp saat pesan">
+      <button type="button" class="btn btn-dark" onclick="lookupOrderOnline()">Cek pesanan</button>
+      <div id="lookup-result" style="font-size:14px"></div>
+    </div>
     <div id="order-history-list" class="promo-list"></div>
   </div>
 
@@ -506,6 +498,15 @@ footer a { color: var(--ink); font-weight: 600; }
       <div id="checkout-form-section" class="hidden checkout-section">
         <h4 class="serif" id="t-checkout-title">Customer &amp; Delivery Details</h4>
 
+        <!-- Free jar box: shown only when this order completes a 12-stamp reward -->
+        <div id="free-jar-box" class="hidden box" style="background:var(--accent-soft);border:1.5px dashed var(--accent);display:grid;gap:8px">
+          <strong id="free-jar-title" style="color:var(--accent);font-size:14px"></strong>
+          <div class="form-group">
+            <label class="form-label" id="free-jar-label"></label>
+            <select id="free-jar-flavor" class="form-select"></select>
+          </div>
+        </div>
+
         <!-- Fulfillment Tabs: Delivery vs Self Pickup -->
         <div class="fulfillment-tabs">
           <button type="button" class="fulfillment-tab active" id="tab-delivery" onclick="setFulfillmentMethod('delivery')">🛵 Delivery</button>
@@ -557,7 +558,7 @@ footer a { color: var(--ink); font-weight: 600; }
               <label class="form-label" id="t-label-address">Full Address</label>
               <button type="button" onclick="saveCurrentLocation()" class="btn btn-ghost" style="padding:4px 10px;font-size:12px;min-height:28px;">🔖 Save Location</button>
             </div>
-            
+
             <div id="saved-locations-container" class="hidden" style="margin-bottom: 8px;">
               <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 4px;">Quick Select Saved Address:</div>
               <div id="saved-chips-list" class="saved-locations-chips"></div>
@@ -675,6 +676,20 @@ const I18N = {
   }
 };
 
+// Text for the free jar box at checkout
+const FREE_TXT = {
+  en: {
+    title: n => `🎉 This order earns ${n} FREE jar${n > 1 ? 's' : ''}!`,
+    label: "Flavor for your free jar",
+    alert: "Please choose the flavor of your free jar."
+  },
+  id: {
+    title: n => `🎉 Pesanan ini dapat ${n} jar GRATIS!`,
+    label: "Pilih rasa jar gratis",
+    alert: "Mohon pilih rasa jar gratis Anda."
+  }
+};
+
 let currentLang = localStorage.getItem('ric_lang') || 'en';
 function t(key, vars = {}) {
   let str = (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
@@ -737,6 +752,7 @@ const INSTANT_DISCOUNT_THRESHOLD = 200000;
 const INSTANT_DISCOUNT_PERCENTAGE = 0.04;
 const NEXT_PURCHASE_THRESHOLD = 300000;
 const BUNDLE_PRICE = 235000;
+const STAMPS_PER_FREE_JAR = 12;
 
 window.addEventListener('DOMContentLoaded', () => {
   loadCustomerData();
@@ -787,7 +803,7 @@ function setFulfillmentMethod(method) {
   currentFulfillmentMethod = method;
   document.getElementById('tab-delivery').classList.toggle('active', method === 'delivery');
   document.getElementById('tab-pickup').classList.toggle('active', method === 'pickup');
-  
+
   document.getElementById('delivery-fields-wrapper').classList.toggle('hidden', method === 'pickup');
   document.getElementById('pickup-info-box').classList.toggle('hidden', method === 'delivery');
 
@@ -804,7 +820,7 @@ function saveCurrentLocation() {
   const address = document.getElementById('cust-address').value.trim();
   if (!address) { alert("Please enter an address first."); return; }
   const locationLabel = prompt("Give this saved location a name (e.g. Home, Office):", "Home") || "My Location";
-  
+
   savedLocations.push({ label: locationLabel, address, areaName: selectedAreaName, fee: currentDeliveryFee, km: calculatedDeliveryKm });
   localStorage.setItem('ric_saved_locations', JSON.stringify(savedLocations));
   renderSavedLocationChips();
@@ -830,7 +846,7 @@ function loadSavedLocation(idx) {
   if (!loc) return;
   document.getElementById('cust-address').value = loc.address;
   saveCustomerField('address', loc.address);
-  
+
   selectedAreaName = loc.areaName;
   currentDeliveryFee = currentFulfillmentMethod === 'pickup' ? 0 : loc.fee;
   calculatedDeliveryKm = loc.km;
@@ -845,11 +861,11 @@ function loadSavedLocation(idx) {
 function renderStampCard() {
   const container = document.getElementById('stamp-slots-container');
   if (!container) return;
-  
-  document.getElementById('stamp-count-badge').innerText = `${earnedStamps} / 12 Jars`;
-  
+
+  document.getElementById('stamp-count-badge').innerText = `${earnedStamps} / ${STAMPS_PER_FREE_JAR} Jars`;
+
   let slotsHtml = '';
-  for (let i = 1; i <= 12; i++) {
+  for (let i = 1; i <= STAMPS_PER_FREE_JAR; i++) {
     const isFilled = i <= earnedStamps;
     slotsHtml += `
       <div class="stamp-slot ${isFilled ? 'filled' : ''}">
@@ -858,53 +874,33 @@ function renderStampCard() {
       </div>`;
   }
   container.innerHTML = slotsHtml;
-
-  const claimSection = document.getElementById('free-jar-claim-section');
-  if (earnedStamps >= 12) {
-    claimSection.classList.remove('hidden');
-  } else {
-    claimSection.classList.add('hidden');
-  }
 }
 
-function claimFreeJarReward() {
-  if (earnedStamps < 12) { alert("You need 12 stamps to claim a free jar."); return; }
-  const name = document.getElementById('cust-name').value.trim() || prompt("Enter your name:");
-  const email = document.getElementById('cust-email').value.trim() || prompt("Enter your email:");
-  const phone = document.getElementById('cust-phone').value.trim() || prompt("Enter your WhatsApp number:");
-  const flavor = document.getElementById('free-jar-flavor').value;
+// Free jars earned by an order with paidJars jars, based on current confirmed stamps
+function getRewardsForCart(paidJars) {
+  return Math.floor((earnedStamps + paidJars) / STAMPS_PER_FREE_JAR) - Math.floor(earnedStamps / STAMPS_PER_FREE_JAR);
+}
 
-  if (!name || !email || !phone) { alert("Please complete your contact info to claim!"); return; }
+function productIdByName(name) {
+  const p = PRODUCTS.find(item => item.name === name);
+  return p ? p.id : null;
+}
 
-  const btn = document.getElementById('claim-reward-btn');
-  btn.disabled = true;
-  btn.innerText = "Submitting claim...";
+// Shows the free jar box in checkout when this order earns a free jar
+function renderFreeJarBox() {
+  const box = document.getElementById('free-jar-box');
+  if (!box) return;
+  const n = getRewardsForCart(countTotalJarsInCart());
+  box.classList.toggle('hidden', n === 0);
+  if (n === 0) return;
 
-  fetch(GOOGLE_SHEET_WEB_APP_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({
-      action: 'claim_free_jar',
-      name, email, phone,
-      claimedFlavor: flavor
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.status !== 'success') throw new Error(data.message || 'Server error');
-    earnedStamps -= 12;
-    localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
-    renderStampCard();
-    alert(`🎉 Success! Your free jar request (${flavor}) has been recorded. Admin will contact you shortly!`);
-  })
-  .catch(err => {
-    console.error(err);
-    alert('Claim failed. Please try again, or contact admin.');
-  })
-  .finally(() => {
-    btn.disabled = false;
-    btn.innerText = 'Claim My Free Jar';
-  });
+  const txt = FREE_TXT[currentLang];
+  document.getElementById('free-jar-title').innerText = txt.title(n);
+  document.getElementById('free-jar-label').innerText = txt.label;
+  const sel = document.getElementById('free-jar-flavor');
+  if (sel.options.length === 0) {
+    sel.innerHTML = PRODUCTS.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+  }
 }
 
 function setLanguage(lang) {
@@ -1071,6 +1067,7 @@ function currentProductsTotal() {
   return total;
 }
 
+// Paid jars only (bundle = 4 jars). Free loyalty jars are never counted here.
 function countTotalJarsInCart() {
   let jars = 0;
   for (let id in cart) {
@@ -1133,7 +1130,7 @@ function renderOrderHistory() {
       <div class="card" style="display:grid;gap:12px">
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:8px">
           <div>
-            <strong style="font-size:16px">Order #${ord.id}</strong>
+            <strong style="font-size:16px">Order #${ord.serverId || ord.id}</strong>
             <div style="font-size:12px;color:var(--muted)">${ord.date} • ${ord.deliveryDatetime}</div>
           </div>
           <span class="badge" style="${badgeStyle}">${badgeText}</span>
@@ -1152,6 +1149,40 @@ function renderOrderHistory() {
         </div>
       </div>`;
   }).join('');
+}
+
+async function lookupOrderOnline() {
+  const id = document.getElementById('lookup-order-id').value.trim();
+  const contact = document.getElementById('lookup-contact').value.trim();
+  const out = document.getElementById('lookup-result');
+  if (!id || !contact) { out.innerText = 'Isi nomor pesanan dan email/WhatsApp.'; return; }
+  out.innerText = 'Mengecek...';
+  const esc = v => String(v == null ? '' : v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  try {
+    const res = await fetch(GOOGLE_SHEET_WEB_APP_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'lookup_order', orderId: id, contact: contact })
+    });
+    const data = await res.json();
+    if (data.status !== 'success') { out.innerText = data.message || 'Pesanan tidak ditemukan.'; return; }
+    const o = data.order;
+    const label = o.paymentStatus === 'Paid' ? 'Lunas' : (o.paymentStatus === 'Pending' ? 'Menunggu pembayaran' : o.paymentStatus);
+    out.innerHTML = `
+      <div style="display:grid;gap:6px;border-top:1px solid var(--line);padding-top:10px">
+        <div><strong>${esc(o.id)}</strong> &middot; ${esc(label)}</div>
+        <div>Jadwal: ${esc(o.datetime)}</div>
+        <div>${o.fulfil === 'pickup' ? 'Ambil di' : 'Alamat'}: ${esc(o.address)}</div>
+        <div style="white-space:pre-line">${esc(o.items)}</div>
+        <div>Subtotal: ${formatRupiah(o.subtotal)}</div>
+        ${o.discount > 0 ? '<div>Diskon: -' + formatRupiah(o.discount) + '</div>' : ''}
+        <div>Ongkir: ${formatRupiah(o.fee)}</div>
+        <div><strong>Total: ${formatRupiah(o.total)}</strong></div>
+      </div>`;
+  } catch (e) {
+    console.error(e);
+    out.innerText = 'Gagal mengecek. Coba lagi sebentar.';
+  }
 }
 
 function copySpecificCoupon(code) {
@@ -1204,7 +1235,7 @@ function updateUI() {
   }
 
   const progressPercent = Math.min(100, Math.round((productsTotal / INSTANT_DISCOUNT_THRESHOLD) * 100));
-  
+
   const bar = document.getElementById('floating-progress-bar');
   const badge = document.getElementById('floating-progress-badge');
   const text = document.getElementById('floating-progress-text');
@@ -1289,6 +1320,8 @@ function updateUI() {
   calculatedGrandTotalNum = Math.max(0, productsTotal - instantDiscountAmount - couponDiscountAmount) + currentDeliveryFee;
   document.getElementById('summary-delivery-fee').innerText = currentFulfillmentMethod === 'pickup' ? 'Free (Pickup)' : formatRupiah(currentDeliveryFee);
   document.getElementById('summary-grand-total').innerText = formatRupiah(calculatedGrandTotalNum);
+
+  renderFreeJarBox();
 }
 
 function toggleCart() {
@@ -1325,7 +1358,12 @@ function payWithMidtrans() {
   }
   if (!/^\S+@\S+\.\S+$/.test(email)) { alert(t('alert_invalid_email')); return; }
 
-  const productsTotal = currentProductsTotal();
+  // Free jars earned by this order (loyalty reward) and the flavor the customer picked
+  const paidJars = countTotalJarsInCart();
+  const freeJars = getRewardsForCart(paidJars);
+  const freeFlavor = document.getElementById('free-jar-flavor').value;
+  if (freeJars > 0 && !freeFlavor) { alert(FREE_TXT[currentLang].alert); return; }
+
   const deliveryDate = document.getElementById('delivery-date').value;
   const deliveryTime = document.getElementById('delivery-time').value;
 
@@ -1344,6 +1382,8 @@ function payWithMidtrans() {
       datetime: `${deliveryDate} (${deliveryTime})`,
       areaIndex: currentFulfillmentMethod === 'pickup' ? -1 : JAKARTA_AREAS.findIndex(a => a.name.replace(/'/g, "") === selectedAreaName),
       cart,
+      freeJars: freeJars,
+      freeFlavor: freeJars > 0 ? freeFlavor : '',
       couponPercent: sentCouponPercent,
       gift: document.getElementById('gift-option').checked,
       giftNote: document.getElementById('gift-note').value.trim(),
@@ -1353,6 +1393,7 @@ function payWithMidtrans() {
   .then(res => res.json())
   .then(data => {
     if (!data.token) throw new Error(data.message || 'Token payment not received');
+    window.pendingServerOrderId = data.orderId || '';
     if (window.snap && typeof window.snap.pay === 'function') {
       window.snap.pay(data.token, {
         onSuccess: () => finishOrder(name, address, `${deliveryDate} (${deliveryTime})`, 'success'),
@@ -1373,10 +1414,11 @@ function payWithMidtrans() {
 }
 
 function finishOrder(name, address, datetime, status = 'success') {
+  const email = document.getElementById('cust-email').value.trim();
   if (status === 'success') {
     try { window.snap.hide(); } catch (e) {}
   }
-  
+
   const productsTotal = currentProductsTotal();
   const instantDisc = productsTotal >= INSTANT_DISCOUNT_THRESHOLD ? Math.round(productsTotal * INSTANT_DISCOUNT_PERCENTAGE) : 0;
   let couponDisc = 0;
@@ -1384,21 +1426,23 @@ function finishOrder(name, address, datetime, status = 'success') {
   if (activeCouponObj) couponDisc = Math.round(productsTotal * (activeCouponObj.percent / 100));
   const totalDiscount = instantDisc + couponDisc;
 
-  if (status === 'success') {
-    const jarsPurchased = countTotalJarsInCart();
-    earnedStamps += jarsPurchased;
-    localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
+  // Stamps: paid jars count once the order is placed (QRIS paid or VA created).
+  // Every 12 stamps used up = 1 free jar, which is included in this order.
+  const paidJars = countTotalJarsInCart();
+  const freeJars = getRewardsForCart(paidJars);
+  const freeFlavor = document.getElementById('free-jar-flavor').value;
+  earnedStamps = earnedStamps + paidJars - STAMPS_PER_FREE_JAR * freeJars;
+  localStorage.setItem('ric_earned_stamps', earnedStamps.toString());
 
-    if (productsTotal >= NEXT_PURCHASE_THRESHOLD) {
-      const wonPercent = 2;
-      const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
-      const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
-      couponInventory.push({ id: uniqueId, percent: wonPercent, code: rewardCode, label: `${wonPercent}% OFF Next Purchase (${rewardCode})` });
-      localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
-    }
+  if (status === 'success' && productsTotal >= NEXT_PURCHASE_THRESHOLD) {
+    const wonPercent = 2;
+    const uniqueId = 'cpn_' + Math.random().toString(36).substring(2, 9);
+    const rewardCode = `RIC-${wonPercent}%-` + Math.random().toString(36).substring(2, 7).toUpperCase();
+    couponInventory.push({ id: uniqueId, percent: wonPercent, code: rewardCode, label: `${wonPercent}% OFF Next Purchase (${rewardCode})` });
+    localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
   }
 
-  // Moved outside of success check so used coupons are correctly removed from wallet on checkout creation
+  // Used coupon is removed from the wallet for every status (QRIS or VA) so it cannot be reused
   if (activeSelectedCouponId) {
     couponInventory = couponInventory.filter(c => c.id !== activeSelectedCouponId);
     localStorage.setItem('ric_coupon_inventory', JSON.stringify(couponInventory));
@@ -1406,15 +1450,23 @@ function finishOrder(name, address, datetime, status = 'success') {
     localStorage.removeItem('ric_active_coupon_id');
   }
 
+  // Order history: include the free jar so the customer sees it
+  const snapshot = { ...cart };
+  if (freeJars > 0) {
+    const fid = productIdByName(freeFlavor);
+    if (fid) snapshot[fid] = (snapshot[fid] || 0) + freeJars;
+  }
+
   const newOrder = {
     id: Math.floor(100000 + Math.random() * 900000),
     date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
     deliveryDatetime: datetime,
-    cartSnapshot: { ...cart },
+    cartSnapshot: snapshot,
     discountTotal: totalDiscount,
     address: currentFulfillmentMethod === 'pickup' ? 'Self Pickup @ Taman Grisenda' : `${address} (${selectedAreaName})`,
     total: calculatedGrandTotalNum,
-    status: status
+    status: status,
+    serverId: window.pendingServerOrderId || ''
   };
   orderHistory.unshift(newOrder);
   localStorage.setItem('ric_order_history', JSON.stringify(orderHistory));
@@ -1429,10 +1481,12 @@ function finishOrder(name, address, datetime, status = 'success') {
   renderOrderHistory();
   switchPage('history');
 
+  const emailNote = `\n\nEmail konfirmasi dikirim ke ${email}. Jika belum masuk, cek folder Spam lalu tekan "Bukan spam".`;
+  const noPesanan = newOrder.serverId ? ` Nomor pesanan: ${newOrder.serverId} (simpan untuk cek struk di menu Order History).` : '';
   if (status === 'pending') {
-    alert("Pesanan Anda dicatat! Silakan selesaikan pembayaran sesuai instruksi VA.");
+    alert("Pesanan Anda dicatat! Silakan selesaikan pembayaran sesuai instruksi VA." + noPesanan + emailNote);
   } else {
-    alert(t('alert_thanks', { name }));
+    alert(t('alert_thanks', { name }) + noPesanan + emailNote);
   }
 }
 </script>
