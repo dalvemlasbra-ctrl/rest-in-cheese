@@ -107,7 +107,16 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .lead { color: var(--muted); font-size: 17px; max-width: 560px; }
 
 /* ---------- Hero ---------- */
-.hero { display: grid; gap: 32px; padding: 40px 0 24px; align-items: center; }
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 40px 0 24px;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; }
+}
 .hero-img {
   aspect-ratio: 4/5; border-radius: 24px; overflow: hidden; background: var(--accent-soft);
   box-shadow: var(--shadow);
@@ -319,7 +328,7 @@ footer a { color: var(--ink); font-weight: 600; }
   <div id="page-home">
     <section class="hero">
       <div class="hero-img">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 1000'%3E%3Crect width='800' height='1000' fill='%23FBEBD6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23B45309'%3EHero Photo%3C/text%3E%3C/svg%3E" alt="Cheesecake in a jar" width="800" height="1000">
+        <img src="hero-banner.jpg" alt="Cheesecake in a jar" width="800" height="1000">
       </div>
       <div>
         <span class="eyebrow">Pantai Indah Kapuk, Jakarta</span>
@@ -639,7 +648,6 @@ let currentLang = localStorage.getItem('ric_lang') || 'en';
 function t(key) {
   return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
 }
-// Short helper for strings that are not in I18N
 function tx(en, id) { return currentLang === 'id' ? id : en; }
 
 // ---------- Storage helpers ----------
@@ -648,7 +656,7 @@ function load(key, def) {
 }
 function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
-// ---------- Catalogue (must match Code.gs) ----------
+// ---------- Catalogue ----------
 const PRODUCTS = [
   { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky pumpkin cheesecake layered with graham crumble, diced pumpkin, and Madagascar vanilla bean.", price: 70000, badge: "Signature",
     macro: "612 KCAL · P 10.3g · C 40.3g · F 30.1g · ±260g" },
@@ -685,8 +693,6 @@ const JAKARTA_AREAS = [
   { name: "Cengkareng & Kalideres (Jakarta Barat)", fee: 22000, km: 8.0 }
 ];
 
-// ---------- State ----------
-// The browser keeps the cart and display data only. Stamps and coupons come from the server.
 let cart = load('ric_cart', {});
 let orderHistory = load('ric_order_history', []);
 let savedLocations = load('ric_saved_locations', []);
@@ -699,7 +705,6 @@ let selectedAreaName = JAKARTA_AREAS[0].name;
 let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
 let payBusy = false;
 
-// ---------- Server calls ----------
 function post(body) {
   return fetch(GOOGLE_SHEET_WEB_APP_URL, {
     method: 'POST',
@@ -761,7 +766,6 @@ async function loadAccountFromForm() {
     : '';
 }
 
-// ---------- Startup ----------
 window.addEventListener('DOMContentLoaded', async () => {
   loadCustomerData();
 
@@ -781,13 +785,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   setLanguage(currentLang);
   renderSavedLocationChips();
   await loadAccount(true);
-  reconcileAll();
 });
 
-// When the customer comes back to the page (after paying in another app), check payments again
-document.addEventListener('visibilitychange', () => { if (!document.hidden) reconcileAll(); });
-
-// ---------- Customer details ----------
 function saveCustomerField(field, val) {
   const custData = load('ric_cust_data', {});
   custData[field] = val;
@@ -882,7 +881,6 @@ function toggleGiftBox() {
 }
 function saveGiftNote(val) { localStorage.setItem('ric_gift_note', val); }
 
-// ---------- Language ----------
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('ric_lang', lang);
@@ -927,13 +925,12 @@ function applyStaticTranslations() {
 
 function formatRupiah(num) { return "Rp " + Math.round(num).toLocaleString("id-ID"); }
 
-// ---------- Navigation ----------
 function switchPage(pageId) {
   ['home', 'products', 'stamps', 'promos', 'history', 'about'].forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
   document.getElementById('page-' + pageId).classList.remove('hidden');
   if (pageId === 'stamps') renderStampCard();
   if (pageId === 'promos') renderBoomerPromos();
-  if (pageId === 'history') { renderOrderHistory(); refreshHistoryStatuses(); }
+  if (pageId === 'history') { renderOrderHistory(); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -962,7 +959,6 @@ function toggleCart() {
   }
 }
 
-// ---------- Areas ----------
 function renderJakartaAreas() {
   const container = document.getElementById('jakarta-area-cards');
   container.innerHTML = JAKARTA_AREAS.map((area) => {
@@ -994,7 +990,6 @@ function selectArea(fee, km, name, element) {
   updateUI();
 }
 
-// ---------- Catalogue and cart ----------
 function renderProducts() {
   document.getElementById('product-list').innerHTML = PRODUCTS.map(p => `
     <article class="product-card">
@@ -1055,7 +1050,6 @@ function currentProductsTotal() {
   return total;
 }
 
-// Paid jars in the cart (bundle = 4 jars). Free jars are never counted here.
 function countJars() {
   let jars = 0;
   for (let id in cart) {
@@ -1079,7 +1073,6 @@ function productIdByName(name) {
   return p ? p.id : null;
 }
 
-// Every number the cart shows, in one place. The server recalculates the same way.
 function calcTotals() {
   const subtotal = currentProductsTotal();
   const instant = subtotal >= INSTANT_DISCOUNT_THRESHOLD ? Math.round(subtotal * INSTANT_DISCOUNT_PERCENTAGE) : 0;
@@ -1184,7 +1177,6 @@ function updateUI() {
   renderFreeJarBox();
 }
 
-// Free jar box: shown when this order completes 12 stamps
 function renderFreeJarBox() {
   const box = document.getElementById('free-jar-box');
   const n = rewardsFor(account.loaded ? account.stamps : 0, countJars());
@@ -1201,7 +1193,6 @@ function renderFreeJarBox() {
   if (keep) sel.value = keep;
 }
 
-// Coupon picker: only coupons the server says this customer has
 function renderCouponSelect() {
   const box = document.getElementById('coupon-wallet-container');
   if (!account.loaded || account.coupons.length === 0) { box.innerHTML = ''; return; }
@@ -1215,7 +1206,6 @@ function renderCouponSelect() {
     </div>`;
 }
 
-// ---------- Stamps and coupons pages ----------
 function renderStampCard() {
   const container = document.getElementById('stamp-slots-container');
   if (!container) return;
@@ -1257,7 +1247,6 @@ function copyText(text) {
   alert(tx('Copied: ', 'Disalin: ') + text);
 }
 
-// ---------- Checkout and payment ----------
 function setPayBusy(busy) {
   payBusy = busy;
   const btn = document.getElementById('whatsapp-btn');
@@ -1266,30 +1255,54 @@ function setPayBusy(busy) {
   btn.firstElementChild.innerText = busy ? t('btn_processing') : t('btn_proceed');
 }
 
+function isValidEmailStrict(email) {
+  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|icloud\.com|co\.id|id|[a-zA-Z]{2,})$/i;
+  return re.test(String(email).trim().toLowerCase());
+}
+
+function isValidPhoneStrict(phone) {
+  const clean = String(phone).replace(/\D/g, '');
+  const norm = clean.startsWith('62') ? '0' + clean.slice(2) : clean;
+  return /^08\d{8,11}$/.test(norm);
+}
+
 async function payWithMidtrans() {
   if (payBusy) return;
   const f = readCheckout();
+
   if (!f.name || !f.phone || !f.email || (currentFulfillmentMethod === 'delivery' && !f.address)) {
-    alert(t('alert_fill_fields'));
+    alert(tx('Mohon lengkapi semua data pendaftaran & alamat.', 'Please complete all customer and address fields.'));
     return;
   }
-  if (!/^\S+@\S+\.\S+$/.test(f.email)) { alert(t('alert_invalid_email')); return; }
+
+  if (!isValidPhoneStrict(f.phone)) {
+    alert(tx('Nomor WhatsApp tidak valid. Gunakan nomor HP Indonesia asli (cth: 081380003850).', 'Invalid WhatsApp number. Please use a real Indonesian phone number.'));
+    return;
+  }
+
+  if (!isValidEmailStrict(f.email)) {
+    alert(tx('Email tidak valid atau typo. Gunakan email resmi (seperti nama@gmail.com).', 'Invalid email address or typo. Please check your email.'));
+    return;
+  }
+
   if (countJars() === 0) return;
 
-  // Settle any earlier payment first, so nothing is charged twice for the same cart
-  await reconcileAll();
-  if (pendingOrders.length > 0 && !confirm(tx(
-    'You have a payment that is not finished yet. Start a new order with this cart anyway?',
-    'Ada pembayaran yang belum selesai. Tetap buat pesanan baru dengan keranjang ini?'))) {
-    return;
+  if (pendingOrders.length > 0) {
+    for (const oldP of pendingOrders) {
+      post({ action: 'cleanup_pending', orderId: oldP.orderId }).catch(() => {});
+    }
+    pendingOrders = [];
+    save('ric_pending', pendingOrders);
   }
 
-  // Refresh stamps and coupons from the server right before paying
   await loadAccount(true);
   const tot = calcTotals();
   const freeJars = rewardsFor(account.loaded ? account.stamps : 0, tot.jars);
   const freeFlavor = document.getElementById('free-jar-flavor').value;
-  if (freeJars > 0 && !freeFlavor) { alert(tx('Please choose the flavor of your free jar.', 'Mohon pilih rasa jar gratis Anda.')); return; }
+  if (freeJars > 0 && !freeFlavor) {
+    alert(tx('Mohon pilih rasa jar gratis Anda.', 'Please choose the flavor of your free jar.'));
+    return;
+  }
 
   const datetime = `${f.date} (${f.time})`;
   const addressText = currentFulfillmentMethod === 'pickup'
@@ -1317,88 +1330,67 @@ async function payWithMidtrans() {
       lang: currentLang
     });
   } catch (e) {
-    alert(t('alert_pay_error'));
-    setPayBusy(false);
-    return;
-  }
-  if (d.status !== 'success' || !d.token) {
-    alert(d.message || t('alert_pay_error'));
+    alert(tx('Gagal terhubung ke pembayaran. Coba lagi.', 'Could not process payment. Try again.'));
     setPayBusy(false);
     return;
   }
 
-  // Remember this order on the device, so the cart clears even if the payment screen closes early
+  if (d.status !== 'success' || !d.token) {
+    alert(d.message || tx('Gagal membuat transaksi.', 'Transaction creation failed.'));
+    setPayBusy(false);
+    return;
+  }
+
   const p = {
-    orderId: d.orderId,
-    name: f.name, email: f.email, phone: f.phone,
-    cart: Object.assign({}, cart),
-    freeJars: freeJars,
-    freeFlavor: freeJars > 0 ? freeFlavor : '',
-    couponCode: chosenCoupon,
-    subtotal: tot.subtotal,
-    discount: tot.discount,
-    total: d.total,
-    datetime: datetime,
-    address: addressText,
-    fulfil: currentFulfillmentMethod,
-    snapResult: null
+    orderId: d.orderId, name: f.name, email: f.email, phone: f.phone,
+    cart: Object.assign({}, cart), freeJars: freeJars,
+    freeFlavor: freeJars > 0 ? freeFlavor : '', couponCode: chosenCoupon,
+    subtotal: tot.subtotal, discount: tot.discount, total: d.total,
+    datetime: datetime, address: addressText, fulfil: currentFulfillmentMethod
   };
+
   pendingOrders.push(p);
   save('ric_pending', pendingOrders);
 
   if (!window.snap || typeof window.snap.pay !== 'function') {
-    alert(t('alert_pay_error'));
+    alert(tx('Sistem pembayaran belum siap. Reload halaman.', 'Payment system not ready. Reload page.'));
     setPayBusy(false);
     return;
   }
 
   window.snap.pay(d.token, {
-    onSuccess: () => markSnapResult(p.orderId, 'success'),
-    onPending: () => markSnapResult(p.orderId, 'pending'),
-    onError: () => { setPayBusy(false); alert(t('alert_pay_fail')); },
-    onClose: () => { setPayBusy(false); reconcileAll(); }
-  });
-}
-
-function markSnapResult(orderId, result) {
-  const p = pendingOrders.find(x => x.orderId === orderId);
-  if (p) { p.snapResult = result; save('ric_pending', pendingOrders); }
-  setPayBusy(false);
-  reconcileAll();
-}
-
-/**
- * Checks every unfinished payment with the server.
- * Paid, or pending after the payment screen reported success/pending: the order is finished
- * (cart cleared, history updated). Failed or expired: the cart is kept so the customer can retry.
- */
-async function reconcileAll() {
-  const list = pendingOrders.slice();
-  for (const p of list) {
-    let d;
-    try { d = await post({ action: 'lookup_order', orderId: p.orderId, contact: p.email }); } catch (e) { continue; }
-    if (!d || d.status !== 'success') continue;
-    const st = d.order.paymentStatus;
-    if (st === 'Paid' || (st === 'Pending' && p.snapResult)) {
-      finalizeOrder(p, st === 'Paid' ? 'Paid' : 'Pending');
-    } else if (st === 'Failed') {
+    onSuccess: () => {
+      cart = {};
+      saveCart();
+      pendingOrders = [];
+      save('ric_pending', pendingOrders);
+      finalizeOrder(p, 'Paid');
+    },
+    onPending: () => {
+      cart = {};
+      saveCart();
+      setPayBusy(false);
+      updateUI();
+      toggleCartIfOpen();
+      alert(tx('Pesanan Anda dicatat. Silakan selesaikan pembayaran sesuai petunjuk Midtrans.', 'Order logged. Complete payment as instructed.'));
+    },
+    onError: () => {
+      setPayBusy(false);
+      post({ action: 'cleanup_pending', orderId: p.orderId }).catch(() => {});
       pendingOrders = pendingOrders.filter(x => x.orderId !== p.orderId);
       save('ric_pending', pendingOrders);
-      alert(tx('This payment did not go through. Your cart is still saved, you can try again.',
-               'Pembayaran ini tidak berhasil. Keranjang Anda masih tersimpan, silakan coba lagi.'));
-      await loadAccount(true);
+      alert(tx('Pembayaran gagal atau dibatalkan. Silakan coba lagi.', 'Payment failed. Please try again.'));
+    },
+    onClose: () => {
+      setPayBusy(false);
+      post({ action: 'cleanup_pending', orderId: p.orderId }).catch(() => {});
+      pendingOrders = pendingOrders.filter(x => x.orderId !== p.orderId);
+      save('ric_pending', pendingOrders);
     }
-  }
+  });
 }
 
 function finalizeOrder(p, status) {
-  // Take the paid items out of the cart (anything added afterwards stays)
-  Object.keys(p.cart).forEach(k => {
-    cart[k] = (cart[k] || 0) - p.cart[k];
-    if (cart[k] <= 0) delete cart[k];
-  });
-  saveCart();
-
   const snapshot = Object.assign({}, p.cart);
   if (p.freeJars > 0) {
     const fid = productIdByName(p.freeFlavor);
@@ -1417,9 +1409,6 @@ function finalizeOrder(p, status) {
   });
   save('ric_order_history', orderHistory);
 
-  pendingOrders = pendingOrders.filter(x => x.orderId !== p.orderId);
-  save('ric_pending', pendingOrders);
-
   chosenCoupon = '';
   setPayBusy(false);
   updateUI();
@@ -1428,8 +1417,8 @@ function finalizeOrder(p, status) {
   renderOrderHistory();
 
   alert(tx(
-    'Order placed! Order no: ' + p.orderId + '. Keep this number to check your receipt in Order History. A confirmation email was sent to ' + p.email + '. If you do not see it, check Spam and tap "Not spam".',
-    'Pesanan dicatat! Nomor pesanan: ' + p.orderId + '. Simpan nomor ini untuk cek struk di Riwayat Pesanan. Email konfirmasi dikirim ke ' + p.email + '. Jika belum masuk, cek folder Spam lalu tekan "Bukan spam".'
+    'Order placed! Order no: ' + p.orderId + '. Confirmation email sent to ' + p.email + '.',
+    'Pesanan dicatat! No pesanan: ' + p.orderId + '. Email konfirmasi terkirim ke ' + p.email + '.'
   ));
 }
 
@@ -1438,7 +1427,6 @@ function toggleCartIfOpen() {
   if (!drawer.classList.contains('hidden')) toggleCart();
 }
 
-// ---------- Order history and receipt lookup ----------
 function statusLabel(s) {
   if (s === 'Paid') return { text: tx('Paid', 'Lunas'), style: 'background:#dcfce7;color:#166534' };
   if (s === 'Failed') return { text: tx('Failed', 'Gagal'), style: 'background:#fee2e2;color:#991b1b' };
@@ -1481,20 +1469,6 @@ function renderOrderHistory() {
         </div>
       </div>`;
   }).join('');
-}
-
-async function refreshHistoryStatuses() {
-  let changed = false;
-  for (const o of orderHistory) {
-    if (o.status === 'Paid' || !o.email) continue;
-    let d;
-    try { d = await post({ action: 'lookup_order', orderId: o.id, contact: o.email }); } catch (e) { continue; }
-    if (d && d.status === 'success' && d.order.paymentStatus !== o.status) {
-      o.status = d.order.paymentStatus === 'Paid' ? 'Paid' : (d.order.paymentStatus === 'Failed' ? 'Failed' : 'Pending');
-      changed = true;
-    }
-  }
-  if (changed) { save('ric_order_history', orderHistory); renderOrderHistory(); }
 }
 
 async function lookupOrderOnline() {
