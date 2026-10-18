@@ -249,8 +249,8 @@ footer a { color: var(--ink); font-weight: 600; }
 .area-card { padding: 14px 16px; }
 .fee-box { border-radius: 16px; border: none; box-shadow: var(--shadow); padding: 14px 16px; }
 /* ---------- Hero: text on the left, jars on the right (phone: text on top, jars below) ---------- */
-.hero-full { position: relative; margin: 0 -20px; min-height: 620px; background: #F3EBDD url('hero.jpg') 74% bottom / cover no-repeat; border-radius: 0 0 28px 28px; overflow: hidden; }
-.hero-full::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #F3EBDD 0%, #F3EBDD 38%, rgba(243,235,221,0) 70%); pointer-events: none; }
+.hero-full { display: block; padding: 0; align-items: normal; position: relative; margin: 0 -20px; min-height: 540px; background: #F3EBDD url('hero.jpg') 78% bottom / cover no-repeat; border-radius: 0 0 28px 28px; overflow: hidden; }
+.hero-full::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #F3EBDD 0%, #F3EBDD 52%, rgba(243,235,221,.85) 68%, rgba(243,235,221,0) 88%); pointer-events: none; }
 .hero-copy { position: relative; z-index: 1; padding: 36px 24px 12px; }
 .hero-copy .eyebrow { margin-bottom: 14px; }
 .hero-copy .hero-title { font-size: clamp(36px, 9vw, 52px); margin-bottom: 14px; }
