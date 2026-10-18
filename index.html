@@ -304,7 +304,7 @@ footer a { color: var(--ink); font-weight: 600; }
           <div>
             <span class="eyebrow" id="t-bundle-badge">Special Offer</span>
             <h3 class="serif">The Buy 4 Bundle</h3>
-            <p id="t-bundle-desc">One jar of each of our 4 flavors, in 300ml jars (±260g each).</p>
+            <p id="t-bundle-desc">One jar of each of our 4 flavors, in 300ml jars (250g each).</p>
           </div>
           <div class="bundle-cta">
             <div class="bundle-price">
@@ -402,7 +402,7 @@ footer a { color: var(--ink); font-weight: 600; }
         </div>
       </div>
       <div class="about-img">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23E8DED2'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%237A6F6A'%3EChef Photo%3C/text%3E%3C/svg%3E" alt="Rest in Cheese chef" width="800" height="600">
+        <img src="about.jpg" alt="Rest in Cheese chef" width="800" height="600">
       </div>
     </div>
   </div>
@@ -622,10 +622,10 @@ function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
 // ---------- Catalogue (must match Code.gs) ----------
 const PRODUCTS = [
-  { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky pumpkin cheesecake layered with graham crumble, diced pumpkin, and Madagascar vanilla bean.", price: 70000, badge: "Signature", macro: "612 KCAL · P 10.3g · C 40.3g · F 30.1g · ±260g" },
-  { id: 2, name: "Corn & Coconut", description: "Sweet corn cheesecake layered with graham crumble and roasted corn.", price: 65000, badge: "", macro: "602 KCAL · P 10.2g · C 37.1g · F 29.9g · ±260g" },
-  { id: 3, name: "Roasted Banana & Honey", description: "Banana cheesecake layered with graham crumble, sliced roasted banana, and wild honey.", price: 65000, badge: "", macro: "624 KCAL · P 10.0g · C 42.6g · F 30.0g · ±260g" },
-  { id: 4, name: "Purple Sweet Potato", description: "Velvety purple sweet potato cheesecake layered with graham crumble and diced sweet potato.", price: 65000, badge: "", macro: "630 KCAL · P 10.0g · C 44.0g · F 30.0g · ±260g" }
+  { id: 1, img: "pumpkin.jpg", name: "Pumpkin & Vanilla Bean", description: "Silky pumpkin cheesecake layered with graham crumble, diced pumpkin, and Madagascar vanilla bean.", price: 70000, badge: "Signature", macro: "612 KCAL · P 10.3g · C 40.3g · F 30.1g · 250g" },
+  { id: 2, img: "corn.jpg", name: "Corn & Coconut", description: "Sweet corn cheesecake layered with graham crumble and roasted corn.", price: 65000, badge: "", macro: "602 KCAL · P 10.2g · C 37.1g · F 29.9g · 250g" },
+  { id: 3, img: "banana.jpg", name: "Roasted Banana & Honey", description: "Banana cheesecake layered with graham crumble, sliced roasted banana, and wild honey.", price: 65000, badge: "", macro: "624 KCAL · P 10.0g · C 42.6g · F 30.0g · 250g" },
+  { id: 4, img: "purple.jpg", name: "Purple Sweet Potato", description: "Velvety purple sweet potato cheesecake layered with graham crumble and diced sweet potato.", price: 65000, badge: "", macro: "630 KCAL · P 10.0g · C 44.0g · F 30.0g · 250g" }
 ];
 const BUNDLE_PRICE = 240000;
 const BUNDLE_JARS = 4;
@@ -1047,7 +1047,7 @@ function heroOrderNow() {
 function renderProducts() {
   document.getElementById('product-list').innerHTML = PRODUCTS.map((p, i) => `
     <article class="product-card reveal" style="animation-delay:${i * 0.09}s">
-      <div class="product-img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Crect width='800' height='800' fill='%23FBEBD6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='28' fill='%23B45309'%3EProduct Photo%3C/text%3E%3C/svg%3E" alt="${p.name}" loading="lazy" width="800" height="800"></div>
+      <div class="product-img"><img src="${p.img}" alt="${p.name}" loading="lazy" width="800" height="800"></div>
       <div class="product-body">
         ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
         <div class="product-top"><h3 class="product-title serif">${p.name}</h3><span class="product-price">${formatRupiah(p.price)}</span></div>
