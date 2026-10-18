@@ -248,6 +248,15 @@ footer a { color: var(--ink); font-weight: 600; }
 .area-list-box { border-radius: 16px; border: none; box-shadow: var(--shadow); }
 .area-card { padding: 14px 16px; }
 .fee-box { border-radius: 16px; border: none; box-shadow: var(--shadow); padding: 14px 16px; }
+/* ---------- Full-screen hero photo with the Order now button ---------- */
+.hero-full { position: relative; height: 100vh; height: 100svh; min-height: 560px; margin: 0 -20px; border-radius: 0 0 28px 28px; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: #F3EBDD url('hero.jpg') 62% center / cover no-repeat; animation: fadeIn 1.2s ease both; }
+.hero-cta-wrap { position: absolute; left: 6%; top: 60%; }
+.hero-cta { box-shadow: 0 10px 28px rgba(180,83,9,.35); animation: fadeUp .9s .5s cubic-bezier(.16,1,.3,1) both; }
+.hero-cta .arrow { display: inline-block; animation: bob 1.8s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+.bundle-wrap { max-width: 1100px; margin: 0 auto; padding: 40px 0 0; }
+@media (min-width: 900px) { .hero-full { margin: 0; border-radius: 0; } .hero-cta-wrap { left: 6%; top: 62%; } }
 </style>
 </head>
 <body>
@@ -291,16 +300,14 @@ footer a { color: var(--ink); font-weight: 600; }
 
   <!-- HOME -->
   <div id="page-home">
-    <section class="hero">
-      <div class="hero-img">
-        <img src="hero.jpg" alt="Rest in Cheese cheesecake jars" width="891" height="1024" fetchpriority="high" width="800" height="1000">
-      </div>
-      <div>
-        <span class="eyebrow">Pantai Indah Kapuk, Jakarta</span>
-        <h1 class="hero-title serif" id="t-hero-title">Cheesecake made with ingredients you know.</h1>
-        <p class="hero-desc" id="t-hero-desc">Silky cheesecake in a jar, infused with comforting, familiar local flavors.</p>
-        <button onclick="heroOrderNow()" class="btn btn-primary hero-cta" id="t-hero-btn">Order now <span class="arrow">&rarr;</span></button>
-        <div class="bundle">
+    <section class="hero hero-full">
+    <div class="hero-bg" role="img" aria-label="Rest in Cheese cheesecake jars"></div>
+    <div class="hero-cta-wrap">
+      <button onclick="heroOrderNow()" class="btn btn-primary hero-cta" id="t-hero-btn">Order now <span class="arrow">&darr;</span></button>
+    </div>
+  </section>
+  <div class="bundle-wrap">
+    <div class="bundle">
           <div>
             <span class="eyebrow" id="t-bundle-badge">Special Offer</span>
             <h3 class="serif">The Buy 4 Bundle</h3>
@@ -314,8 +321,7 @@ footer a { color: var(--ink); font-weight: 600; }
             <button onclick="addBundleToCart()" class="btn" id="t-add-bundle-btn">Add bundle</button>
           </div>
         </div>
-      </div>
-    </section>
+  </div>
   </div>
 
   <div class="marquee" aria-hidden="true">
