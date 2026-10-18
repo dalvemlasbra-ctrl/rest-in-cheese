@@ -634,6 +634,7 @@ const INSTANT_DISCOUNT_THRESHOLD = 200000;
 const INSTANT_DISCOUNT_PERCENTAGE = 0.04;
 const ORDER_CUTOFF_HOUR = 21;   // same-day delivery orders close at 21.00 Jakarta time
 const OPEN_TEXT = '09.00–21.00 WIB';
+const PAYMENT_WINDOW_MS = 60 * 60 * 1000; // 1 hour to pay
 
 const JAKARTA_AREAS = [
   { name: "PIK, Kapuk & Taman Grisenda (Dekat Dapur)", fee: 15000, km: 2.0 },
@@ -793,6 +794,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   renderSavedLocationChips();
   await loadAccount(true);
   reconcileAll();
+  tickPending();
 });
 
 // Customers come back from the payment app: check payments again
@@ -1356,7 +1358,8 @@ async function payWithMidtrans() {
   const p = {
     orderId: d.orderId, name: f.name, email: f.email, phone: f.phone,
     cart: Object.assign({}, cart), freeJars: freeJars, freeFlavor: freeJars > 0 ? freeFlavor : '',
-    subtotal: tot.subtotal, discount: tot.discount, total: d.total, datetime: datetime, address: addressText, fulfil: currentFulfillmentMethod
+    subtotal: tot.subtotal, discount: tot.discount, total: d.total, datetime: datetime, address: addressText, fulfil: currentFulfillmentMethod,
+    created: Date.now()
   };
   pendingOrders.push(p);
   save('ric_pending', pendingOrders);
@@ -1439,14 +1442,50 @@ function finalizeOrder(p) {
     'Pembayaran diterima! Nomor pesanan: ' + p.orderId + '. Simpan nomor ini untuk cek struk di Riwayat Pesanan. Email konfirmasi dikirim ke ' + p.email + '. Jika belum masuk, cek folder Spam lalu tekan "Bukan spam".'));
 }
 
+function remainingMs(p) {
+  return (p.created || Date.now()) + PAYMENT_WINDOW_MS - Date.now();
+}
+function fmtRemain(ms) {
+  const sec = Math.max(0, Math.floor(ms / 1000));
+  return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
+}
 function renderPendingBanner() {
   const b = document.getElementById('pending-banner');
+  if (!b) return;
   if (!pendingOrders.length) { b.classList.add('hidden'); b.innerHTML = ''; return; }
   b.classList.remove('hidden');
-  b.innerHTML = '<strong>' + tx('Waiting for payment', 'Menunggu pembayaran') + '</strong><div style="font-size:14px;margin-top:4px">' +
-    pendingOrders.map(p => p.orderId + ' · ' + formatRupiah(p.total)).join('<br>') +
-    '</div><div style="font-size:13px;color:var(--muted);margin-top:6px">' + tx('Your cart clears automatically after payment.', 'Keranjang kosong otomatis setelah pembayaran.') + '</div>';
+  b.innerHTML = '<strong>' + tx('Waiting for payment', 'Menunggu pembayaran') + '</strong>' +
+    pendingOrders.map(p => '<div style="font-size:14px;margin-top:6px">' + p.orderId + ' · ' + formatRupiah(p.total) +
+      ' · <span style="font-weight:700;color:var(--accent)">' + tx('time left ', 'sisa ') + fmtRemain(remainingMs(p)) + '</span></div>').join('') +
+    '<div style="font-size:13px;color:var(--muted);margin-top:8px">' +
+      tx('Pay within 1 hour. Your cart clears automatically after payment. After 1 hour the order closes, and your cart stays saved.',
+         'Bayar dalam 1 jam. Keranjang otomatis kosong setelah pembayaran. Setelah 1 jam pesanan ditutup, dan keranjang tetap tersimpan.') +
+    '</div>';
 }
+
+let pendingTickBusy = false;
+// Runs every second: updates the countdown, and closes orders whose hour is up
+async function tickPending() {
+  if (!pendingOrders.length || pendingTickBusy) { renderPendingBanner(); return; }
+  if (pendingOrders.some(p => remainingMs(p) <= 0)) {
+    pendingTickBusy = true;
+    try {
+      await reconcileAll(); // the server has the final say (paid or closed)
+      const late = pendingOrders.filter(p => remainingMs(p) <= 0);
+      if (late.length) {
+        pendingOrders = pendingOrders.filter(p => remainingMs(p) > 0);
+        save('ric_pending', pendingOrders);
+        alert(tx('Payment time is over, so this order is closed. Your cart is still saved.',
+                 'Waktu pembayaran sudah habis, pesanan ini ditutup. Keranjang Anda masih tersimpan.'));
+        await loadAccount(true);
+      }
+    } finally {
+      pendingTickBusy = false;
+    }
+  }
+  renderPendingBanner();
+}
+setInterval(tickPending, 1000);
 
 // ---------- Order history and receipt lookup ----------
 function renderOrderHistory() {
