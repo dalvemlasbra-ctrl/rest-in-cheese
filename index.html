@@ -248,15 +248,23 @@ footer a { color: var(--ink); font-weight: 600; }
 .area-list-box { border-radius: 16px; border: none; box-shadow: var(--shadow); }
 .area-card { padding: 14px 16px; }
 .fee-box { border-radius: 16px; border: none; box-shadow: var(--shadow); padding: 14px 16px; }
-/* ---------- Hero: the whole photo, same on phone and laptop ---------- */
-.hero-full { margin: 0 -20px; background: #F3EBDD; border-radius: 0 0 28px 28px; overflow: hidden; }
-.hero-photo { display: block; width: 100%; height: auto; animation: fadeIn 1.1s ease both; }
-.hero-cta-wrap { text-align: center; padding: 18px 0 24px; }
-.hero-cta { box-shadow: 0 10px 28px rgba(180,83,9,.35); animation: fadeUp .9s .4s cubic-bezier(.16,1,.3,1) both; }
+/* ---------- Hero: text on the left, jars on the right (phone: text on top, jars below) ---------- */
+.hero-full { position: relative; margin: 0 -20px; background: #F3EBDD; border-radius: 0 0 28px 28px; overflow: hidden; display: flex; flex-direction: column; }
+.hero-copy { order: 1; padding: 34px 24px 12px; }
+.hero-copy .eyebrow { margin-bottom: 14px; }
+.hero-copy .hero-title { font-size: clamp(36px, 9vw, 52px); margin-bottom: 14px; }
+.hero-copy .hero-desc { font-size: 16px; margin-bottom: 22px; max-width: 420px; }
+.hero-photo { order: 2; display: block; width: 100%; height: auto; animation: fadeIn 1.1s ease both; }
+.hero-cta { box-shadow: 0 10px 28px rgba(180,83,9,.35); animation: fadeUp .9s .3s cubic-bezier(.16,1,.3,1) both; }
 .hero-cta .arrow { display: inline-block; animation: bob 1.8s ease-in-out infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
 .bundle-wrap { max-width: 1100px; margin: 0 auto; padding: 40px 0 0; }
-@media (min-width: 900px) { .hero-full { margin: 0; border-radius: 0 0 28px 28px; } }
+@media (min-width: 900px) {
+  .hero-full { margin: 0; flex-direction: row; align-items: stretch; border-radius: 0 0 28px 28px; }
+  .hero-copy { order: 1; flex: 0 0 44%; padding: 60px 40px 60px 6%; display: flex; flex-direction: column; justify-content: center; }
+  .hero-copy .hero-desc { max-width: 400px; }
+  .hero-photo { order: 2; flex: 1 1 56%; width: 56%; height: auto; object-fit: cover; }
+}
 </style>
 </head>
 <body>
@@ -301,10 +309,13 @@ footer a { color: var(--ink); font-weight: 600; }
   <!-- HOME -->
   <div id="page-home">
     <section class="hero hero-full">
-    <img class="hero-photo" src="hero.jpg" alt="Rest in Cheese: four cheesecake jars" width="1672" height="940">
-    <div class="hero-cta-wrap">
+    <div class="hero-copy">
+      <span class="eyebrow" id="t-hero-eyebrow">Real ingredients. Pure indulgence</span>
+      <h1 class="hero-title serif" id="t-hero-title">Cheesecake made with ingredients you know.</h1>
+      <p class="hero-desc" id="t-hero-desc">Silky cheesecake in a jar, infused with comforting, familiar local flavors.</p>
       <button onclick="heroOrderNow()" class="btn btn-primary hero-cta" id="t-hero-btn">Order now <span class="arrow">&darr;</span></button>
     </div>
+    <img class="hero-photo" src="hero.jpg" alt="Rest in Cheese: four cheesecake jars" width="1536" height="940">
   </section>
   <div class="bundle-wrap">
     <div class="bundle">
@@ -571,7 +582,7 @@ footer a { color: var(--ink); font-weight: 600; }
     <p style="margin-top:6px"><a href="https://wa.me/6282112002258" target="_blank" id="t-footer-wa">WhatsApp Admin</a></p>
   </div>
   <p id="t-footer-copy">&copy; Rest in Cheese. All rights reserved.</p>
-  <p style="font-size:11px;color:#9a8f88">build v4 · hero-photo</p>
+  <p style="font-size:11px;color:#9a8f88">build v5 · hero text</p>
 </footer>
 
 <script>
@@ -582,7 +593,7 @@ const I18N = {
     cart_btn_label: "Cart", nav_home: "Home", nav_catalogue: "Catalogue", nav_stamps: "Loyalty Stamp", nav_promos: "Coupons & Discounts", nav_history: "Order History", nav_about: "About", nav_admin: "Chat Admin",
     hero_title: "Cheesecake made with ingredients you know.",
     hero_desc: "Silky cheesecake in a jar, infused with comforting, familiar local flavors.",
-    hero_btn: "Order now", pillar_1: "Selected local ingredients", pillar_2: "No artificial flavorings", pillar_3: "Instant delivery or pickup",
+    hero_btn: "Order now", hero_eyebrow: "Real ingredients. Pure indulgence", pillar_1: "Selected local ingredients", pillar_2: "No artificial flavorings", pillar_3: "Instant delivery or pickup",
     bundle_badge: "Special Offer", add_bundle_btn: "Add bundle", marquee_1: "Made with local ingredients", marquee_2: "No artificial flavorings", marquee_3: "Instant delivery (Jakarta only)", stamp_none: "Enter your WhatsApp and email to see your stamp progress.", stamp_progress: "Your stamps: {n}/12. {left} more jar(s) for 1 FREE jar.", area_search_ph: "Search area (e.g. Kapuk, Menteng)",
     cat_title: "Jar Catalogue", cat_subtitle: "Fresh Batch Today",
     promos_title: "Coupons & Discounts", history_title: "Order History",
@@ -601,7 +612,7 @@ const I18N = {
     cart_btn_label: "Keranjang", nav_home: "Home", nav_catalogue: "Katalog", nav_stamps: "Kartu Stamp", nav_promos: "Kupon & Diskon", nav_history: "Riwayat Pesanan", nav_about: "Tentang", nav_admin: "Chat Admin",
     hero_title: "Cheesecake dari bahan yang kamu kenal.",
     hero_desc: "Keju lembut dalam jar, memadukan cita rasa lokal yang hangat dan akrab.",
-    hero_btn: "Pesan sekarang", pillar_1: "Bahan lokal terpilih", pillar_2: "Tanpa pengawet & perasa buatan", pillar_3: "Kirim instan / ambil sendiri",
+    hero_btn: "Pesan sekarang", hero_eyebrow: "Bahan asli. Kenikmatan murni", pillar_1: "Bahan lokal terpilih", pillar_2: "Tanpa pengawet & perasa buatan", pillar_3: "Kirim instan / ambil sendiri",
     bundle_badge: "Penawaran Khusus", add_bundle_btn: "Tambah bundle", marquee_1: "Dibuat dengan bahan lokal", marquee_2: "Tanpa perasa buatan", marquee_3: "Kirim instan (khusus Jakarta)", stamp_none: "Isi WhatsApp dan email untuk melihat progres stamp Anda.", stamp_progress: "Stamp Anda: {n}/12. {left} jar lagi untuk 1 jar GRATIS.", area_search_ph: "Cari area (mis. Kapuk, Menteng)",
     cat_title: "Katalog Jar", cat_subtitle: "Segar Setiap Hari",
     promos_title: "Kupon & Diskon", history_title: "Riwayat Pesanan",
@@ -906,7 +917,7 @@ function applyStaticTranslations() {
   set('t-cart-btn-label', t('cart_btn_label'));
   set('t-nav-home', t('nav_home')); set('t-nav-catalogue', t('nav_catalogue')); set('t-nav-stamps', t('nav_stamps'));
   set('t-nav-promos', t('nav_promos')); set('t-nav-history', t('nav_history')); set('t-nav-about', t('nav_about')); set('t-nav-admin', t('nav_admin'));
-  set('t-hero-title', t('hero_title')); set('t-hero-desc', t('hero_desc')); set('t-hero-btn', t('hero_btn'));
+  set('t-hero-eyebrow', t('hero_eyebrow')); set('t-hero-title', t('hero_title')); set('t-hero-desc', t('hero_desc')); set('t-hero-btn', t('hero_btn'));
   set('t-pillar-1', t('pillar_1')); set('t-pillar-2', t('pillar_2')); set('t-pillar-3', t('pillar_3'));
   set('t-bundle-badge', t('bundle_badge')); set('t-add-bundle-btn', t('add_bundle_btn'));
   const mq = document.getElementById('marquee-track');
