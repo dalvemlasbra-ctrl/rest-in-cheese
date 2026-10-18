@@ -16,136 +16,109 @@
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="Mid-client-kuh_2ZttMf5eUjih"></script>
 <style>
 :root {
-  --bg: #F7F2EA;
-  --surface: #FFFFFF;
-  --ink: #1C1616;
-  --muted: #7A6F6A;
-  --line: #E8DED2;
-  --accent: #B45309;
-  --accent-soft: #FBEBD6;
-  --radius: 16px;
+  --bg: #F7F2EA; --surface: #FFFFFF; --ink: #1C1616; --muted: #7A6F6A; --line: #E8DED2;
+  --accent: #B45309; --accent-soft: #FBEBD6; --radius: 16px;
   --shadow: 0 1px 2px rgba(28,22,22,.04), 0 8px 24px rgba(28,22,22,.06);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body {
-  font-family: 'DM Sans', system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  padding-bottom: 110px;
-}
+body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; padding-bottom: 110px; }
 h1, h2, h3, h4, .serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; }
 button, input, select, textarea { font-family: inherit; }
 .hidden { display: none !important; }
 img { max-width: 100%; display: block; }
 
-/* ---------- Header ---------- */
-header {
-  position: sticky; top: 0; z-index: 40;
-  background: rgba(247,242,234,.88);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
-  padding: env(safe-area-inset-top, 0px) 0 0;
-}
-.nav {
-  max-width: 1100px; margin: 0 auto; padding: 14px 20px;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-}
-.menu-btn {
-  width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--line);
-  background: var(--surface); cursor: pointer; font-size: 18px; color: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-}
+/* Header */
+header { position: sticky; top: 0; z-index: 40; background: rgba(247,242,234,.88); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); padding: env(safe-area-inset-top, 0px) 0 0; }
+.nav { max-width: 1100px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.menu-btn { width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: 18px; color: var(--ink); display: flex; align-items: center; justify-content: center; }
 .brand { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .header-right { display: flex; align-items: center; gap: 12px; }
 .lang-switch { display: flex; gap: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
 .lang-switch span { cursor: pointer; padding: 4px 6px; border-radius: 6px; }
 .lang-switch span.active { color: var(--ink); background: var(--surface); box-shadow: var(--shadow); }
-.cart-toggle-btn {
-  background: var(--ink); color: #fff; border: none; border-radius: 999px;
-  padding: 9px 16px; font-size: 14px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; gap: 8px; min-height: 42px;
-}
-#cart-count {
-  background: var(--accent); color: #fff; border-radius: 999px;
-  min-width: 22px; padding: 1px 7px; font-size: 12px; text-align: center;
-}
+.cart-toggle-btn { background: var(--ink); color: #fff; border: none; border-radius: 999px; padding: 9px 16px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; min-height: 42px; }
+#cart-count { background: var(--accent); color: #fff; border-radius: 999px; min-width: 22px; padding: 1px 7px; font-size: 12px; text-align: center; }
 
-/* ---------- Drawer menu ---------- */
-#menu-drawer {
-  position: fixed; inset: 0; z-index: 50; background: rgba(28,22,22,.35);
-  backdrop-filter: blur(4px); display: flex;
-}
-#menu-panel {
-  width: min(320px, 85%); background: var(--bg); height: 100%;
-  padding: 24px; display: flex; flex-direction: column; gap: 28px;
-  transform: translateX(-100%); transition: transform .35s cubic-bezier(.16,1,.3,1);
-}
+/* Drawer menu */
+#menu-drawer { position: fixed; inset: 0; z-index: 50; background: rgba(28,22,22,.35); backdrop-filter: blur(4px); display: flex; }
+#menu-panel { width: min(320px, 85%); background: var(--bg); height: 100%; padding: 24px; display: flex; flex-direction: column; gap: 28px; transform: translateX(-100%); transition: transform .35s cubic-bezier(.16,1,.3,1); }
 .drawer-header { display: flex; justify-content: space-between; align-items: center; }
-.drawer-close {
-  background: none; border: none; font-size: 28px; cursor: pointer; color: var(--muted);
-  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
-}
+.drawer-close { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--muted); width: 44px; height: 44px; }
 .drawer-links { display: flex; flex-direction: column; gap: 6px; }
-.drawer-links button, .drawer-links a {
-  background: none; border: none; text-align: left; cursor: pointer; text-decoration: none;
-  font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--ink);
-  padding: 10px 0; border-bottom: 1px solid var(--line);
-}
+.drawer-links button, .drawer-links a { background: none; border: none; text-align: left; cursor: pointer; text-decoration: none; font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--ink); padding: 10px 0; border-bottom: 1px solid var(--line); }
 
-/* ---------- Layout ---------- */
+/* Layout */
 main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .section { padding: 56px 0; }
-.eyebrow {
-  font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 12px; display: block;
-}
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block; }
 .section-title { font-size: clamp(32px, 5vw, 44px); margin-bottom: 10px; }
 .lead { color: var(--muted); font-size: 17px; max-width: 560px; }
 
-/* ---------- Hero ---------- */
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  padding: 40px 0 24px;
-  align-items: center;
+/* Hero */
+.hero { display: grid; gap: 32px; padding: 40px 0 24px; align-items: center; }
+@media (min-width: 900px) {
+  .hero { grid-template-columns: 1fr 1fr; gap: 56px; padding: 64px 0 40px; }
+  .hero-img { order: 2; aspect-ratio: 4/5 !important; }
 }
-@media (max-width: 768px) {
-  .hero { grid-template-columns: 1fr; }
+.hero > div:first-child > * { animation: fadeUp .8s cubic-bezier(.16,1,.3,1) both; }
+.hero > div:first-child > *:nth-child(1) { animation-delay: .05s; }
+.hero > div:first-child > *:nth-child(2) { animation-delay: .15s; }
+.hero > div:first-child > *:nth-child(3) { animation-delay: .25s; }
+.hero > div:first-child > *:nth-child(4) { animation-delay: .35s; }
+.hero-img { animation: fadeIn 1.1s ease both; }
+.hero-img img { object-position: center; }
+.hero-cta { transition: transform .2s, box-shadow .2s; }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(180,83,9,.32); }
+.hero-cta .arrow { display: inline-block; transition: transform .3s; }
+.hero-cta:hover .arrow { transform: translateX(4px); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: none; } }
+/* Product cards glide up when the catalogue opens. 'backwards' so the hover effect below still works afterwards. */
+.product-card.reveal { animation: fadeUp .7s cubic-bezier(.16,1,.3,1) backwards; }
+.product-card { transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s ease; }
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 2px 4px rgba(28,22,22,.05), 0 18px 40px rgba(28,22,22,.12); }
+.product-card:hover .product-img img { transform: scale(1.04); }
+.product-img img { transition: transform .6s cubic-bezier(.16,1,.3,1); }
+/* Content that fades up as you scroll to it */
+.reveal-on-scroll { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .9s cubic-bezier(.16,1,.3,1); transition-delay: var(--d, 0s); }
+.reveal-on-scroll.is-in { opacity: 1; transform: none; }
+/* Marquee strip */
+.marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--surface); margin: 8px -20px 0; padding: 14px 0; }
+.marquee-track { display: flex; width: max-content; animation: marquee 28s linear infinite; }
+.marquee-track span { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--accent); padding: 0 22px; white-space: nowrap; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+/* Order now: hero slides up and fades out, catalogue slides up into view */
+.hero-exit { animation: heroOut .42s cubic-bezier(.4,0,.2,1) both; }
+@keyframes heroOut { to { opacity: 0; transform: translateY(-48px); } }
+.page-slide { animation: pageSlideUp .85s cubic-bezier(.16,1,.3,1) both; }
+@keyframes pageSlideUp { from { opacity: 0; transform: translateY(90px); } to { opacity: 1; transform: none; } }
+/* Page change: gentle fade and rise */
+.page-enter { animation: fadeUp .55s cubic-bezier(.16,1,.3,1) both; }
+/* Hero photo moves slightly as you scroll (set by JS) */
+.hero-img img { will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
 }
-.hero-img {
-  aspect-ratio: 4/5; border-radius: 24px; overflow: hidden; background: var(--accent-soft);
-  box-shadow: var(--shadow);
-}
+.hero-img { aspect-ratio: 4/5; border-radius: 24px; overflow: hidden; background: var(--accent-soft); box-shadow: var(--shadow); }
 .hero-img img { width: 100%; height: 100%; object-fit: cover; }
 .hero-title { font-size: clamp(40px, 7vw, 60px); margin-bottom: 16px; }
 .hero-desc { color: var(--muted); font-size: 17px; margin-bottom: 28px; max-width: 480px; }
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  border: none; border-radius: 999px; padding: 14px 26px; font-size: 15px; font-weight: 600;
-  cursor: pointer; text-decoration: none; min-height: 48px; transition: transform .15s, opacity .2s;
-}
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: none; border-radius: 999px; padding: 14px 26px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; min-height: 48px; transition: transform .15s, opacity .2s; }
 .btn:active { transform: scale(.98); }
 .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 6px 18px rgba(180,83,9,.25); }
 .btn-dark { background: var(--ink); color: #fff; }
 .btn-ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
 .btn:disabled { opacity: .6; cursor: not-allowed; }
 .btn-block { width: 100%; }
-
 .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px; }
 .pillar { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 16px; }
 .pillar-num { font-size: 12px; color: var(--accent); font-weight: 700; }
 .pillar-text { font-size: 15px; font-weight: 500; margin-top: 4px; display: block; }
 
-/* ---------- Bundle ---------- */
-.bundle {
-  background: var(--ink); color: #fff; border-radius: 24px; padding: 32px 26px;
-  display: grid; gap: 22px; margin-top: 32px;
-}
+/* Bundle */
+.bundle { background: var(--ink); color: #fff; border-radius: 24px; padding: 32px 26px; display: grid; gap: 22px; margin-top: 32px; }
 .bundle .eyebrow { color: #F4B860; }
 .bundle h3 { font-size: 34px; margin-bottom: 8px; }
 .bundle p { color: #CFC6C2; }
@@ -154,7 +127,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .price-now { font-size: 28px; font-weight: 700; color: #F4B860; }
 .bundle .btn { background: #fff; color: var(--ink); }
 
-/* ---------- Catalogue ---------- */
+/* Catalogue */
 .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
 .product-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 .product-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
@@ -166,54 +139,35 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 999px; margin-bottom: 6px; }
 .product-price { font-weight: 700; color: var(--accent); white-space: nowrap; }
 .product-desc { color: var(--muted); font-size: 14px; }
-.product-macro-bar {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.05em;
-  color: var(--muted); background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  padding: 6px 8px; text-align: center; margin: 4px 0; text-transform: uppercase;
-}
+.product-macro-bar { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.05em; color: var(--muted); background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: center; margin: 4px 0; text-transform: uppercase; }
 .product-actions { margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 10px; }
 .qty { display: flex; align-items: center; gap: 12px; }
 .qty-btn { width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); font-size: 18px; cursor: pointer; color: var(--ink); }
 .qty-num { font-weight: 700; min-width: 22px; text-align: center; }
 
-/* ---------- Cards ---------- */
+/* Cards */
 .promo-list { display: grid; gap: 14px; max-width: 640px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
-.voucher-card {
-  background: var(--surface); border: 1.5px dashed var(--accent); border-radius: var(--radius);
-  padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px;
-}
+.voucher-card { background: var(--surface); border: 1.5px dashed var(--accent); border-radius: var(--radius); padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .voucher-code { font-family: ui-monospace, monospace; font-weight: 700; color: var(--accent); word-break: break-all; }
 .btn-small { padding: 10px 16px; min-height: 40px; font-size: 14px; }
+.status-pill { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
 
-/* ---------- Loyalty Stamp Card ---------- */
-.loyalty-card {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px;
-  box-shadow: var(--shadow); max-width: 600px; display: grid; gap: 20px;
-}
+/* Loyalty */
+.loyalty-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; box-shadow: var(--shadow); max-width: 600px; display: grid; gap: 20px; }
 .stamp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.stamp-slot {
-  aspect-ratio: 1; border: 2px dashed var(--line); border-radius: 16px; display: flex;
-  flex-direction: column; align-items: center; justify-content: center; background: var(--bg);
-  transition: all .3s ease;
-}
+.stamp-slot { aspect-ratio: 1; border: 2px dashed var(--line); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg); }
 .stamp-slot.filled { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
 .stamp-icon { font-size: 26px; }
 .stamp-num { font-size: 10px; font-weight: 700; color: var(--muted); margin-top: 2px; }
 .stamp-slot.filled .stamp-num { color: var(--accent); }
 
-/* ---------- Fulfillment tabs ---------- */
-.fulfillment-tabs {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--bg);
-  border: 1px solid var(--line); padding: 4px; border-radius: 14px; margin-bottom: 12px;
-}
-.fulfillment-tab {
-  padding: 10px; text-align: center; border-radius: 10px; font-size: 14px; font-weight: 600;
-  cursor: pointer; color: var(--muted); background: transparent; transition: all .2s; border: none;
-}
+/* Fulfillment tabs */
+.fulfillment-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--bg); border: 1px solid var(--line); padding: 4px; border-radius: 14px; margin-bottom: 12px; }
+.fulfillment-tab { padding: 10px; text-align: center; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--muted); background: transparent; border: none; }
 .fulfillment-tab.active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
 
-/* ---------- About ---------- */
+/* About */
 .about-grid { display: grid; gap: 28px; }
 .about-img { aspect-ratio: 4/3; border-radius: 20px; overflow: hidden; background: var(--line); }
 .about-img img { width: 100%; height: 100%; object-fit: cover; }
@@ -222,17 +176,10 @@ main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .info-item strong { color: var(--ink); font-weight: 600; }
 .info-item span { color: var(--muted); text-align: right; }
 
-/* ---------- Footer ---------- */
+/* Footer and bottom bar */
 footer { max-width: 1100px; margin: 0 auto; padding: 40px 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: grid; gap: 10px; }
 footer a { color: var(--ink); font-weight: 600; }
-
-/* ---------- Bottom cart bar ---------- */
-.floating-bar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 35;
-  background: rgba(255,255,255,.96); backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(28,22,22,.06);
-  padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
-}
+.floating-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; background: rgba(255,255,255,.96); backdrop-filter: blur(12px); border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(28,22,22,.06); padding: 12px 20px calc(12px + env(safe-area-inset-bottom, 0px)); }
 .floating-bar-inner { max-width: 1100px; margin: 0 auto; display: grid; gap: 8px; }
 .bar-top { display: flex; justify-content: space-between; align-items: center; font-size: 14px; gap: 12px; }
 .bar-top strong { font-size: 16px; }
@@ -240,13 +187,9 @@ footer a { color: var(--ink); font-weight: 600; }
 .progress-bar-fill { height: 100%; width: 0%; background: var(--accent); border-radius: 999px; transition: width .4s ease; }
 #floating-progress-text { font-size: 12px; color: var(--muted); }
 
-/* ---------- Cart drawer ---------- */
+/* Cart drawer */
 #cart-drawer { position: fixed; inset: 0; z-index: 50; background: rgba(28,22,22,.4); backdrop-filter: blur(4px); display: flex; justify-content: flex-end; }
-#drawer-panel {
-  width: 100%; max-width: 440px; height: 100%; background: var(--bg);
-  display: flex; flex-direction: column;
-  transform: translateX(100%); transition: transform .35s cubic-bezier(.16,1,.3,1);
-}
+#drawer-panel { width: 100%; max-width: 440px; height: 100%; background: var(--bg); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .35s cubic-bezier(.16,1,.3,1); }
 .drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 20px 22px; border-bottom: 1px solid var(--line); background: var(--surface); }
 .drawer-head h3 { font-size: 26px; }
 .cart-body { flex: 1; overflow-y: auto; padding: 20px 22px; display: grid; gap: 18px; align-content: start; }
@@ -261,13 +204,11 @@ footer a { color: var(--ink); font-weight: 600; }
 .check-row input { width: 18px; height: 18px; accent-color: var(--accent); }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-label { font-size: 13px; font-weight: 600; color: var(--ink); }
-.form-input, .form-select, .form-textarea {
-  width: 100%; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line);
-  border-radius: 12px; font-size: 15px; color: var(--ink); outline: none; transition: border-color .2s, box-shadow .2s;
-}
+.form-input, .form-select, .form-textarea { width: 100%; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; font-size: 15px; color: var(--ink); outline: none; }
 .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(180,83,9,.12); }
 .form-textarea { resize: vertical; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-hint { font-size: 12px; color: #B91C1C; min-height: 0; }
 .area-list-box { max-height: 210px; overflow-y: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .area-card { padding: 12px 14px; border-bottom: 1px solid var(--line); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--surface); }
 .area-card:last-child { border-bottom: none; }
@@ -279,10 +220,34 @@ footer a { color: var(--ink); font-weight: 600; }
 .sum-row.total { font-size: 18px; font-weight: 700; color: var(--ink); border-top: 1px solid var(--line); padding-top: 10px; }
 #discount-row, #coupon-discount-row { color: var(--accent); font-weight: 600; }
 .checkout-section { display: grid; gap: 14px; padding-top: 8px; }
+.location-chip { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer; }
 .saved-locations-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.location-chip { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-.location-chip:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
-.status-pill { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+/* ---------- Checkout form: cleaner, card-based look ---------- */
+.cart-body { gap: 22px; padding: 22px; }
+.checkout-section { gap: 20px; padding-top: 4px; }
+.checkout-section > h4 { font-size: 26px; margin-bottom: -4px; }
+.checkout-section .form-group { gap: 8px; }
+.checkout-section .form-label { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.form-input, .form-select, .form-textarea {
+  background: #FFFFFF; border: 1px solid #E6DCCE; border-radius: 14px; padding: 14px 16px;
+  font-size: 16px; box-shadow: 0 1px 2px rgba(28,22,22,.03);
+}
+.form-row { gap: 14px; }
+.field-hint { font-size: 12px; min-height: 0; }
+.box { border-radius: 16px; }
+.check-row { background: #FFFFFF; border: none; border-radius: 16px; padding: 14px 16px; box-shadow: var(--shadow); }
+/* Stamp progress: a slim pill instead of a big card */
+#stamp-hint { border: none; background: #FFFFFF; border-radius: 999px; padding: 10px 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; font-size: 13px; }
+#stamp-hint::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+#free-jar-box { border-radius: 18px; }
+/* Delivery / pickup switch as a pill */
+.fulfillment-tabs { border-radius: 999px; padding: 5px; background: #EFE7DA; border: none; margin-bottom: 0; }
+.fulfillment-tab { border-radius: 999px; padding: 12px 10px; font-weight: 600; font-size: 14px; }
+.fulfillment-tab.active { box-shadow: 0 2px 8px rgba(28,22,22,.1); }
+/* Area list and fees */
+.area-list-box { border-radius: 16px; border: none; box-shadow: var(--shadow); }
+.area-card { padding: 14px 16px; }
+.fee-box { border-radius: 16px; border: none; box-shadow: var(--shadow); padding: 14px 16px; }
 </style>
 </head>
 <body>
@@ -328,23 +293,17 @@ footer a { color: var(--ink); font-weight: 600; }
   <div id="page-home">
     <section class="hero">
       <div class="hero-img">
-        <img src="hero-banner.jpg" alt="Cheesecake in a jar" width="800" height="1000">
+        <img src="hero.jpg" alt="Rest in Cheese cheesecake jars" width="891" height="1024" fetchpriority="high" width="800" height="1000">
       </div>
       <div>
         <span class="eyebrow">Pantai Indah Kapuk, Jakarta</span>
         <h1 class="hero-title serif" id="t-hero-title">Cheesecake made with ingredients you know.</h1>
         <p class="hero-desc" id="t-hero-desc">Silky cheesecake in a jar, infused with comforting, familiar local flavors.</p>
-        <button onclick="switchPage('products')" class="btn btn-primary" id="t-hero-btn">Order now</button>
-        <div class="pillars" style="margin-top:28px">
-          <div class="pillar"><span class="pillar-num">01</span><span class="pillar-text" id="t-pillar-1">Selected local ingredients</span></div>
-          <div class="pillar"><span class="pillar-num">02</span><span class="pillar-text" id="t-pillar-2">No artificial flavorings</span></div>
-          <div class="pillar"><span class="pillar-num">03</span><span class="pillar-text" id="t-pillar-3">Instant delivery or pickup</span></div>
-        </div>
-
+        <button onclick="heroOrderNow()" class="btn btn-primary hero-cta" id="t-hero-btn">Order now <span class="arrow">&rarr;</span></button>
         <div class="bundle">
           <div>
             <span class="eyebrow" id="t-bundle-badge">Special Offer</span>
-            <h3 class="serif" id="bundle-title">The Buy 4 Bundle</h3>
+            <h3 class="serif">The Buy 4 Bundle</h3>
             <p id="t-bundle-desc">One jar of each of our 4 flavors, in 300ml jars (±260g each).</p>
           </div>
           <div class="bundle-cta">
@@ -357,6 +316,13 @@ footer a { color: var(--ink); font-weight: 600; }
         </div>
       </div>
     </section>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marquee-track">
+      <span>Made with local ingredients ·</span><span>No artificial flavorings ·</span><span>Instant delivery (Jakarta only) ·</span>
+      <span>Made with local ingredients ·</span><span>No artificial flavorings ·</span><span>Instant delivery (Jakarta only) ·</span>
+    </div>
   </div>
 
   <!-- PRODUCTS -->
@@ -376,23 +342,20 @@ footer a { color: var(--ink); font-weight: 600; }
     <span class="eyebrow">Rewards Program</span>
     <h2 class="section-title serif">Loyalty Stamp Card</h2>
     <p class="lead">1 jar = 1 stamp. Every 12 stamps earns 1 FREE jar, added to the order that completes them. You choose its flavor at checkout.</p>
-
     <div class="loyalty-card">
       <div class="form-group" style="gap:8px">
         <input id="acc-phone" class="form-input" placeholder="WhatsApp number used when ordering" inputmode="tel">
         <input id="acc-email" class="form-input" placeholder="Email used when ordering" inputmode="email">
         <button class="btn btn-dark btn-block" onclick="loadAccountFromForm()">View my stamps</button>
-        <div id="acc-msg" style="font-size:13px;color:var(--muted)"></div>
+        <div id="acc-msg" class="field-hint"></div>
       </div>
-
       <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px">
         <div>
           <strong style="font-size:18px">12-Jar Stamp Card</strong>
-          <div style="font-size:13px;color:var(--muted)" id="stamp-note">Stamps are counted after each paid order.</div>
+          <div style="font-size:13px;color:var(--muted)" id="stamp-note">Enter your WhatsApp and email above to see your stamps.</div>
         </div>
         <span class="badge" id="stamp-count-badge">0 / 12 Jars</span>
       </div>
-
       <div class="stamp-grid" id="stamp-slots-container"></div>
     </div>
   </div>
@@ -401,7 +364,7 @@ footer a { color: var(--ink); font-weight: 600; }
   <div id="page-promos" class="hidden section">
     <span class="eyebrow">Rewards</span>
     <h2 class="section-title serif" id="t-promos-title">Coupons &amp; Discounts</h2>
-    <p class="lead" id="t-promos-desc" style="margin-bottom:28px">Your unused discount coupons. Pick one in the cart when you check out.</p>
+    <p class="lead" style="margin-bottom:28px">Your unused coupons. Pick one in the cart when you check out.</p>
     <div id="boomer-promo-list" class="promo-list"></div>
   </div>
 
@@ -409,7 +372,7 @@ footer a { color: var(--ink); font-weight: 600; }
   <div id="page-history" class="hidden section">
     <span class="eyebrow">Your Purchases</span>
     <h2 class="section-title serif" id="t-history-title">Order History</h2>
-    <p class="lead" id="t-history-desc" style="margin-bottom:28px">Track your orders and check any receipt with your order number.</p>
+    <p class="lead" style="margin-bottom:28px">Your paid orders on this device, and receipts for any order number.</p>
 
     <div class="card" style="display:grid;gap:10px;margin-bottom:16px;max-width:640px">
       <strong style="font-size:15px">Check an order &amp; receipt</strong>
@@ -419,6 +382,7 @@ footer a { color: var(--ink); font-weight: 600; }
       <div id="lookup-result" style="font-size:14px"></div>
     </div>
 
+    <div id="pending-banner" class="hidden card" style="max-width:640px;margin-bottom:16px;background:var(--accent-soft);border-color:var(--accent)"></div>
     <div id="order-history-list" class="promo-list"></div>
   </div>
 
@@ -474,7 +438,6 @@ footer a { color: var(--ink); font-weight: 600; }
       <div id="checkout-form-section" class="hidden checkout-section">
         <h4 class="serif" id="t-checkout-title">Customer &amp; Delivery Details</h4>
 
-        <!-- Free jar box: shown when this order completes 12 stamps -->
         <div id="free-jar-box" class="hidden box" style="background:var(--accent-soft);border:1.5px dashed var(--accent);display:grid;gap:8px">
           <strong id="free-jar-title" style="color:var(--accent);font-size:14px"></strong>
           <div class="form-group">
@@ -483,7 +446,6 @@ footer a { color: var(--ink); font-weight: 600; }
           </div>
         </div>
 
-        <!-- Coupon picker: filled from the server -->
         <div id="coupon-wallet-container"></div>
 
         <label class="box check-row">
@@ -503,14 +465,22 @@ footer a { color: var(--ink); font-weight: 600; }
           <label class="form-label" id="t-label-name">Full Name</label>
           <input type="text" id="cust-name" class="form-input" placeholder="e.g. Sarah Jenkins" oninput="saveCustomerField('name', this.value)">
         </div>
-        <div class="form-group">
-          <label class="form-label" id="t-label-phone">WhatsApp Number</label>
-          <input type="tel" id="cust-phone" class="form-input" placeholder="e.g. 081380003850" oninput="saveCustomerField('phone', this.value)" onchange="onIdentityChange()">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" id="t-label-phone">WhatsApp Number</label>
+            <input type="tel" id="cust-phone" class="form-input" placeholder="081234567890" inputmode="tel" oninput="saveCustomerField('phone', this.value)" onchange="onIdentityChange()">
+          </div>
+          
         </div>
+        <div id="phone-hint" class="field-hint"></div>
+
         <div class="form-group">
           <label class="form-label" id="t-label-email">Email</label>
-          <input type="email" id="cust-email" class="form-input" placeholder="e.g. sarah@gmail.com" oninput="saveCustomerField('email', this.value)" onchange="onIdentityChange()">
+          <input type="email" id="cust-email" class="form-input" placeholder="e.g. sarah@gmail.com" inputmode="email" oninput="saveCustomerField('email', this.value)" onchange="onIdentityChange()">
         </div>
+        
+        <div id="email-hint" class="field-hint"></div>
 
         <div class="form-row">
           <div class="form-group">
@@ -527,17 +497,17 @@ footer a { color: var(--ink); font-weight: 600; }
           </div>
         </div>
 
+        <div id="hours-note" style="font-size:13px;color:var(--muted);line-height:1.5"></div>
         <div id="delivery-fields-wrapper">
           <div class="form-group">
             <label class="form-label" id="t-label-area">Delivery Area in Jakarta</label>
+            <input type="search" id="area-search" class="form-input" placeholder="Cari area" oninput="renderJakartaAreas()" style="margin-bottom:8px">
             <div class="area-list-box" id="jakarta-area-cards"></div>
           </div>
-
           <div class="fee-box" style="margin-top:10px;margin-bottom:10px">
             <div><span id="t-dist-label">Est. Distance:</span> <strong id="dist-km">2.0 km</strong></div>
             <div><span id="t-fee-label">Delivery Fee:</span> <strong id="calc-ongkir">Rp 15.000</strong></div>
           </div>
-
           <div class="form-group">
             <div style="display:flex;justify-content:space-between;align-items:center">
               <label class="form-label" id="t-label-address">Full Address</label>
@@ -591,6 +561,7 @@ footer a { color: var(--ink); font-weight: 600; }
 <footer>
   <div>
     <p>Rest in Cheese, Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara.</p>
+    <p>Open daily 09.00–21.00 WIB</p>
     <p style="margin-top:6px"><a href="https://wa.me/6282112002258" target="_blank" id="t-footer-wa">WhatsApp Admin</a></p>
   </div>
   <p id="t-footer-copy">&copy; Rest in Cheese. All rights reserved.</p>
@@ -605,17 +576,15 @@ const I18N = {
     hero_title: "Cheesecake made with ingredients you know.",
     hero_desc: "Silky cheesecake in a jar, infused with comforting, familiar local flavors.",
     hero_btn: "Order now", pillar_1: "Selected local ingredients", pillar_2: "No artificial flavorings", pillar_3: "Instant delivery or pickup",
-    bundle_badge: "Special Offer", add_bundle_btn: "Add bundle",
+    bundle_badge: "Special Offer", add_bundle_btn: "Add bundle", marquee_1: "Made with local ingredients", marquee_2: "No artificial flavorings", marquee_3: "Instant delivery (Jakarta only)", stamp_none: "Enter your WhatsApp and email to see your stamp progress.", stamp_progress: "Your stamps: {n}/12. {left} more jar(s) for 1 FREE jar.", area_search_ph: "Search area (e.g. Kapuk, Menteng)",
     cat_title: "Jar Catalogue", cat_subtitle: "Fresh Batch Today",
-    promos_title: "Coupons & Discounts",
-    history_title: "Order History",
+    promos_title: "Coupons & Discounts", history_title: "Order History",
     about_title: "About Rest in Cheese", about_subtitle: "The story behind our kitchen.",
     about_text: "Training as a former intern at The Landmark Mandarin Oriental taught me that fine pastry isn't about expensive labels—it's about technique, patience, and honoring ingredients. Rest in Cheese is born from that philosophy, handcrafted right from our home kitchen in Taman Grisenda, Pantai Indah Kapuk.",
     info_main_label: "Main ingredients:", info_shelf_label: "Shelf life & storage:", info_order_label: "Ordering system:", info_area_label: "Delivery area:", info_area_val: "Jakarta, delivery fee based on area",
     cart_title: "Order Summary", gift_label: "Send as a gift? (+ Greeting Card)", gift_placeholder: "Write your greeting message here...",
     empty_cart: "No items added yet.", checkout_title: "Customer & Delivery Details",
-    label_name: "Full Name", placeholder_name: "e.g. Sarah Jenkins", label_phone: "WhatsApp Number", placeholder_phone: "e.g. 081380003850",
-    label_email: "Email", placeholder_email: "e.g. sarah@gmail.com", label_date: "Delivery / Pickup Date", label_time: "Time Slot",
+    label_name: "Full Name", label_phone: "WhatsApp Number", label_email: "Email", label_date: "Delivery / Pickup Date", label_time: "Time Slot",
     label_area: "Delivery Area in Jakarta", dist_label: "Est. Distance:", fee_label: "Delivery Fee:", label_address: "Full Address",
     placeholder_address: "Street, House/Building No., Unit...", summary_subtotal: "Product Subtotal", summary_delivery: "Delivery Fee",
     summary_total: "Total Payment", btn_proceed: "Proceed to Payment", btn_processing: "Processing...",
@@ -626,17 +595,15 @@ const I18N = {
     hero_title: "Cheesecake dari bahan yang kamu kenal.",
     hero_desc: "Keju lembut dalam jar, memadukan cita rasa lokal yang hangat dan akrab.",
     hero_btn: "Pesan sekarang", pillar_1: "Bahan lokal terpilih", pillar_2: "Tanpa pengawet & perasa buatan", pillar_3: "Kirim instan / ambil sendiri",
-    bundle_badge: "Penawaran Khusus", add_bundle_btn: "Tambah bundle",
+    bundle_badge: "Penawaran Khusus", add_bundle_btn: "Tambah bundle", marquee_1: "Dibuat dengan bahan lokal", marquee_2: "Tanpa perasa buatan", marquee_3: "Kirim instan (khusus Jakarta)", stamp_none: "Isi WhatsApp dan email untuk melihat progres stamp Anda.", stamp_progress: "Stamp Anda: {n}/12. {left} jar lagi untuk 1 jar GRATIS.", area_search_ph: "Cari area (mis. Kapuk, Menteng)",
     cat_title: "Katalog Jar", cat_subtitle: "Segar Setiap Hari",
-    promos_title: "Kupon & Diskon",
-    history_title: "Riwayat Pesanan",
+    promos_title: "Kupon & Diskon", history_title: "Riwayat Pesanan",
     about_title: "Tentang Rest in Cheese", about_subtitle: "Cerita di balik dapur kami.",
     about_text: "Berlatih sebagai mantan pemagang di The Landmark Mandarin Oriental mengajarkan saya bahwa kue butik bukan soal label mahal, melainkan rasa hormat pada teknik dan bahan. Rest in Cheese adalah wujud kecintaan itu, diracik langsung dari dapur rumah kami di Taman Grisenda, Pantai Indah Kapuk.",
     info_main_label: "Bahan utama:", info_shelf_label: "Daya tahan dan cara simpan:", info_order_label: "Sistem pesanan:", info_area_label: "Area pengiriman:", info_area_val: "Jakarta, ongkir sesuai wilayah",
     cart_title: "Ringkasan Pesanan", gift_label: "Kirim sebagai hadiah? (+ Kartu Ucapan)", gift_placeholder: "Tulis pesan ucapan di sini...",
     empty_cart: "Belum ada item dipilih.", checkout_title: "Detail Pelanggan & Pengiriman",
-    label_name: "Nama Pemesan", placeholder_name: "e.g. Sarah Jenkins", label_phone: "Nomor WhatsApp", placeholder_phone: "e.g. 081380003850",
-    label_email: "Email", placeholder_email: "e.g. sarah@gmail.com", label_date: "Tanggal Kirim / Ambil", label_time: "Slot Waktu",
+    label_name: "Nama Pemesan", label_phone: "Nomor WhatsApp", label_email: "Email", label_date: "Tanggal Kirim / Ambil", label_time: "Slot Waktu",
     label_area: "Wilayah Tujuan di Jakarta", dist_label: "Estimasi Jarak:", fee_label: "Ongkir:", label_address: "Alamat Lengkap",
     placeholder_address: "Jalan, Nomor Rumah, Patokan...", summary_subtotal: "Subtotal Produk", summary_delivery: "Ongkir",
     summary_total: "Total Pembayaran", btn_proceed: "Lanjut Pembayaran", btn_processing: "Memproses...",
@@ -645,33 +612,28 @@ const I18N = {
 };
 
 let currentLang = localStorage.getItem('ric_lang') || 'en';
-function t(key) {
-  return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
-}
+function t(key) { return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key; }
 function tx(en, id) { return currentLang === 'id' ? id : en; }
 
-// ---------- Storage helpers ----------
 function load(key, def) {
   try { const v = JSON.parse(localStorage.getItem(key)); return v == null ? def : v; } catch (e) { return def; }
 }
 function save(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
-// ---------- Catalogue ----------
+// ---------- Catalogue (must match Code.gs) ----------
 const PRODUCTS = [
-  { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky pumpkin cheesecake layered with graham crumble, diced pumpkin, and Madagascar vanilla bean.", price: 70000, badge: "Signature",
-    macro: "612 KCAL · P 10.3g · C 40.3g · F 30.1g · ±260g" },
-  { id: 2, name: "Corn & Coconut", description: "Sweet corn cheesecake layered with graham crumble and roasted corn.", price: 65000, badge: "",
-    macro: "602 KCAL · P 10.2g · C 37.1g · F 29.9g · ±260g" },
-  { id: 3, name: "Roasted Banana & Honey", description: "Banana cheesecake layered with graham crumble, sliced roasted banana, and wild honey.", price: 65000, badge: "",
-    macro: "624 KCAL · P 10.0g · C 42.6g · F 30.0g · ±260g" },
-  { id: 4, name: "Purple Sweet Potato", description: "Velvety purple sweet potato cheesecake layered with graham crumble and diced sweet potato.", price: 65000, badge: "",
-    macro: "630 KCAL · P 10.0g · C 44.0g · F 30.0g · ±260g" }
+  { id: 1, name: "Pumpkin & Vanilla Bean", description: "Silky pumpkin cheesecake layered with graham crumble, diced pumpkin, and Madagascar vanilla bean.", price: 70000, badge: "Signature", macro: "612 KCAL · P 10.3g · C 40.3g · F 30.1g · ±260g" },
+  { id: 2, name: "Corn & Coconut", description: "Sweet corn cheesecake layered with graham crumble and roasted corn.", price: 65000, badge: "", macro: "602 KCAL · P 10.2g · C 37.1g · F 29.9g · ±260g" },
+  { id: 3, name: "Roasted Banana & Honey", description: "Banana cheesecake layered with graham crumble, sliced roasted banana, and wild honey.", price: 65000, badge: "", macro: "624 KCAL · P 10.0g · C 42.6g · F 30.0g · ±260g" },
+  { id: 4, name: "Purple Sweet Potato", description: "Velvety purple sweet potato cheesecake layered with graham crumble and diced sweet potato.", price: 65000, badge: "", macro: "630 KCAL · P 10.0g · C 44.0g · F 30.0g · ±260g" }
 ];
 const BUNDLE_PRICE = 240000;
 const BUNDLE_JARS = 4;
 const STAMPS_PER_FREE_JAR = 12;
 const INSTANT_DISCOUNT_THRESHOLD = 200000;
 const INSTANT_DISCOUNT_PERCENTAGE = 0.04;
+const ORDER_CUTOFF_HOUR = 21;   // same-day delivery orders close at 21.00 Jakarta time
+const OPEN_TEXT = '09.00–21.00 WIB';
 
 const JAKARTA_AREAS = [
   { name: "PIK, Kapuk & Taman Grisenda (Dekat Dapur)", fee: 15000, km: 2.0 },
@@ -693,6 +655,11 @@ const JAKARTA_AREAS = [
   { name: "Cengkareng & Kalideres (Jakarta Barat)", fee: 22000, km: 8.0 }
 ];
 
+// Same list as the server. Only these providers are accepted.
+const ALLOWED_EMAIL_DOMAINS = ['gmail.com', 'yahoo.com', 'yahoo.co.id', 'outlook.com', 'hotmail.com', 'live.com', 'icloud.com', 'me.com', 'ymail.com', 'proton.me', 'protonmail.com'];
+
+// ---------- State ----------
+// The browser keeps the cart and display data only. Stamps and coupons come from the server.
 let cart = load('ric_cart', {});
 let orderHistory = load('ric_order_history', []);
 let savedLocations = load('ric_saved_locations', []);
@@ -705,6 +672,55 @@ let selectedAreaName = JAKARTA_AREAS[0].name;
 let calculatedDeliveryKm = JAKARTA_AREAS[0].km;
 let payBusy = false;
 
+// ---------- Validation (phone and email) ----------
+function normPhone(v) {
+  let d = String(v || '').replace(/\D/g, '');
+  if (d.indexOf('62') === 0) d = '0' + d.slice(2);
+  return d;
+}
+function editDistance(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]);
+  for (let j = 1; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) {
+    dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  }
+  return dp[m][n];
+}
+// Returns '' if OK, or a message. Also suggests a fix for typos like "gmial.com".
+function checkEmail(raw) {
+  const e = String(raw || '').trim().toLowerCase();
+  const m = e.match(/^[a-z0-9._%+-]+@([a-z0-9.-]+\.[a-z]{2,})$/);
+  if (!m) return tx('Email is not valid. Example: name@gmail.com', 'Email tidak valid. Contoh: nama@gmail.com');
+  if (ALLOWED_EMAIL_DOMAINS.indexOf(m[1]) !== -1) return '';
+  let best = null, bd = 99;
+  ALLOWED_EMAIL_DOMAINS.forEach(d => { const x = editDistance(m[1], d); if (x < bd) { bd = x; best = d; } });
+  if (bd <= 2) return tx('Did you mean ', 'Maksudnya ') + e.split('@')[0] + '@' + best + '?';
+  return tx('Use gmail.com, yahoo.com, outlook.com, hotmail.com, icloud.com or similar.', 'Pakai gmail.com, yahoo.com, outlook.com, hotmail.com, icloud.com, atau sejenisnya.');
+}
+function checkPhone(raw) {
+  const p = normPhone(raw);
+  if (!/^08\d{8,11}$/.test(p)) return tx('Enter a real Indonesian mobile number, e.g. 081234567890.', 'Masukkan nomor HP Indonesia yang benar, contoh 081234567890.');
+  return '';
+}
+// Checks the whole checkout identity block. Returns '' if everything is fine.
+function checkIdentity() {
+  const name = document.getElementById('cust-name').value.trim();
+  const phone = document.getElementById('cust-phone').value;
+  const email = document.getElementById('cust-email').value;
+  if (name.length < 3) return tx('Enter your full name.', 'Isi nama lengkap Anda.');
+  const pe = checkPhone(phone); if (pe) return pe;
+  const ee = checkEmail(email); if (ee) return ee;
+  return '';
+}
+function showHints() {
+  const pe = checkPhone(document.getElementById('cust-phone').value);
+  document.getElementById('phone-hint').innerText = document.getElementById('cust-phone').value ? pe : '';
+  const ee = checkEmail(document.getElementById('cust-email').value);
+  document.getElementById('email-hint').innerText = document.getElementById('cust-email').value ? ee : '';
+}
+
+// ---------- Server calls ----------
 function post(body) {
   return fetch(GOOGLE_SHEET_WEB_APP_URL, {
     method: 'POST',
@@ -714,15 +730,12 @@ function post(body) {
 }
 
 function identity() {
-  return {
-    phone: document.getElementById('cust-phone').value.trim(),
-    email: document.getElementById('cust-email').value.trim()
-  };
+  return { phone: normPhone(document.getElementById('cust-phone').value), email: document.getElementById('cust-email').value.trim().toLowerCase() };
 }
 
 async function loadAccount(silent) {
   const id = identity();
-  if (!id.phone || !id.email) {
+  if (!id.phone || !id.email || checkPhone(id.phone) || checkEmail(id.email)) {
     account = { loaded: false, stamps: 0, coupons: [] };
     chosenCoupon = '';
     refreshAccountUI();
@@ -730,9 +743,8 @@ async function loadAccount(silent) {
   }
   try {
     const d = await post({ action: 'get_account', phone: id.phone, email: id.email });
-    if (d.status === 'success') {
-      account = { loaded: true, stamps: d.stamps, coupons: d.coupons || [] };
-    } else {
+    if (d.status === 'success') account = { loaded: true, stamps: d.stamps, coupons: d.coupons || [] };
+    else {
       account = { loaded: false, stamps: 0, coupons: [] };
       if (!silent) alert(d.message);
     }
@@ -750,43 +762,43 @@ function refreshAccountUI() {
   updateUI();
 }
 
-function onIdentityChange() { loadAccount(true); }
+function onIdentityChange() { showHints(); loadAccount(true); }
 
 async function loadAccountFromForm() {
-  const ph = document.getElementById('acc-phone').value.trim();
-  const em = document.getElementById('acc-email').value.trim();
+  const ph = normPhone(document.getElementById('acc-phone').value);
+  const em = document.getElementById('acc-email').value.trim().toLowerCase();
+  const pe = checkPhone(ph), ee = checkEmail(em);
+  if (pe || ee) { document.getElementById('acc-msg').innerText = pe || ee; return; }
   document.getElementById('cust-phone').value = ph;
   document.getElementById('cust-email').value = em;
   saveCustomerField('phone', ph);
   saveCustomerField('email', em);
   document.getElementById('acc-msg').innerText = tx('Checking...', 'Mengecek...');
   await loadAccount(false);
-  document.getElementById('acc-msg').innerText = account.loaded
-    ? tx('Showing your stamps and coupons.', 'Menampilkan stamp dan kupon Anda.')
-    : '';
+  document.getElementById('acc-msg').innerText = '';
 }
 
+// ---------- Startup ----------
 window.addEventListener('DOMContentLoaded', async () => {
   loadCustomerData();
-
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const iso = tomorrow.toISOString().slice(0, 10);
-  const dateInput = document.getElementById('delivery-date');
-  if (dateInput && !dateInput.value) { dateInput.value = iso; dateInput.min = iso; }
-
+  setupDeliveryDate();
   const savedGiftNote = localStorage.getItem('ric_gift_note');
   if (savedGiftNote) {
     document.getElementById('gift-option').checked = true;
     document.getElementById('gift-note-container').classList.remove('hidden');
     document.getElementById('gift-note').value = savedGiftNote;
   }
-
   setLanguage(currentLang);
+  setupMotion();
   renderSavedLocationChips();
   await loadAccount(true);
+  reconcileAll();
 });
 
+// Customers come back from the payment app: check payments again
+document.addEventListener('visibilitychange', () => { if (!document.hidden) reconcileAll(); });
+
+// ---------- Customer details ----------
 function saveCustomerField(field, val) {
   const custData = load('ric_cust_data', {});
   custData[field] = val;
@@ -794,35 +806,24 @@ function saveCustomerField(field, val) {
 }
 
 function loadCustomerData() {
-  const custData = load('ric_cust_data', {});
-  if (custData.name) document.getElementById('cust-name').value = custData.name;
-  if (custData.phone) document.getElementById('cust-phone').value = custData.phone;
-  if (custData.email) document.getElementById('cust-email').value = custData.email;
-  if (custData.date) document.getElementById('delivery-date').value = custData.date;
-  if (custData.time) document.getElementById('delivery-time').value = custData.time;
-  if (custData.address) document.getElementById('cust-address').value = custData.address;
-  if (custData.phone) document.getElementById('acc-phone').value = custData.phone;
-  if (custData.email) document.getElementById('acc-email').value = custData.email;
-  if (custData.areaName) {
-    selectedAreaName = custData.areaName;
-    const found = JAKARTA_AREAS.find(a => a.name === custData.areaName);
-    if (found) {
-      currentDeliveryFee = found.fee;
-      calculatedDeliveryKm = found.km;
-    }
+  const c = load('ric_cust_data', {});
+  if (c.name) document.getElementById('cust-name').value = c.name;
+  if (c.phone) { document.getElementById('cust-phone').value = c.phone; document.getElementById('acc-phone').value = c.phone; }
+  if (c.email) { document.getElementById('cust-email').value = c.email; document.getElementById('acc-email').value = c.email; }
+  if (c.date) document.getElementById('delivery-date').value = c.date;
+  if (c.time) document.getElementById('delivery-time').value = c.time;
+  if (c.address) document.getElementById('cust-address').value = c.address;
+  if (c.areaName) {
+    selectedAreaName = c.areaName;
+    const found = JAKARTA_AREAS.find(a => a.name === c.areaName);
+    if (found) { currentDeliveryFee = found.fee; calculatedDeliveryKm = found.km; }
   }
 }
 
 function readCheckout() {
   const v = id => document.getElementById(id).value.trim();
-  return {
-    name: v('cust-name'),
-    phone: v('cust-phone'),
-    email: v('cust-email'),
-    address: currentFulfillmentMethod === 'pickup' ? '' : v('cust-address'),
-    date: v('delivery-date'),
-    time: v('delivery-time')
-  };
+  return { name: v('cust-name'), phone: normPhone(v('cust-phone')), email: v('cust-email').toLowerCase(),
+    address: currentFulfillmentMethod === 'pickup' ? '' : v('cust-address'), date: v('delivery-date'), time: v('delivery-time') };
 }
 
 function setFulfillmentMethod(method) {
@@ -831,20 +832,16 @@ function setFulfillmentMethod(method) {
   document.getElementById('tab-pickup').classList.toggle('active', method === 'pickup');
   document.getElementById('delivery-fields-wrapper').classList.toggle('hidden', method === 'pickup');
   document.getElementById('pickup-info-box').classList.toggle('hidden', method === 'delivery');
-  if (method === 'pickup') {
-    currentDeliveryFee = 0;
-  } else {
-    const found = JAKARTA_AREAS.find(a => a.name === selectedAreaName);
-    currentDeliveryFee = found ? found.fee : 15000;
-  }
+  if (method === 'pickup') currentDeliveryFee = 0;
+  else { const f = JAKARTA_AREAS.find(a => a.name === selectedAreaName); currentDeliveryFee = f ? f.fee : 15000; }
   updateUI();
 }
 
 function saveCurrentLocation() {
   const address = document.getElementById('cust-address').value.trim();
-  if (!address) { alert(tx('Please enter an address first.', 'Isi alamat dulu.')); return; }
-  const locationLabel = prompt(tx('Name this saved address (e.g. Home, Office):', 'Beri nama alamat ini (mis. Rumah, Kantor):'), 'Home') || 'My Location';
-  savedLocations.push({ label: locationLabel, address, areaName: selectedAreaName, fee: currentDeliveryFee, km: calculatedDeliveryKm });
+  if (address.length < 5) { alert(tx('Enter the address first.', 'Isi alamat dulu.')); return; }
+  const label = prompt(tx('Name this address (e.g. Home, Office):', 'Beri nama alamat ini (mis. Rumah, Kantor):'), 'Home') || 'My Location';
+  savedLocations.push({ label, address, areaName: selectedAreaName, fee: currentDeliveryFee, km: calculatedDeliveryKm });
   save('ric_saved_locations', savedLocations);
   renderSavedLocationChips();
   alert(tx('Address saved.', 'Alamat tersimpan.'));
@@ -855,8 +852,7 @@ function renderSavedLocationChips() {
   const list = document.getElementById('saved-chips-list');
   if (savedLocations.length === 0) { container.classList.add('hidden'); return; }
   container.classList.remove('hidden');
-  list.innerHTML = savedLocations.map((loc, idx) => `
-    <button type="button" onclick="loadSavedLocation(${idx})" class="location-chip">📍 <strong>${loc.label}</strong></button>`).join('');
+  list.innerHTML = savedLocations.map((loc, idx) => `<button type="button" onclick="loadSavedLocation(${idx})" class="location-chip">📍 <strong>${loc.label}</strong></button>`).join('');
 }
 
 function loadSavedLocation(idx) {
@@ -869,7 +865,7 @@ function loadSavedLocation(idx) {
   calculatedDeliveryKm = loc.km;
   saveCustomerField('areaName', loc.areaName);
   renderJakartaAreas();
-  document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + " km";
+  document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + ' km';
   document.getElementById('calc-ongkir').innerText = formatRupiah(currentDeliveryFee);
   updateUI();
 }
@@ -881,6 +877,7 @@ function toggleGiftBox() {
 }
 function saveGiftNote(val) { localStorage.setItem('ric_gift_note', val); }
 
+// ---------- Language ----------
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('ric_lang', lang);
@@ -903,17 +900,21 @@ function applyStaticTranslations() {
   set('t-hero-title', t('hero_title')); set('t-hero-desc', t('hero_desc')); set('t-hero-btn', t('hero_btn'));
   set('t-pillar-1', t('pillar_1')); set('t-pillar-2', t('pillar_2')); set('t-pillar-3', t('pillar_3'));
   set('t-bundle-badge', t('bundle_badge')); set('t-add-bundle-btn', t('add_bundle_btn'));
+  const mq = document.getElementById('marquee-track');
+  if (mq) {
+    const one = [t('marquee_1'), t('marquee_2'), t('marquee_3')].map(x => '<span>' + x + ' ·</span>').join('');
+    mq.innerHTML = one + one;
+  }
+  const areaSearch = document.getElementById('area-search');
+  if (areaSearch) areaSearch.placeholder = t('area_search_ph');
   set('t-cat-title', t('cat_title')); set('t-cat-subtitle', t('cat_subtitle'));
-  set('t-promos-title', t('promos_title'));
-  set('t-history-title', t('history_title'));
+  set('t-promos-title', t('promos_title')); set('t-history-title', t('history_title'));
   set('t-about-title', t('about_title')); set('t-about-subtitle', t('about_subtitle')); set('t-about-text', t('about_text'));
   set('t-info-main-label', t('info_main_label')); set('t-info-shelf-label', t('info_shelf_label'));
   set('t-info-order-label', t('info_order_label')); set('t-info-area-label', t('info_area_label')); set('t-info-area-val', t('info_area_val'));
   set('t-cart-title', t('cart_title')); set('t-gift-label', t('gift_label')); place('gift-note', t('gift_placeholder'));
   set('t-empty-cart', t('empty_cart')); set('t-checkout-title', t('checkout_title'));
-  set('t-label-name', t('label_name')); place('cust-name', t('placeholder_name'));
-  set('t-label-phone', t('label_phone')); place('cust-phone', t('placeholder_phone'));
-  set('t-label-email', t('label_email')); place('cust-email', t('placeholder_email'));
+  set('t-label-name', t('label_name')); set('t-label-phone', t('label_phone')); set('t-label-email', t('label_email'));
   set('t-label-date', t('label_date')); set('t-label-time', t('label_time')); set('t-label-area', t('label_area'));
   set('t-dist-label', t('dist_label')); set('t-fee-label', t('fee_label'));
   set('t-label-address', t('label_address')); place('cust-address', t('placeholder_address'));
@@ -923,14 +924,17 @@ function applyStaticTranslations() {
   set('t-footer-wa', t('footer_wa')); set('t-footer-copy', t('footer_copy'));
 }
 
-function formatRupiah(num) { return "Rp " + Math.round(num).toLocaleString("id-ID"); }
+function formatRupiah(num) { return 'Rp ' + Math.round(num).toLocaleString('id-ID'); }
 
+// ---------- Navigation ----------
 function switchPage(pageId) {
   ['home', 'products', 'stamps', 'promos', 'history', 'about'].forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
-  document.getElementById('page-' + pageId).classList.remove('hidden');
+  const pageEl = document.getElementById('page-' + pageId);
+  pageEl.classList.remove('hidden');
+  pageEl.classList.remove('page-enter'); void pageEl.offsetWidth; pageEl.classList.add('page-enter');
   if (pageId === 'stamps') renderStampCard();
   if (pageId === 'promos') renderBoomerPromos();
-  if (pageId === 'history') { renderOrderHistory(); }
+  if (pageId === 'history') { renderOrderHistory(); refreshHistoryStatuses(); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -959,18 +963,18 @@ function toggleCart() {
   }
 }
 
+// ---------- Areas ----------
 function renderJakartaAreas() {
   const container = document.getElementById('jakarta-area-cards');
-  container.innerHTML = JAKARTA_AREAS.map((area) => {
-    const isSelected = area.name === selectedAreaName;
-    return `
-      <div onclick="selectArea(${area.fee}, ${area.km}, '${area.name.replace(/'/g, "")}', this)" class="area-card" style="${isSelected ? 'background: var(--accent-soft);' : ''}">
-        <div>
-          <div class="area-name">${area.name}</div>
-          <div class="area-fee">${t('ongkir_label')} Rp ${area.fee.toLocaleString("id-ID")} (~${area.km} km)</div>
-        </div>
-        <span class="check-icon" style="font-size:13px;color:${isSelected ? 'var(--accent)' : 'transparent'};font-weight:700">&#10003;</span>
-      </div>`;
+  const q = ((document.getElementById('area-search') || {}).value || '').trim().toLowerCase();
+  const list = JAKARTA_AREAS.filter(a => a.name.toLowerCase().indexOf(q) !== -1);
+  if (list.length === 0) { container.innerHTML = '<div style="padding:14px;color:var(--muted);font-size:14px">' + tx('No area found.', 'Area tidak ditemukan.') + '</div>'; return; }
+  container.innerHTML = list.map(area => {
+    const sel = area.name === selectedAreaName;
+    return `<div onclick="selectArea(${area.fee}, ${area.km}, '${area.name.replace(/'/g, '')}', this)" class="area-card" style="${sel ? 'background: var(--accent-soft);' : ''}">
+      <div><div class="area-name">${area.name}</div><div class="area-fee">${t('ongkir_label')} Rp ${area.fee.toLocaleString('id-ID')} (~${area.km} km)</div></div>
+      <span class="check-icon" style="font-size:13px;color:${sel ? 'var(--accent)' : 'transparent'};font-weight:700">&#10003;</span>
+    </div>`;
   }).join('');
 }
 
@@ -985,23 +989,66 @@ function selectArea(fee, km, name, element) {
   });
   element.style.background = 'var(--accent-soft)';
   element.querySelector('.check-icon').style.color = 'var(--accent)';
-  document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + " km";
+  document.getElementById('dist-km').innerText = calculatedDeliveryKm.toFixed(1) + ' km';
   document.getElementById('calc-ongkir').innerText = formatRupiah(currentDeliveryFee);
   updateUI();
 }
 
+// ---------- Motion (skipped when the phone asks for reduced motion) ----------
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function setupMotion() {
+  if (reduceMotion) return;
+  // Scroll reveal: the pieces fade up one after another as they come into view
+  const targets = document.querySelectorAll('.about-img, .info-item, .loyalty-card, .section-head');
+  targets.forEach((el, i) => { el.classList.add('reveal-on-scroll'); el.style.setProperty('--d', (i % 4) * 0.08 + 's'); });
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  targets.forEach(el => io.observe(el));
+
+  // Hero photo drifts a little as you scroll
+  const photo = document.querySelector('.hero-img img');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking || !photo) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = Math.min(window.scrollY, 600);
+      photo.style.transform = 'translateY(' + (y * 0.06).toFixed(1) + 'px) scale(1.02)';
+      ticking = false;
+    });
+  }, { passive: true });
+}
+
+// ---------- Hero: open the catalogue with a smooth scroll ----------
+function heroOrderNow() {
+  const home = document.getElementById('page-home');
+  // 1) hero fades and slides up
+  home.classList.add('hero-exit');
+  setTimeout(() => {
+    // 2) swap pages, catalogue slides up from below
+    ['home', 'products', 'stamps', 'promos', 'history', 'about'].forEach(p => document.getElementById('page-' + p).classList.add('hidden'));
+    home.classList.remove('hero-exit');
+    const pp = document.getElementById('page-products');
+    pp.classList.remove('hidden');
+    pp.classList.remove('page-slide'); void pp.offsetWidth; pp.classList.add('page-slide');
+    window.scrollTo({ top: 0 });
+    // 3) glide down to the product list once the slide has started
+    setTimeout(() => {
+      const list = document.getElementById('product-list');
+      if (list) list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 260);
+  }, 420);
+}
+
+// ---------- Catalogue and cart ----------
 function renderProducts() {
-  document.getElementById('product-list').innerHTML = PRODUCTS.map(p => `
-    <article class="product-card">
-      <div class="product-img">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Crect width='800' height='800' fill='%23FBEBD6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='28' fill='%23B45309'%3EProduct Photo%3C/text%3E%3C/svg%3E" alt="${p.name}" loading="lazy" width="800" height="800">
-      </div>
+  document.getElementById('product-list').innerHTML = PRODUCTS.map((p, i) => `
+    <article class="product-card reveal" style="animation-delay:${i * 0.09}s">
+      <div class="product-img"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Crect width='800' height='800' fill='%23FBEBD6'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='28' fill='%23B45309'%3EProduct Photo%3C/text%3E%3C/svg%3E" alt="${p.name}" loading="lazy" width="800" height="800"></div>
       <div class="product-body">
         ${p.badge ? `<span class="badge">${p.badge}</span>` : ''}
-        <div class="product-top">
-          <h3 class="product-title serif">${p.name}</h3>
-          <span class="product-price">${formatRupiah(p.price)}</span>
-        </div>
+        <div class="product-top"><h3 class="product-title serif">${p.name}</h3><span class="product-price">${formatRupiah(p.price)}</span></div>
         <p class="product-desc">${p.description}</p>
         <div class="product-macro-bar">${p.macro}</div>
         <div class="product-actions">
@@ -1042,20 +1089,15 @@ function currentProductsTotal() {
   let total = 0;
   for (let id in cart) {
     if (id === 'bundle') total += BUNDLE_PRICE * cart[id];
-    else {
-      const p = PRODUCTS.find(item => item.id == id);
-      if (p) total += p.price * cart[id];
-    }
+    else { const p = PRODUCTS.find(item => item.id == id); if (p) total += p.price * cart[id]; }
   }
   return total;
 }
 
+// Paid jars in the cart (bundle = 4 jars). Free jars are never counted here.
 function countJars() {
   let jars = 0;
-  for (let id in cart) {
-    if (id === 'bundle') jars += cart[id] * BUNDLE_JARS;
-    else jars += cart[id];
-  }
+  for (let id in cart) jars += (id === 'bundle') ? cart[id] * BUNDLE_JARS : cart[id];
   return jars;
 }
 
@@ -1073,6 +1115,7 @@ function productIdByName(name) {
   return p ? p.id : null;
 }
 
+// Every number the cart shows, in one place. The server recalculates the same way.
 function calcTotals() {
   const subtotal = currentProductsTotal();
   const instant = subtotal >= INSTANT_DISCOUNT_THRESHOLD ? Math.round(subtotal * INSTANT_DISCOUNT_PERCENTAGE) : 0;
@@ -1092,39 +1135,30 @@ function updateUI() {
   document.getElementById('cart-count').innerText = totalCount;
   document.getElementById('summary-products-total').innerText = formatRupiah(tot.subtotal);
   document.getElementById('floating-spending-amount').innerText = formatRupiah(tot.subtotal);
-  PRODUCTS.forEach(p => { const q = document.getElementById(`qty-${p.id}`); if (q) q.innerText = cart[p.id] || 0; });
+  PRODUCTS.forEach(p => { const q = document.getElementById('qty-' + p.id); if (q) q.innerText = cart[p.id] || 0; });
 
   const progress = Math.min(100, Math.round((tot.subtotal / INSTANT_DISCOUNT_THRESHOLD) * 100));
   const bar = document.getElementById('floating-progress-bar');
   const badge = document.getElementById('floating-progress-badge');
   const text = document.getElementById('floating-progress-text');
   if (tot.subtotal >= INSTANT_DISCOUNT_THRESHOLD) {
-    bar.style.width = '100%';
-    badge.innerText = '100%';
+    bar.style.width = '100%'; badge.innerText = '100%';
     text.innerText = tx('4% instant discount active', 'Diskon 4% aktif') + ' (-' + formatRupiah(tot.instant) + ')';
   } else {
-    bar.style.width = progress + '%';
-    badge.innerText = progress + '%';
-    text.innerText = tx('Add ', 'Tambah ') + formatRupiah(INSTANT_DISCOUNT_THRESHOLD - tot.subtotal) +
-      tx(' for 4% instant discount', ' untuk diskon 4%');
+    bar.style.width = progress + '%'; badge.innerText = progress + '%';
+    text.innerText = tx('Add ', 'Tambah ') + formatRupiah(INSTANT_DISCOUNT_THRESHOLD - tot.subtotal) + tx(' for 4% instant discount', ' untuk diskon 4%');
   }
 
   const discountRow = document.getElementById('discount-row');
-  if (tot.instant > 0) {
-    discountRow.classList.remove('hidden');
-    document.getElementById('summary-discount').innerText = '-' + formatRupiah(tot.instant);
-  } else {
-    discountRow.classList.add('hidden');
-  }
+  if (tot.instant > 0) { discountRow.classList.remove('hidden'); document.getElementById('summary-discount').innerText = '-' + formatRupiah(tot.instant); }
+  else discountRow.classList.add('hidden');
 
   const couponRow = document.getElementById('coupon-discount-row');
   if (tot.couponDisc > 0) {
     couponRow.classList.remove('hidden');
     document.getElementById('coupon-discount-label-text').innerText = tot.pct + '% ' + tx('Coupon Discount', 'Diskon Kupon');
     document.getElementById('summary-coupon-discount').innerText = '-' + formatRupiah(tot.couponDisc);
-  } else {
-    couponRow.classList.add('hidden');
-  }
+  } else couponRow.classList.add('hidden');
 
   const hasItems = totalCount > 0;
   document.getElementById('empty-cart').classList.toggle('hidden', hasItems);
@@ -1132,42 +1166,27 @@ function updateUI() {
   document.getElementById('floating-bar-container').classList.toggle('hidden', !hasItems);
 
   const cartItemsEl = document.getElementById('cart-items');
-  if (!hasItems) {
-    cartItemsEl.innerHTML = '';
-  } else {
+  if (!hasItems) cartItemsEl.innerHTML = '';
+  else {
     let html = '';
     if (cart['bundle']) {
-      html += `
-        <div class="cart-item">
-          <div>
-            <div class="cart-item-name">The Buy 4 Bundle</div>
-            <div class="cart-item-meta">${tx('1 of each flavor', '1 dari tiap rasa')} &middot; ${formatRupiah(BUNDLE_PRICE)} &times; ${cart['bundle']}</div>
-          </div>
-          <div class="cart-item-controls">
-            <span style="font-weight:600">${formatRupiah(BUNDLE_PRICE * cart['bundle'])}</span>
-            <button onclick="updateCartBundle(-1)" class="qty-btn">-</button>
-            <span class="qty-num">${cart['bundle']}</span>
-            <button onclick="updateCartBundle(1)" class="qty-btn">+</button>
-          </div>
-        </div>`;
+      html += `<div class="cart-item"><div>
+        <div class="cart-item-name">The Buy 4 Bundle</div>
+        <div class="cart-item-meta">${tx('1 of each flavor', '1 dari tiap rasa')} · ${formatRupiah(BUNDLE_PRICE)} × ${cart['bundle']}</div></div>
+        <div class="cart-item-controls"><span style="font-weight:600">${formatRupiah(BUNDLE_PRICE * cart['bundle'])}</span>
+        <button onclick="updateCartBundle(-1)" class="qty-btn">-</button><span class="qty-num">${cart['bundle']}</span>
+        <button onclick="updateCartBundle(1)" class="qty-btn">+</button></div></div>`;
     }
     for (let id in cart) {
       if (id === 'bundle') continue;
       const p = PRODUCTS.find(item => item.id == id);
       const qty = cart[id];
-      html += `
-        <div class="cart-item">
-          <div>
-            <div class="cart-item-name">${p.name}</div>
-            <div class="cart-item-meta">${formatRupiah(p.price)} &times; ${qty}</div>
-          </div>
-          <div class="cart-item-controls">
-            <span style="font-weight:600">${formatRupiah(p.price * qty)}</span>
-            <button onclick="updateCart(${p.id}, -1)" class="qty-btn">-</button>
-            <span class="qty-num">${qty}</span>
-            <button onclick="updateCart(${p.id}, 1)" class="qty-btn">+</button>
-          </div>
-        </div>`;
+      html += `<div class="cart-item"><div>
+        <div class="cart-item-name">${p.name}</div>
+        <div class="cart-item-meta">${formatRupiah(p.price)} × ${qty}</div></div>
+        <div class="cart-item-controls"><span style="font-weight:600">${formatRupiah(p.price * qty)}</span>
+        <button onclick="updateCart(${p.id}, -1)" class="qty-btn">-</button><span class="qty-num">${qty}</span>
+        <button onclick="updateCart(${p.id}, 1)" class="qty-btn">+</button></div></div>`;
     }
     cartItemsEl.innerHTML = html;
   }
@@ -1184,8 +1203,7 @@ function renderFreeJarBox() {
   if (n === 0) return;
   document.getElementById('free-jar-title').innerText = tx(
     '🎉 This order earns ' + n + ' FREE jar' + (n > 1 ? 's' : '') + '!',
-    '🎉 Pesanan ini dapat ' + n + ' jar GRATIS!'
-  );
+    '🎉 Pesanan ini dapat ' + n + ' jar GRATIS!');
   document.getElementById('free-jar-label').innerText = tx('Flavor for your free jar', 'Pilih rasa jar gratis');
   const sel = document.getElementById('free-jar-flavor');
   const keep = sel.value;
@@ -1196,31 +1214,27 @@ function renderFreeJarBox() {
 function renderCouponSelect() {
   const box = document.getElementById('coupon-wallet-container');
   if (!account.loaded || account.coupons.length === 0) { box.innerHTML = ''; return; }
-  box.innerHTML = `
-    <div class="box" style="display:grid;gap:6px">
-      <label class="form-label">${tx('Use a coupon (optional)', 'Pakai kupon (opsional)')}</label>
-      <select id="coupon-select" class="form-select" onchange="chosenCoupon=this.value; updateUI()">
-        <option value="">${tx('No coupon', 'Tanpa kupon')}</option>
-        ${account.coupons.map(c => `<option value="${c}" ${c === chosenCoupon ? 'selected' : ''}>${c}</option>`).join('')}
-      </select>
-    </div>`;
+  box.innerHTML = `<div class="box" style="display:grid;gap:6px">
+    <label class="form-label">${tx('Use a coupon (optional)', 'Pakai kupon (opsional)')}</label>
+    <select id="coupon-select" class="form-select" onchange="chosenCoupon=this.value; updateUI()">
+      <option value="">${tx('No coupon', 'Tanpa kupon')}</option>
+      ${account.coupons.map(c => `<option value="${c}" ${c === chosenCoupon ? 'selected' : ''}>${c}</option>`).join('')}
+    </select></div>`;
 }
 
+// ---------- Stamps and coupons pages ----------
 function renderStampCard() {
   const container = document.getElementById('stamp-slots-container');
   if (!container) return;
   const stamps = account.loaded ? account.stamps : 0;
-  document.getElementById('stamp-count-badge').innerText = `${stamps} / ${STAMPS_PER_FREE_JAR} Jars`;
+  document.getElementById('stamp-count-badge').innerText = stamps + ' / ' + STAMPS_PER_FREE_JAR + ' Jars';
   document.getElementById('stamp-note').innerText = account.loaded
     ? tx('Stamps are counted after each paid order.', 'Stamp dihitung setelah setiap pesanan lunas.')
     : tx('Enter your WhatsApp and email above to see your stamps.', 'Isi WhatsApp dan email di atas untuk melihat stamp Anda.');
   let html = '';
   for (let i = 1; i <= STAMPS_PER_FREE_JAR; i++) {
     const filled = i <= stamps;
-    html += `<div class="stamp-slot ${filled ? 'filled' : ''}">
-      <span class="stamp-icon">${filled ? '🧀' : '⭕'}</span>
-      <span class="stamp-num">JAR ${i}</span>
-    </div>`;
+    html += `<div class="stamp-slot ${filled ? 'filled' : ''}"><span class="stamp-icon">${filled ? '🧀' : '⭕'}</span><span class="stamp-num">JAR ${i}</span></div>`;
   }
   container.innerHTML = html;
 }
@@ -1229,15 +1243,13 @@ function renderBoomerPromos() {
   const container = document.getElementById('boomer-promo-list');
   if (!container) return;
   if (!account.loaded || account.coupons.length === 0) {
-    container.innerHTML = `<div class="card" style="text-align:center;color:var(--muted)">${tx('No unused coupons yet. Enter your details on the Loyalty Stamp page to check.', 'Belum ada kupon. Isi data Anda di halaman Kartu Stamp untuk mengecek.')}</div>`;
+    container.innerHTML = `<div class="card" style="text-align:center;color:var(--muted)">${tx('No unused coupons. Check your details on the Loyalty Stamp page.', 'Belum ada kupon. Cek data Anda di halaman Kartu Stamp.')}</div>`;
     return;
   }
   container.innerHTML = account.coupons.map(c => `
-    <div class="voucher-card">
-      <div>
-        <div class="voucher-code">${c}</div>
-        <div style="font-size:13px">${couponPercentOf(c)}% OFF</div>
-      </div>
+    <div class="voucher-card"><div>
+      <div class="voucher-code">${c}</div>
+      <div style="font-size:13px">${couponPercentOf(c)}% OFF</div></div>
       <button onclick="copyText('${c}')" class="btn btn-ghost btn-small">${tx('Copy', 'Salin')}</button>
     </div>`).join('');
 }
@@ -1247,6 +1259,41 @@ function copyText(text) {
   alert(tx('Copied: ', 'Disalin: ') + text);
 }
 
+// ---------- Opening hours and same-day cut-off (Jakarta time) ----------
+function jakartaNow() {
+  const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', hour12: false }).formatToParts(new Date());
+  const get = type => parts.find(p => p.type === type).value;
+  return { date: get('year') + '-' + get('month') + '-' + get('day'), hour: Number(get('hour')) % 24 };
+}
+function addDays(iso, n) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const x = new Date(y, m - 1, d + n);
+  return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+}
+function setupDeliveryDate() {
+  const input = document.getElementById('delivery-date');
+  const now = jakartaNow();
+  const afterCutoff = now.hour >= ORDER_CUTOFF_HOUR;
+  const minIso = afterCutoff ? addDays(now.date, 1) : now.date;
+  if (input) {
+    input.min = minIso;
+    if (!input.value || input.value < minIso) input.value = minIso;
+  }
+  const note = document.getElementById('hours-note');
+  if (note) note.innerText = afterCutoff
+    ? tx('Same-day orders are closed for today (cut-off 21.00). Your order will be delivered tomorrow morning.', 'Pesanan hari ini sudah ditutup (batas 21.00). Pesanan Anda dikirim besok pagi.')
+    : tx('Orders placed before 21.00 can be delivered today. After 21.00, orders go out the next morning.', 'Pesanan sebelum 21.00 bisa dikirim hari ini. Setelah 21.00, dikirim besok pagi.');
+}
+// Returns an error message, or '' if the chosen date is allowed right now
+function deliveryDateError(dateStr) {
+  const now = jakartaNow();
+  if (!dateStr) return tx('Please choose a delivery date.', 'Pilih tanggal kirim.');
+  if (dateStr < now.date) return tx('That date has passed. Please choose another date.', 'Tanggal itu sudah lewat. Pilih tanggal lain.');
+  if (dateStr === now.date && now.hour >= ORDER_CUTOFF_HOUR) return tx('Same-day orders close at 21.00. Please choose tomorrow.', 'Pesanan hari ini sudah ditutup setelah 21.00. Pilih besok.');
+  return '';
+}
+
+// ---------- Checkout and payment ----------
 function setPayBusy(busy) {
   payBusy = busy;
   const btn = document.getElementById('whatsapp-btn');
@@ -1255,142 +1302,114 @@ function setPayBusy(busy) {
   btn.firstElementChild.innerText = busy ? t('btn_processing') : t('btn_proceed');
 }
 
-function isValidEmailStrict(email) {
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|icloud\.com|co\.id|id|[a-zA-Z]{2,})$/i;
-  return re.test(String(email).trim().toLowerCase());
-}
-
-function isValidPhoneStrict(phone) {
-  const clean = String(phone).replace(/\D/g, '');
-  const norm = clean.startsWith('62') ? '0' + clean.slice(2) : clean;
-  return /^08\d{8,11}$/.test(norm);
-}
-
 async function payWithMidtrans() {
   if (payBusy) return;
   const f = readCheckout();
-
-  if (!f.name || !f.phone || !f.email || (currentFulfillmentMethod === 'delivery' && !f.address)) {
-    alert(tx('Mohon lengkapi semua data pendaftaran & alamat.', 'Please complete all customer and address fields.'));
-    return;
-  }
-
-  if (!isValidPhoneStrict(f.phone)) {
-    alert(tx('Nomor WhatsApp tidak valid. Gunakan nomor HP Indonesia asli (cth: 081380003850).', 'Invalid WhatsApp number. Please use a real Indonesian phone number.'));
-    return;
-  }
-
-  if (!isValidEmailStrict(f.email)) {
-    alert(tx('Email tidak valid atau typo. Gunakan email resmi (seperti nama@gmail.com).', 'Invalid email address or typo. Please check your email.'));
-    return;
-  }
-
+  if (currentFulfillmentMethod === 'delivery' && f.address.length < 5) { alert(tx('Enter your full address.', 'Isi alamat lengkap.')); return; }
+  const idErr = checkIdentity();
+  if (idErr) { alert(idErr); return; }
   if (countJars() === 0) return;
+  const dateErr = deliveryDateError(f.date);
+  if (dateErr) { alert(dateErr); setupDeliveryDate(); return; }
 
-  if (pendingOrders.length > 0) {
-    for (const oldP of pendingOrders) {
-      post({ action: 'cleanup_pending', orderId: oldP.orderId }).catch(() => {});
-    }
-    pendingOrders = [];
-    save('ric_pending', pendingOrders);
-  }
+  // Finish any earlier payment first, so the same cart is not paid twice
+  await reconcileAll();
+  if (pendingOrders.length > 0 && !confirm(tx(
+    'You have a payment that is not finished yet. Start a new order with this cart anyway?',
+    'Ada pembayaran yang belum selesai. Tetap buat pesanan baru dengan keranjang ini?'))) return;
 
+  // Fresh stamps and coupons from the server, right before paying
   await loadAccount(true);
   const tot = calcTotals();
   const freeJars = rewardsFor(account.loaded ? account.stamps : 0, tot.jars);
   const freeFlavor = document.getElementById('free-jar-flavor').value;
-  if (freeJars > 0 && !freeFlavor) {
-    alert(tx('Mohon pilih rasa jar gratis Anda.', 'Please choose the flavor of your free jar.'));
-    return;
-  }
+  if (freeJars > 0 && !freeFlavor) { alert(tx('Please choose the flavor of your free jar.', 'Mohon pilih rasa jar gratis Anda.')); return; }
 
-  const datetime = `${f.date} (${f.time})`;
+  const datetime = f.date + ' (' + f.time + ')';
   const addressText = currentFulfillmentMethod === 'pickup'
     ? 'SELF PICKUP @ Taman Grisenda'
-    : `${f.address} [Area: ${selectedAreaName}, ~${calculatedDeliveryKm.toFixed(1)}km]`;
-  const areaIndex = currentFulfillmentMethod === 'pickup'
-    ? -1
-    : JAKARTA_AREAS.findIndex(a => a.name === selectedAreaName);
+    : f.address + ' [Area: ' + selectedAreaName + ', ~' + calculatedDeliveryKm.toFixed(1) + 'km]';
+  const areaIndex = currentFulfillmentMethod === 'pickup' ? -1 : JAKARTA_AREAS.findIndex(a => a.name === selectedAreaName);
 
   setPayBusy(true);
   let d;
   try {
     d = await post({
-      action: 'create',
-      name: f.name, phone: f.phone, email: f.email,
-      fulfillment: currentFulfillmentMethod,
-      address: addressText,
-      datetime: datetime,
-      areaIndex: areaIndex,
-      cart: cart,
-      freeFlavor: freeJars > 0 ? freeFlavor : '',
-      couponCode: chosenCoupon,
+      action: 'create', name: f.name, phone: f.phone, email: f.email,
+      fulfillment: currentFulfillmentMethod, address: addressText, datetime: datetime, areaIndex: areaIndex,
+      cart: cart, freeFlavor: freeJars > 0 ? freeFlavor : '', couponCode: chosenCoupon,
       gift: document.getElementById('gift-option').checked,
-      giftNote: document.getElementById('gift-note').value.trim(),
-      lang: currentLang
+      giftNote: document.getElementById('gift-note').value.trim(), lang: currentLang
     });
   } catch (e) {
-    alert(tx('Gagal terhubung ke pembayaran. Coba lagi.', 'Could not process payment. Try again.'));
+    alert(tx('Failed to start payment. Please try again.', 'Gagal memulai pembayaran. Coba lagi.'));
     setPayBusy(false);
     return;
   }
-
   if (d.status !== 'success' || !d.token) {
-    alert(d.message || tx('Gagal membuat transaksi.', 'Transaction creation failed.'));
+    alert(d.message || tx('Failed to start payment. Please try again.', 'Gagal memulai pembayaran. Coba lagi.'));
     setPayBusy(false);
     return;
   }
 
+  // Remember the order on this device. The cart is cleared only when the server says Paid.
   const p = {
     orderId: d.orderId, name: f.name, email: f.email, phone: f.phone,
-    cart: Object.assign({}, cart), freeJars: freeJars,
-    freeFlavor: freeJars > 0 ? freeFlavor : '', couponCode: chosenCoupon,
-    subtotal: tot.subtotal, discount: tot.discount, total: d.total,
-    datetime: datetime, address: addressText, fulfil: currentFulfillmentMethod
+    cart: Object.assign({}, cart), freeJars: freeJars, freeFlavor: freeJars > 0 ? freeFlavor : '',
+    subtotal: tot.subtotal, discount: tot.discount, total: d.total, datetime: datetime, address: addressText, fulfil: currentFulfillmentMethod
   };
-
   pendingOrders.push(p);
   save('ric_pending', pendingOrders);
 
   if (!window.snap || typeof window.snap.pay !== 'function') {
-    alert(tx('Sistem pembayaran belum siap. Reload halaman.', 'Payment system not ready. Reload page.'));
+    alert(tx('Payment window could not open. Your order is saved; open Order History to finish it.', 'Jendela pembayaran tidak terbuka. Pesanan tersimpan; buka Riwayat Pesanan untuk menyelesaikannya.'));
     setPayBusy(false);
+    renderOrderHistory();
     return;
   }
 
   window.snap.pay(d.token, {
-    onSuccess: () => {
-      cart = {};
-      saveCart();
-      pendingOrders = [];
-      save('ric_pending', pendingOrders);
-      finalizeOrder(p, 'Paid');
-    },
-    onPending: () => {
-      cart = {};
-      saveCart();
-      setPayBusy(false);
-      updateUI();
-      toggleCartIfOpen();
-      alert(tx('Pesanan Anda dicatat. Silakan selesaikan pembayaran sesuai petunjuk Midtrans.', 'Order logged. Complete payment as instructed.'));
-    },
-    onError: () => {
-      setPayBusy(false);
-      post({ action: 'cleanup_pending', orderId: p.orderId }).catch(() => {});
-      pendingOrders = pendingOrders.filter(x => x.orderId !== p.orderId);
-      save('ric_pending', pendingOrders);
-      alert(tx('Pembayaran gagal atau dibatalkan. Silakan coba lagi.', 'Payment failed. Please try again.'));
-    },
-    onClose: () => {
-      setPayBusy(false);
-      post({ action: 'cleanup_pending', orderId: p.orderId }).catch(() => {});
-      pendingOrders = pendingOrders.filter(x => x.orderId !== p.orderId);
-      save('ric_pending', pendingOrders);
-    }
+    onSuccess: () => { setPayBusy(false); reconcileAll(); },
+    onPending: () => { setPayBusy(false); reconcileAll(); alert(tx('Please finish paying. Your cart will be cleared automatically once payment is received.', 'Silakan selesaikan pembayaran. Keranjang otomatis kosong setelah pembayaran diterima.')); },
+    onError: () => { setPayBusy(false); alert(tx('Payment failed. Please try again.', 'Pembayaran gagal. Silakan coba lagi.')); reconcileAll(); },
+    onClose: () => { setPayBusy(false); reconcileAll(); }
   });
 }
 
-function finalizeOrder(p, status) {
+/**
+ * Asks the server about every unfinished payment. The server checks Midtrans directly.
+ * Only a Paid status finishes the order (clears that cart, adds it to history).
+ * Failed or expired payments are removed from the list, the cart is kept.
+ */
+async function reconcileAll() {
+  const list = pendingOrders.slice();
+  for (const p of list) {
+    let d;
+    try { d = await post({ action: 'lookup_order', orderId: p.orderId, contact: p.email }); } catch (e) { continue; }
+    if (!d || d.status !== 'success') continue;
+    const st = d.order.paymentStatus;
+    if (st === 'Paid') {
+      finalizeOrder(p);
+    } else if (st === 'Failed') {
+      pendingOrders = pendingOrders.filter(x => x.orderId !== p.orderId);
+      save('ric_pending', pendingOrders);
+      alert(tx('This payment did not go through. Your cart is still saved, you can try again.', 'Pembayaran ini tidak berhasil. Keranjang Anda masih tersimpan, silakan coba lagi.'));
+      await loadAccount(true);
+    }
+  }
+  renderPendingBanner();
+}
+
+function finalizeOrder(p) {
+  // Guard: if this order was already finished (two checks ran at the same time), do nothing
+  if (!pendingOrders.some(x => x.orderId === p.orderId)) return;
+  // Take the paid items out of the cart. Anything added afterwards stays.
+  Object.keys(p.cart).forEach(k => {
+    cart[k] = (cart[k] || 0) - p.cart[k];
+    if (cart[k] <= 0) delete cart[k];
+  });
+  saveCart();
+
   const snapshot = Object.assign({}, p.cart);
   if (p.freeJars > 0) {
     const fid = productIdByName(p.freeFlavor);
@@ -1399,80 +1418,72 @@ function finalizeOrder(p, status) {
   orderHistory.unshift({
     id: p.orderId,
     date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
-    deliveryDatetime: p.datetime,
-    cartSnapshot: snapshot,
-    discountTotal: p.discount,
-    address: p.address,
-    total: p.total,
-    status: status,
-    email: p.email
+    deliveryDatetime: p.datetime, cartSnapshot: snapshot, discountTotal: p.discount,
+    address: p.address, total: p.total, status: 'Paid', email: p.email
   });
   save('ric_order_history', orderHistory);
 
+  pendingOrders = pendingOrders.filter(x => x.orderId !== p.orderId);
+  save('ric_pending', pendingOrders);
+
   chosenCoupon = '';
   setPayBusy(false);
+  const drawer = document.getElementById('cart-drawer');
+  if (!drawer.classList.contains('hidden')) toggleCart();
   updateUI();
-  toggleCartIfOpen();
   loadAccount(true);
   renderOrderHistory();
 
   alert(tx(
-    'Order placed! Order no: ' + p.orderId + '. Confirmation email sent to ' + p.email + '.',
-    'Pesanan dicatat! No pesanan: ' + p.orderId + '. Email konfirmasi terkirim ke ' + p.email + '.'
-  ));
+    'Payment received! Order no: ' + p.orderId + '. Keep this number to check your receipt in Order History. A confirmation email was sent to ' + p.email + '. If you do not see it, check Spam and tap "Not spam".',
+    'Pembayaran diterima! Nomor pesanan: ' + p.orderId + '. Simpan nomor ini untuk cek struk di Riwayat Pesanan. Email konfirmasi dikirim ke ' + p.email + '. Jika belum masuk, cek folder Spam lalu tekan "Bukan spam".'));
 }
 
-function toggleCartIfOpen() {
-  const drawer = document.getElementById('cart-drawer');
-  if (!drawer.classList.contains('hidden')) toggleCart();
+function renderPendingBanner() {
+  const b = document.getElementById('pending-banner');
+  if (!pendingOrders.length) { b.classList.add('hidden'); b.innerHTML = ''; return; }
+  b.classList.remove('hidden');
+  b.innerHTML = '<strong>' + tx('Waiting for payment', 'Menunggu pembayaran') + '</strong><div style="font-size:14px;margin-top:4px">' +
+    pendingOrders.map(p => p.orderId + ' · ' + formatRupiah(p.total)).join('<br>') +
+    '</div><div style="font-size:13px;color:var(--muted);margin-top:6px">' + tx('Your cart clears automatically after payment.', 'Keranjang kosong otomatis setelah pembayaran.') + '</div>';
 }
 
-function statusLabel(s) {
-  if (s === 'Paid') return { text: tx('Paid', 'Lunas'), style: 'background:#dcfce7;color:#166534' };
-  if (s === 'Failed') return { text: tx('Failed', 'Gagal'), style: 'background:#fee2e2;color:#991b1b' };
-  return { text: tx('Waiting for payment confirmation', 'Menunggu konfirmasi pembayaran'), style: 'background:#fef3c7;color:#92400e' };
-}
-
+// ---------- Order history and receipt lookup ----------
 function renderOrderHistory() {
   const container = document.getElementById('order-history-list');
   if (!container) return;
+  renderPendingBanner();
   if (orderHistory.length === 0) {
-    container.innerHTML = `<div class="card" style="text-align:center;color:var(--muted)">${tx('No orders on this device yet.', 'Belum ada pesanan di perangkat ini.')}</div>`;
+    container.innerHTML = `<div class="card" style="text-align:center;color:var(--muted)">${tx('No paid orders on this device yet.', 'Belum ada pesanan lunas di perangkat ini.')}</div>`;
     return;
   }
   container.innerHTML = orderHistory.map(ord => {
     let items = '<ul style="margin-left: 18px; display: grid; gap: 4px; font-size: 14px; font-weight: 500;">';
     for (let key in ord.cartSnapshot) {
-      if (key === 'bundle') items += `<li>The Buy 4 Bundle &times; ${ord.cartSnapshot['bundle']}</li>`;
-      else {
-        const prod = PRODUCTS.find(p => p.id == key);
-        if (prod) items += `<li>${prod.name} &times; ${ord.cartSnapshot[key]}</li>`;
-      }
+      if (key === 'bundle') items += `<li>The Buy 4 Bundle × ${ord.cartSnapshot['bundle']}</li>`;
+      else { const prod = PRODUCTS.find(p => p.id == key); if (prod) items += `<li>${prod.name} × ${ord.cartSnapshot[key]}</li>`; }
     }
     items += '</ul>';
-    const lb = statusLabel(ord.status);
-    return `
-      <div class="card" style="display:grid;gap:12px">
-        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:8px;gap:8px">
-          <div>
-            <strong style="font-size:16px">${ord.id}</strong>
-            <div style="font-size:12px;color:var(--muted)">${ord.date} • ${ord.deliveryDatetime}</div>
-          </div>
-          <span class="status-pill" style="${lb.style}">${lb.text}</span>
-        </div>
-        <div>${items}</div>
-        ${ord.discountTotal > 0 ? `<div style="font-size:13px;color:var(--accent);font-weight:600">Discount: -${formatRupiah(ord.discountTotal)}</div>` : ''}
-        <div style="font-size:13px;color:var(--muted)">📍 <strong>${tx('Delivery / Pickup', 'Antar / Ambil')}:</strong> ${ord.address}</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:8px;font-weight:700;">
-          <span>${tx('Total', 'Total')}:</span>
-          <span style="color:var(--accent)">${formatRupiah(ord.total)}</span>
-        </div>
-      </div>`;
+    return `<div class="card" style="display:grid;gap:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:8px;gap:8px">
+        <div><strong style="font-size:16px">${ord.id}</strong><div style="font-size:12px;color:var(--muted)">${ord.date} • ${ord.deliveryDatetime}</div></div>
+        <span class="status-pill" style="background:#dcfce7;color:#166534">${tx('Paid', 'Lunas')}</span>
+      </div>
+      <div>${items}</div>
+      ${ord.discountTotal > 0 ? `<div style="font-size:13px;color:var(--accent);font-weight:600">Discount: -${formatRupiah(ord.discountTotal)}</div>` : ''}
+      <div style="font-size:13px;color:var(--muted)">📍 <strong>${tx('Delivery / Pickup', 'Antar / Ambil')}:</strong> ${ord.address}</div>
+      <div style="display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:8px;font-weight:700"><span>${tx('Total', 'Total')}:</span><span style="color:var(--accent)">${formatRupiah(ord.total)}</span></div>
+    </div>`;
   }).join('');
 }
 
+async function refreshHistoryStatuses() {
+  renderPendingBanner();
+  if (pendingOrders.length) reconcileAll();
+}
+
 async function lookupOrderOnline() {
-  const id = document.getElementById('lookup-order-id').value.trim();
+  const id = document.getElementById('lookup-order-id').value.trim().toUpperCase();
   const contact = document.getElementById('lookup-contact').value.trim();
   const out = document.getElementById('lookup-result');
   if (!id || !contact) { out.innerText = tx('Enter the order number and your email or WhatsApp.', 'Isi nomor pesanan dan email/WhatsApp.'); return; }
@@ -1482,18 +1493,17 @@ async function lookupOrderOnline() {
     const d = await post({ action: 'lookup_order', orderId: id, contact: contact });
     if (d.status !== 'success') { out.innerText = d.message || tx('Order not found.', 'Pesanan tidak ditemukan.'); return; }
     const o = d.order;
-    const lb = statusLabel(o.paymentStatus);
-    out.innerHTML = `
-      <div style="display:grid;gap:6px;border-top:1px solid var(--line);padding-top:10px">
-        <div><strong>${esc(o.id)}</strong> · <span class="status-pill" style="${lb.style}">${esc(lb.text)}</span></div>
-        <div>${tx('Schedule', 'Jadwal')}: ${esc(o.datetime)}</div>
-        <div>${o.fulfil === 'pickup' ? tx('Pick up at', 'Ambil di') : tx('Address', 'Alamat')}: ${esc(o.address)}</div>
-        <div style="white-space:pre-line">${esc(o.items)}</div>
-        <div>Subtotal: ${formatRupiah(o.subtotal)}</div>
-        ${o.discount > 0 ? '<div>Discount: -' + formatRupiah(o.discount) + '</div>' : ''}
-        <div>${tx('Delivery fee', 'Ongkir')}: ${formatRupiah(o.fee)}</div>
-        <div><strong>Total: ${formatRupiah(o.total)}</strong></div>
-      </div>`;
+    const label = o.paymentStatus === 'Paid' ? tx('Paid', 'Lunas') : (o.paymentStatus === 'Failed' ? tx('Not paid', 'Belum dibayar') : tx('Waiting for payment', 'Menunggu pembayaran'));
+    const style = o.paymentStatus === 'Paid' ? 'background:#dcfce7;color:#166534' : 'background:#fef3c7;color:#92400e';
+    out.innerHTML = `<div style="display:grid;gap:6px;border-top:1px solid var(--line);padding-top:10px">
+      <div><strong>${esc(o.id)}</strong> · <span class="status-pill" style="${style}">${esc(label)}</span></div>
+      <div>${tx('Schedule', 'Jadwal')}: ${esc(o.datetime)}</div>
+      <div>${o.fulfil === 'pickup' ? tx('Pick up at', 'Ambil di') : tx('Address', 'Alamat')}: ${esc(o.address)}</div>
+      <div style="white-space:pre-line">${esc(o.items)}</div>
+      <div>Subtotal: ${formatRupiah(o.subtotal)}</div>
+      ${o.discount > 0 ? '<div>Discount: -' + formatRupiah(o.discount) + '</div>' : ''}
+      <div>${tx('Delivery fee', 'Ongkir')}: ${formatRupiah(o.fee)}</div>
+      <div><strong>Total: ${formatRupiah(o.total)}</strong></div></div>`;
   } catch (e) {
     out.innerText = tx('Could not check the order. Please try again.', 'Gagal mengecek. Coba lagi sebentar.');
   }
