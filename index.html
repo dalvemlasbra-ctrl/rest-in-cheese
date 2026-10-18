@@ -9,7 +9,8 @@
 <meta property="og:title" content="Rest in Cheese | Cheesecake in a Jar">
 <meta property="og:description" content="Silky cheesecake in a jar, infused with comforting, familiar local flavors.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%231C1616'/%3E%3Ctext x='50' y='65' font-family='serif' font-size='50' fill='%23F7F2EA' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -248,9 +249,19 @@ footer a { color: var(--ink); font-weight: 600; }
 .area-list-box { border-radius: 16px; border: none; box-shadow: var(--shadow); }
 .area-card { padding: 14px 16px; }
 .fee-box { border-radius: 16px; border: none; box-shadow: var(--shadow); padding: 14px 16px; }
+/* ---------- Brand polish ---------- */
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-logo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 2px 8px rgba(120,70,20,.18); }
+.footer-logo { width: 64px; height: 64px; border-radius: 50%; }
+body { background: radial-gradient(circle at 15% 0%, #FBF7F0 0%, var(--bg) 55%) fixed; }
+.product-card { border: 1px solid #EFE6D8; }
+.btn-primary { background: linear-gradient(135deg, #B9590E 0%, #9A4308 100%); }
+.bundle { background: linear-gradient(160deg, #241C1C 0%, #1C1616 100%); }
+.section-title::after { content: ''; display: block; width: 56px; height: 2px; margin-top: 14px; background: linear-gradient(90deg, #B45309, rgba(180,83,9,0)); border-radius: 2px; }
+
 /* ---------- Hero: text on the left, jars on the right (phone: text on top, jars below) ---------- */
 .hero-full { display: block; padding: 0; align-items: normal; position: relative; margin: 0 -20px; min-height: 540px; background: #F3EBDD url('hero.jpg') 78% bottom / cover no-repeat; border-radius: 0 0 28px 28px; overflow: hidden; }
-.hero-full::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #F3EBDD 0%, #F3EBDD 52%, rgba(243,235,221,.85) 68%, rgba(243,235,221,0) 88%); pointer-events: none; }
+.hero-full::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #F3EBDD 0%, #F3EBDD 40%, rgba(243,235,221,.5) 56%, rgba(243,235,221,0) 74%); pointer-events: none; }
 .hero-copy { position: relative; z-index: 1; padding: 36px 24px 12px; }
 .hero-copy .eyebrow { margin-bottom: 14px; }
 .hero-copy .hero-title { font-size: clamp(36px, 9vw, 52px); margin-bottom: 14px; }
@@ -277,7 +288,7 @@ footer a { color: var(--ink); font-weight: 600; }
 <header>
   <div class="nav">
     <button onclick="toggleMenu()" class="menu-btn" aria-label="Open menu">&#9776;</button>
-    <div class="brand" onclick="switchPage('home')">Rest in Cheese</div>
+    <div class="brand" onclick="switchPage('home')"><img src="logo.png" alt="" class="brand-logo">Rest in Cheese</div>
     <div class="header-right">
       <div class="lang-switch">
         <span id="lang-en" onclick="setLanguage('en')">EN</span>
@@ -294,7 +305,7 @@ footer a { color: var(--ink); font-weight: 600; }
 <div id="menu-drawer" class="hidden">
   <div id="menu-panel">
     <div class="drawer-header">
-      <span class="brand">Rest in Cheese</span>
+      <span class="brand"><img src="logo.png" alt="" class="brand-logo">Rest in Cheese</span>
       <button onclick="toggleMenu()" class="drawer-close" aria-label="Close menu">&times;</button>
     </div>
     <div class="drawer-links">
@@ -582,13 +593,15 @@ footer a { color: var(--ink); font-weight: 600; }
 </div>
 
 <footer>
+  <img src="logo.png" alt="Rest in Cheese" class="footer-logo">
+  <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--accent)">Cheesecake in a jar · A little slice of heaven</p>
   <div>
     <p>Rest in Cheese, Taman Grisenda, Pantai Indah Kapuk, Jakarta Utara.</p>
     <p>Open daily 09.00–21.00 WIB</p>
     <p style="margin-top:6px"><a href="https://wa.me/6282112002258" target="_blank" id="t-footer-wa">WhatsApp Admin</a></p>
   </div>
   <p id="t-footer-copy">&copy; Rest in Cheese. All rights reserved.</p>
-  <p style="font-size:11px;color:#9a8f88">build v5 · hero text</p>
+  <p style="font-size:11px;color:#9a8f88">build v6 · logo</p>
 </footer>
 
 <script>
