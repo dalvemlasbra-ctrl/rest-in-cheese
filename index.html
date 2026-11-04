@@ -554,7 +554,7 @@ body { background: radial-gradient(circle at 15% 0%, #FBF7F0 0%, var(--bg) 55%) 
           <input type="text" id="cust-name" class="form-input" placeholder="e.g. Sarah Jenkins" oninput="saveCustomerField('name', this.value)">
         </div>
 
-        <div class="form-row">
+        <div class="form-row" style="grid-template-columns:1fr">
           <div class="form-group">
             <label class="form-label" id="t-label-phone">WhatsApp Number</label>
             <input type="tel" id="cust-phone" class="form-input" placeholder="081234567890" inputmode="tel" oninput="saveCustomerField('phone', this.value)" onchange="onIdentityChange()">
@@ -1363,13 +1363,14 @@ function updateUI() {
     for (let id in cart) {
       if (id === 'bundle') continue;
       const p = PRODUCTS.find(item => item.id == id);
+      if (!p) { delete cart[id]; saveCart(); continue; }
       const qty = cart[id];
       html += `<div class="cart-item"><div>
         <div class="cart-item-name">${p.name}</div>
         <div class="cart-item-meta">${formatRupiah(p.price)} × ${qty}</div></div>
         <div class="cart-item-controls"><span style="font-weight:600">${formatRupiah(p.price * qty)}</span>
-        <button onclick="updateCart(${p.id}, -1)" class="qty-btn">-</button><span class="qty-num">${qty}</span>
-        <button onclick="updateCart(${p.id}, 1)" class="qty-btn">+</button></div></div>`;
+        <button onclick="updateCart('${p.id}', -1)" class="qty-btn">-</button><span class="qty-num">${qty}</span>
+        <button onclick="updateCart('${p.id}', 1)" class="qty-btn">+</button></div></div>`;
     }
     cartItemsEl.innerHTML = html;
   }
@@ -1558,7 +1559,7 @@ async function payWithMidtrans() {
   if (currentFulfillmentMethod === 'delivery' && f.address.length < 5) { alert(tx('Enter your full address.', 'Isi alamat lengkap.')); return; }
   const idErr = checkIdentity();
   if (idErr) { alert(idErr); return; }
-  if (countJars() === 0) return;
+  if (currentProductsTotal() <= 0) return;
   const dateErr = deliveryDateError(f.date);
   if (dateErr) { alert(dateErr); setupDeliveryDate(); return; }
 
