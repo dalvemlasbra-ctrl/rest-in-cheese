@@ -1543,7 +1543,8 @@ async function payWithMidtrans() {
   if (currentFulfillmentMethod === 'delivery' && f.address.length < 5) { alert(tx('Enter your full address.', 'Isi alamat lengkap.')); return; }
   const idErr = checkIdentity();
   if (idErr) { alert(idErr); return; }
-  if (countJars() === 0) return;
+  const anyItem = Object.keys(cart).some(k => (cart[k] || 0) > 0);   // cookies count too, not only jars
+  if (!anyItem) { alert(tx('Your cart is empty.', 'Keranjang masih kosong.')); return; }
   const dateErr = deliveryDateError(f.date);
   if (dateErr) { alert(dateErr); setupDeliveryDate(); return; }
 
