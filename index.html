@@ -839,12 +839,6 @@ function post(body) {
   }).then(r => r.json());
 }
 
-function postRetry(body) {
-  return post(body).catch(function () {
-    return new Promise(function (res) { setTimeout(res, 800); }).then(function () { return post(body); });
-  });
-}
-
 function identity() {
   return { phone: normPhone(document.getElementById('cust-phone').value), email: document.getElementById('cust-email').value.trim().toLowerCase() };
 }
@@ -859,7 +853,7 @@ async function loadAccount(silent) {
   }
   try {
     const d = await post({ action: 'get_account', phone: id.phone, email: id.email });
-    if (d.status === 'success') account = { loaded: true, stamps: d.stamps, coupons: d.coupons || [] };
+    if (d.status === 'success') account = { loaded: true, stamps: d.stamps, coupons: d.coupons || [], at: Date.now() };
     else {
       account = { loaded: false, stamps: 0, coupons: [] };
       if (!silent) alert(d.message);
@@ -1554,8 +1548,11 @@ async function payWithMidtrans() {
   const dateErr = deliveryDateError(f.date);
   if (dateErr) { alert(dateErr); setupDeliveryDate(); return; }
 
-  // Finish any earlier payment and refresh stamps/coupons together, so the same cart is not paid twice
-  await Promise.all([reconcileAll(), loadAccount(true)]);
+  // Finish any earlier payment first, so the same cart is not paid twice
+  if (pendingOrders.length) reconcileAll();   // runs in the background, never blocks the popup
+
+  // Fresh stamps and coupons from the server, right before paying
+  if (!account.loaded || !account.at || Date.now() - account.at > 30000) await loadAccount(true);   // only when stale
   const tot = calcTotals();
   const freeJars = rewardsFor(account.loaded ? account.stamps : 0, tot.jars);
   const freeFlavors = Array.from(document.querySelectorAll('#free-jar-selects select')).map(s => s.value);
@@ -1570,7 +1567,7 @@ async function payWithMidtrans() {
   setPayBusy(true);
   let d;
   try {
-    d = await postRetry({
+    d = await post({
       action: 'create', name: f.name, phone: f.phone, email: f.email,
       fulfillment: currentFulfillmentMethod, address: addressText, datetime: datetime, areaIndex: areaIndex,
       cart: cart, freeFlavors: freeJars > 0 ? freeFlavors : [], couponCode: chosenCoupon,
@@ -1687,7 +1684,7 @@ async function tickPending() {
   pendingTickBusy = true;
   try { await reconcileAll(); } finally { pendingTickBusy = false; }
 }
-setInterval(tickPending, 15000);
+setInterval(tickPending, 60000);
 
 // ---------- Order history and receipt lookup ----------
 function renderOrderHistory() {
