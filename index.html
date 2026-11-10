@@ -1194,7 +1194,7 @@ function renderProducts() {
 
   const list = PRODUCTS.filter(p => (catView === 'cookie') === !!p.cookie);
   document.getElementById('product-list').innerHTML = list.map((p, i) => {
-    const hasLimit = !p.cookie && stockLeft && stockLeft[p.id] !== undefined;
+    const hasLimit = !!stockLeft && stockLeft[p.id] !== undefined;
     const left = hasLimit ? stockLeft[p.id] : null;
     const isOut = !!soldOutMap[p.id] || (left !== null && left <= 0);
     const plusOff = isOut || !orderingOpen || (left !== null && ((cart[p.id] || 0) + (cart.bundle || 0) >= left));
