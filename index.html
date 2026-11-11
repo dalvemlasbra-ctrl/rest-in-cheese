@@ -1249,7 +1249,8 @@ function addBundleToCart() {
     return;
   }
   if (stockLeft) {
-    const short = PRODUCTS.find(p => (cart[p.id] || 0) + (cart.bundle || 0) + 1 > stockLeft[p.id]);
+    // the bundle is cheesecake only, so only cheesecake stock matters here
+    const short = PRODUCTS.find(p => !p.cookie && (cart[p.id] || 0) + (cart.bundle || 0) + 1 > stockLeft[p.id]);
     if (short) {
       alert(tx('Sorry, not enough ' + short.name + ' left for another bundle.', 'Maaf, stok ' + short.name + ' tidak cukup untuk bundle lagi.'));
       return;
